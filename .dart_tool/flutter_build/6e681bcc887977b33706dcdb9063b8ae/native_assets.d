@@ -1,0 +1,1 @@
+ /Users/mateo.manolio/Documents/Aplicaciones/finance-management/.dart_tool/flutter_build/6e681bcc887977b33706dcdb9063b8ae/native_assets.yaml: 
