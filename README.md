@@ -22,6 +22,8 @@ This Flutter project follows the following file structure:
   │ │ ├ screen 2
   │ │ └ ...
   │ ├ data # data sources files
+  │ │ ├ models
+  │ │ └ repositories
   │ ├ core
   │ │ ├ themes
   │ │ ├ domain
