@@ -1,0 +1,97 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5919817927012936905",
+      "lastPropertyId": "4:5272017983793239894",
+      "name": "ExpenseDao",
+      "properties": [
+        {
+          "id": "1:8467154191867697575",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:980807865786412414",
+          "name": "value",
+          "type": 8
+        },
+        {
+          "id": "3:2192930994010682160",
+          "name": "note",
+          "type": 9
+        },
+        {
+          "id": "4:5272017983793239894",
+          "name": "time",
+          "type": 10
+        }
+      ],
+      "relations": [
+        {
+          "id": "2:3099708585342056500",
+          "name": "tags",
+          "targetId": "3:507036025836838464"
+        }
+      ]
+    },
+    {
+      "id": "2:3124102123521736051",
+      "lastPropertyId": "3:72597092580267512",
+      "name": "Tag",
+      "properties": [
+        {
+          "id": "1:3879372550089706277",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8381641229841950575",
+          "name": "tag",
+          "type": 9
+        },
+        {
+          "id": "3:72597092580267512",
+          "name": "color",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:507036025836838464",
+      "lastPropertyId": "1:849968182285221238",
+      "name": "Tags",
+      "properties": [
+        {
+          "id": "1:849968182285221238",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:1057711043170155730",
+          "name": "tags",
+          "targetId": "2:3124102123521736051"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "3:507036025836838464",
+  "lastIndexId": "0:0",
+  "lastRelationId": "2:3099708585342056500",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
