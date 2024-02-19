@@ -1,10 +1,8 @@
-import 'package:objectbox/objectbox.dart';
+import 'dart:ui';
 
-@Entity()
 class Tag {
-  int id = 0;
   final String tag;
-  final String color;
+  final Color color;
 
   Tag({required this.tag, required this.color});
 }

@@ -16,8 +16,7 @@ import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../../../../app/data/models/expense_dao.dart';
-import '../../../../app/domain/tag.dart';
-import '../../../../app/domain/tags.dart';
+import '../../../../app/data/models/tag_dao.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -25,7 +24,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 5919817927012936905),
       name: 'ExpenseDao',
-      lastPropertyId: const obx_int.IdUid(4, 5272017983793239894),
+      lastPropertyId: const obx_int.IdUid(5, 640440764480911258),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -51,53 +50,34 @@ final _entities = <obx_int.ModelEntity>[
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
-            id: const obx_int.IdUid(2, 3099708585342056500),
+            id: const obx_int.IdUid(4, 24130832137686415),
             name: 'tags',
-            targetId: const obx_int.IdUid(3, 507036025836838464))
+            targetId: const obx_int.IdUid(4, 3601738121799794424))
       ],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(2, 3124102123521736051),
-      name: 'Tag',
-      lastPropertyId: const obx_int.IdUid(3, 72597092580267512),
+      id: const obx_int.IdUid(4, 3601738121799794424),
+      name: 'TagDao',
+      lastPropertyId: const obx_int.IdUid(3, 6383428610470993746),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 3879372550089706277),
+            id: const obx_int.IdUid(1, 5518069033967568717),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 8381641229841950575),
+            id: const obx_int.IdUid(2, 7866011984642990259),
             name: 'tag',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 72597092580267512),
+            id: const obx_int.IdUid(3, 6383428610470993746),
             name: 'color',
             type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
-  obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 507036025836838464),
-      name: 'Tags',
-      lastPropertyId: const obx_int.IdUid(1, 849968182285221238),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 849968182285221238),
-            name: 'id',
-            type: 6,
-            flags: 1)
-      ],
-      relations: <obx_int.ModelRelation>[
-        obx_int.ModelRelation(
-            id: const obx_int.IdUid(1, 1057711043170155730),
-            name: 'tags',
-            targetId: const obx_int.IdUid(2, 3124102123521736051))
-      ],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -136,14 +116,25 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(3, 507036025836838464),
-      lastIndexId: const obx_int.IdUid(0, 0),
-      lastRelationId: const obx_int.IdUid(2, 3099708585342056500),
+      lastEntityId: const obx_int.IdUid(5, 3158100299059240116),
+      lastIndexId: const obx_int.IdUid(1, 1128386827182227114),
+      lastRelationId: const obx_int.IdUid(4, 24130832137686415),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [],
-      retiredRelationUids: const [],
+      retiredEntityUids: const [
+        3124102123521736051,
+        507036025836838464,
+        3158100299059240116
+      ],
+      retiredIndexUids: const [1128386827182227114],
+      retiredPropertyUids: const [
+        3879372550089706277,
+        8381641229841950575,
+        72597092580267512,
+        849968182285221238,
+        640440764480911258,
+        2238330895478964221
+      ],
+      retiredRelationUids: const [3099708585342056500],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -153,14 +144,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
         model: _entities[0],
         toOneRelations: (ExpenseDao object) => [],
         toManyRelations: (ExpenseDao object) =>
-            {obx_int.RelInfo<ExpenseDao>.toMany(2, object.id): object.tags},
+            {obx_int.RelInfo<ExpenseDao>.toMany(4, object.id): object.tags},
         getId: (ExpenseDao object) => object.id,
         setId: (ExpenseDao object, int id) {
           object.id = id;
         },
         objectToFB: (ExpenseDao object, fb.Builder fbb) {
           final noteOffset = fbb.writeString(object.note);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
@@ -181,18 +172,18 @@ obx_int.ModelDefinition getObjectBoxModel() {
               value: valueParam, note: noteParam, time: timeParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           obx_int.InternalToManyAccess.setRelInfo<ExpenseDao>(object.tags,
-              store, obx_int.RelInfo<ExpenseDao>.toMany(2, object.id));
+              store, obx_int.RelInfo<ExpenseDao>.toMany(4, object.id));
           return object;
         }),
-    Tag: obx_int.EntityDefinition<Tag>(
+    TagDao: obx_int.EntityDefinition<TagDao>(
         model: _entities[1],
-        toOneRelations: (Tag object) => [],
-        toManyRelations: (Tag object) => {},
-        getId: (Tag object) => object.id,
-        setId: (Tag object, int id) {
+        toOneRelations: (TagDao object) => [],
+        toManyRelations: (TagDao object) => {},
+        getId: (TagDao object) => object.id,
+        setId: (TagDao object, int id) {
           object.id = id;
         },
-        objectToFB: (Tag object, fb.Builder fbb) {
+        objectToFB: (TagDao object, fb.Builder fbb) {
           final tagOffset = fbb.writeString(object.tag);
           final colorOffset = fbb.writeString(object.color);
           fbb.startTable(4);
@@ -209,34 +200,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final colorParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
-          final object = Tag(tag: tagParam, color: colorParam)
+          final object = TagDao(tag: tagParam, color: colorParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
-          return object;
-        }),
-    Tags: obx_int.EntityDefinition<Tags>(
-        model: _entities[2],
-        toOneRelations: (Tags object) => [],
-        toManyRelations: (Tags object) =>
-            {obx_int.RelInfo<Tags>.toMany(1, object.id): object.tags},
-        getId: (Tags object) => object.id,
-        setId: (Tags object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Tags object, fb.Builder fbb) {
-          fbb.startTable(2);
-          fbb.addInt64(0, object.id);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Tags()
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          obx_int.InternalToManyAccess.setRelInfo<Tags>(
-              object.tags, store, obx_int.RelInfo<Tags>.toMany(1, object.id));
           return object;
         })
   };
@@ -264,27 +230,20 @@ class ExpenseDao_ {
 
   /// see [ExpenseDao.tags]
   static final tags =
-      obx.QueryRelationToMany<ExpenseDao, Tags>(_entities[0].relations[0]);
+      obx.QueryRelationToMany<ExpenseDao, TagDao>(_entities[0].relations[0]);
 }
 
-/// [Tag] entity fields to define ObjectBox queries.
-class Tag_ {
-  /// see [Tag.id]
-  static final id = obx.QueryIntegerProperty<Tag>(_entities[1].properties[0]);
+/// [TagDao] entity fields to define ObjectBox queries.
+class TagDao_ {
+  /// see [TagDao.id]
+  static final id =
+      obx.QueryIntegerProperty<TagDao>(_entities[1].properties[0]);
 
-  /// see [Tag.tag]
-  static final tag = obx.QueryStringProperty<Tag>(_entities[1].properties[1]);
+  /// see [TagDao.tag]
+  static final tag =
+      obx.QueryStringProperty<TagDao>(_entities[1].properties[1]);
 
-  /// see [Tag.color]
-  static final color = obx.QueryStringProperty<Tag>(_entities[1].properties[2]);
-}
-
-/// [Tags] entity fields to define ObjectBox queries.
-class Tags_ {
-  /// see [Tags.id]
-  static final id = obx.QueryIntegerProperty<Tags>(_entities[2].properties[0]);
-
-  /// see [Tags.tags]
-  static final tags =
-      obx.QueryRelationToMany<Tags, Tag>(_entities[2].relations[0]);
+  /// see [TagDao.color]
+  static final color =
+      obx.QueryStringProperty<TagDao>(_entities[1].properties[2]);
 }
