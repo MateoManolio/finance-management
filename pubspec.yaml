@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   objectbox: ^2.4.0
+  build_runner: ^2.4.8
 
 dev_dependencies:
   flutter_test:
