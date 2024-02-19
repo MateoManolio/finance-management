@@ -1,1 +1,0 @@
-[{"id":"0:0","lastPropertyId":"0:0","name":"Tags","properties":[{"id":"0:0","name":"id","type":6,"flags":1,"dartFieldType":"int","uidRequest":false}],"relations":[{"id":"0:0","name":"tags","targetName":"Tag","uidRequest":false}],"backlinks":[],"constructorParams":["tags optional-named List<Tag>?"],"uidRequest":false}]
