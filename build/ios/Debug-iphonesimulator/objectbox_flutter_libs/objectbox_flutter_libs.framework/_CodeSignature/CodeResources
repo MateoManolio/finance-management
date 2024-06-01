@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		tzcoYbiaQKZK25RF+rHh5qwfIW4=
+		kjQwBbkC6uJ/Jpvii0PtflY46O4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -22,11 +22,11 @@
 		</data>
 		<key>Modules/objectbox_flutter_libs.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		4Z56CTaNydJxTJA+tHeZfVBr9mk=
+		DrND+IrjvFvPVASLlyj5dT4Gukk=
 		</data>
 		<key>Modules/objectbox_flutter_libs.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		UhMH5yye136HXcIra3TyYwkiD/Q=
+		ERjQcSa3d0YuRPLSyht77PsLG04=
 		</data>
 		<key>Modules/objectbox_flutter_libs.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -80,14 +80,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			2rQQHQo5yJbPWamjEXTup8olqSuDdkG3GQbNl2TGeVY=
+			MHyqmjsR3hhm2NYVXXPq94k+68jaPpztcMeFlgIYJoU=
 			</data>
 		</dict>
 		<key>Modules/objectbox_flutter_libs.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			6+zOGAHIsxAyV83+hjEhsYusY8uSElfVYUWIYpRUQ8Q=
+			xDms3ATkm4ngnoGVg1Wn3bsuEteYUEYZ//mdEn9vUJo=
 			</data>
 		</dict>
 		<key>Modules/objectbox_flutter_libs.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
