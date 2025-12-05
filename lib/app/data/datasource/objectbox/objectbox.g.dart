@@ -24,7 +24,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 5919817927012936905),
       name: 'ExpenseDao',
-      lastPropertyId: const obx_int.IdUid(5, 640440764480911258),
+      lastPropertyId: const obx_int.IdUid(7, 1494924912565155595),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -46,6 +46,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 5272017983793239894),
             name: 'time',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 3265471650160425111),
+            name: 'color',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 1494924912565155595),
+            name: 'iconCodePoint',
+            type: 6,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -74,7 +84,7 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 6383428610470993746),
             name: 'color',
-            type: 9,
+            type: 6,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -151,11 +161,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (ExpenseDao object, fb.Builder fbb) {
           final noteOffset = fbb.writeString(object.note);
-          fbb.startTable(6);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
           fbb.addInt64(3, object.time.millisecondsSinceEpoch);
+          fbb.addInt64(5, object.color);
+          fbb.addInt64(6, object.iconCodePoint);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -168,8 +180,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 8, '');
           final timeParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
+          final colorParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
+          final iconCodePointParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
           final object = ExpenseDao(
-              value: valueParam, note: noteParam, time: timeParam)
+              value: valueParam,
+              note: noteParam,
+              time: timeParam,
+              color: colorParam,
+              iconCodePoint: iconCodePointParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           obx_int.InternalToManyAccess.setRelInfo<ExpenseDao>(object.tags,
               store, obx_int.RelInfo<ExpenseDao>.toMany(4, object.id));
@@ -185,11 +205,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (TagDao object, fb.Builder fbb) {
           final tagOffset = fbb.writeString(object.tag);
-          final colorOffset = fbb.writeString(object.color);
           fbb.startTable(4);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, tagOffset);
-          fbb.addOffset(2, colorOffset);
+          fbb.addInt64(2, object.color);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -198,8 +217,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final tagParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final colorParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
+          final colorParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
           final object = TagDao(tag: tagParam, color: colorParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
@@ -228,6 +247,14 @@ class ExpenseDao_ {
   static final time =
       obx.QueryDateProperty<ExpenseDao>(_entities[0].properties[3]);
 
+  /// see [ExpenseDao.color]
+  static final color =
+      obx.QueryIntegerProperty<ExpenseDao>(_entities[0].properties[4]);
+
+  /// see [ExpenseDao.iconCodePoint]
+  static final iconCodePoint =
+      obx.QueryIntegerProperty<ExpenseDao>(_entities[0].properties[5]);
+
   /// see [ExpenseDao.tags]
   static final tags =
       obx.QueryRelationToMany<ExpenseDao, TagDao>(_entities[0].relations[0]);
@@ -245,5 +272,5 @@ class TagDao_ {
 
   /// see [TagDao.color]
   static final color =
-      obx.QueryStringProperty<TagDao>(_entities[1].properties[2]);
+      obx.QueryIntegerProperty<TagDao>(_entities[1].properties[2]);
 }

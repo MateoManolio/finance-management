@@ -4,7 +4,7 @@ import 'package:objectbox/objectbox.dart';
 class TagDao {
   int id = 0;
   final String tag;
-  final String color;
+  final int color;
 
   TagDao({required this.tag, required this.color});
 }

@@ -21,15 +21,15 @@
     },
     {
       "name": "async",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.11.0",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.13.0",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.4"
     },
     {
       "name": "boolean_selector",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/boolean_selector-2.1.1",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/boolean_selector-2.1.2",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.1"
     },
     {
       "name": "build",
@@ -183,7 +183,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///C:/Users/Mateo/Documents/Aplicaciones/Flutter%20SDK/flutter/packages/flutter",
+      "rootUri": "file:///C:/Users/Mateo/develop/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -195,7 +195,7 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///C:/Users/Mateo/Documents/Aplicaciones/Flutter%20SDK/flutter/packages/flutter_test",
+      "rootUri": "file:///C:/Users/Mateo/develop/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -219,9 +219,9 @@
     },
     {
       "name": "google_fonts",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.3.2",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.3.3",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "3.9"
     },
     {
       "name": "graphs",
@@ -309,9 +309,9 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/meta-1.16.0",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/meta-1.17.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.5"
     },
     {
       "name": "mime",
@@ -363,7 +363,7 @@
     },
     {
       "name": "path_provider_foundation",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_foundation-2.4.4",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_foundation-2.5.1",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -429,7 +429,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///C:/Users/Mateo/Documents/Aplicaciones/Flutter%20SDK/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///C:/Users/Mateo/develop/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -441,9 +441,9 @@
     },
     {
       "name": "source_span",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/source_span-1.10.0",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/source_span-1.10.1",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.1"
     },
     {
       "name": "stack_trace",
@@ -465,19 +465,19 @@
     },
     {
       "name": "string_scanner",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/string_scanner-1.2.0",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/string_scanner-1.4.1",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.1"
     },
     {
       "name": "term_glyph",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/term_glyph-1.2.1",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/term_glyph-1.2.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.1"
     },
     {
       "name": "test_api",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/test_api-0.7.6",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/test_api-0.7.7",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -501,9 +501,9 @@
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-13.0.0",
+      "rootUri": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-15.0.2",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.5"
     },
     {
       "name": "watcher",
@@ -549,8 +549,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.9.2",
-  "flutterRoot": "file:///C:/Users/Mateo/Documents/Aplicaciones/Flutter%20SDK/flutter",
-  "flutterVersion": "3.35.7",
+  "generatorVersion": "3.10.3",
+  "flutterRoot": "file:///C:/Users/Mateo/develop/flutter",
+  "flutterVersion": "3.38.4",
   "pubCache": "file:///C:/Users/Mateo/AppData/Local/Pub/Cache"
 }
