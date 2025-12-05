@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5919817927012936905",
-      "lastPropertyId": "5:640440764480911258",
+      "lastPropertyId": "7:1494924912565155595",
       "name": "ExpenseDao",
       "properties": [
         {
@@ -28,6 +28,16 @@
           "id": "4:5272017983793239894",
           "name": "time",
           "type": 10
+        },
+        {
+          "id": "6:3265471650160425111",
+          "name": "color",
+          "type": 6
+        },
+        {
+          "id": "7:1494924912565155595",
+          "name": "iconCodePoint",
+          "type": 6
         }
       ],
       "relations": [
@@ -57,7 +67,7 @@
         {
           "id": "3:6383428610470993746",
           "name": "color",
-          "type": 9
+          "type": 6
         }
       ],
       "relations": []

@@ -1,5 +1,5 @@
-import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:wise_wallet/app/data/models/expense_dao.dart';
 import 'package:wise_wallet/app/data/models/tag_dao.dart';
@@ -14,6 +14,8 @@ extension ToDomain on ExpenseDao {
       note: note,
       time: time,
       tags: tags.toDomain(),
+      color: Color(color),
+      icon: IconData(iconCodePoint, fontFamily: 'MaterialIcons'),
     );
   }
 }
@@ -24,6 +26,8 @@ extension ToDaoExpense on Expense {
       value: value,
       note: note,
       time: time,
+      color: color.toARGB32(),
+      iconCodePoint: icon.codePoint,
     );
     for (final tag in tags) {
       expense.tags.add(tag.toModel());
@@ -36,7 +40,7 @@ extension ToDaoTag on Tag {
   TagDao toModel() {
     return TagDao(
       tag: tag,
-      color: '${color.red}-${color.green}-${color.blue}',
+      color: color.toARGB32(),
     );
   }
 }
@@ -53,15 +57,9 @@ extension ToDomainTagList on ToMany<TagDao> {
 
 extension ToDomainTag on TagDao {
   Tag toDomain() {
-    final colorList = color.split('-');
     return Tag(
       tag: tag,
-      color: Color.fromRGBO(
-        int.parse(colorList[0]),
-        int.parse(colorList[1]),
-        int.parse(colorList[2]),
-        1,
-      ),
+      color: Color(color),
     );
   }
 }

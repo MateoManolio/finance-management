@@ -9,10 +9,14 @@ class ExpenseDao {
   @Property(type: PropertyType.date)
   final DateTime time;
   var tags = ToMany<TagDao>();
+  final int color;
+  final int iconCodePoint;
 
   ExpenseDao({
     required this.value,
     required this.note,
     required this.time,
+    required this.color,
+    required this.iconCodePoint,
   });
 }

@@ -5,17 +5,17 @@ _Briefly describe the purpose of this pull request._
 
 ## Functionality
 What is this PR about?
-- [] Adding a new feature (**FEATURE**)
-- [] Fixing a bug (**FIX**)
-- [] Refactoring and code corrections (**DEV**)
-- [] Other
+- [ ] Adding a new feature (**FEATURE**)
+- [ ] Fixing a bug (**FIX**)
+- [ ] Refactoring and code corrections (**DEV**)
+- [ ] Other
 
 ## Testing
 Specify the **devices** used for test the app.
 
 - [] Iphone 15 Pro
-- [] Pixel 7 Pro
-- [] Samsung S20 (_real device_)
+- [ ] Pixel 7 Pro
+- [ ] Samsung S20 (_real device_)
 
 ## UI Changes
 Did this PR updates the UI?
