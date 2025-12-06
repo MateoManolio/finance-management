@@ -1,10 +1,13 @@
+import 'dart:collection';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/display_expenses_controller.dart';
 import '../../../../core/app_constants.dart';
-import '../../../../domain/expense.dart';
+import '../../../../domain/entity/expense.dart';
 import 'expense_widget.dart';
+
+import 'empty_expenses_placeholder.dart';
 
 class DisplayExpenses extends StatelessWidget {
   final List<Expense> expenses;
@@ -75,12 +78,23 @@ class _Information extends StatelessWidget {
       }
       grouped[date]!.add(expense);
     }
-    return grouped;
+
+    final reversedKeys = grouped.keys.toList().reversed;
+    return LinkedHashMap.fromIterable(
+      reversedKeys,
+      key: (date) => date as DateTime,
+      value: (date) => grouped[date as DateTime]!,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (expenses.isEmpty) {
+      return const EmptyExpensesPlaceholder();
+    }
+
     final grouped = _groupedExpenses;
+
     return ShaderMask(
       shaderCallback: (Rect bounds) {
         return const LinearGradient(
@@ -101,8 +115,7 @@ class _Information extends StatelessWidget {
         itemCount: grouped.length,
         itemBuilder: (context, index) {
           final date = grouped.keys.elementAt(index);
-          // Reverse the list to show oldest to newest (top to bottom within the day)
-          final dailyExpenses = grouped[date]!.reversed.toList();
+          final dailyExpenses = grouped[date]!;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

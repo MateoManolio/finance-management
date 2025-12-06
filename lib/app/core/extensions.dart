@@ -1,21 +1,25 @@
-
 import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:wise_wallet/app/data/models/expense_dao.dart';
 import 'package:wise_wallet/app/data/models/tag_dao.dart';
-import 'package:wise_wallet/app/domain/expense.dart';
-import 'package:wise_wallet/app/domain/tag.dart';
+import 'package:wise_wallet/app/data/models/category_dao.dart';
+import 'package:wise_wallet/app/domain/entity/expense.dart';
+import 'package:wise_wallet/app/domain/entity/tag.dart';
+import 'package:wise_wallet/app/domain/entity/category.dart';
 
 extension ToDomain on ExpenseDao {
   Expense toDomain() {
-    //final expenseTags = tags;
+    final categoryDao = category.target;
+    if (categoryDao == null) {
+      throw Exception('Expense must have a category');
+    }
+
     return Expense(
       value: value,
       note: note,
       time: time,
       tags: tags.toDomain(),
-      color: Color(color),
-      icon: IconData(iconCodePoint, fontFamily: 'MaterialIcons'),
+      category: categoryDao.toDomain(),
     );
   }
 }
@@ -26,13 +30,38 @@ extension ToDaoExpense on Expense {
       value: value,
       note: note,
       time: time,
-      color: color.toARGB32(),
-      iconCodePoint: icon.codePoint,
     );
+
+    // Asignar categoría
+    expense.category.target = category.toModel();
+
+    // Asignar tags
     for (final tag in tags) {
       expense.tags.add(tag.toModel());
     }
     return expense;
+  }
+}
+
+extension ToDaoCategory on Category {
+  CategoryDao toModel() {
+    return CategoryDao(
+      name: name,
+      iconCodePoint: icon.codePoint,
+      group: group,
+      color: color?.value,
+    );
+  }
+}
+
+extension ToDomainCategory on CategoryDao {
+  Category toDomain() {
+    return Category(
+      name: name,
+      icon: IconData(iconCodePoint, fontFamily: 'MaterialIcons'),
+      group: group,
+      color: color != null ? Color(color!) : null,
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../domain/expense.dart';
+import '../domain/entity/expense.dart';
 
 class DisplayExpensesController extends GetxController {
   String formatDate(DateTime date) {
@@ -33,7 +33,7 @@ class DisplayExpensesController extends GetxController {
   }
 
   List<Color> getColorForExpense(Expense expense) {
-    final baseColor = expense.color;
+    final baseColor = expense.getEffectiveColor();
     final darkerColor =
         HSLColor.fromColor(baseColor).withLightness(0.3).toColor();
 
