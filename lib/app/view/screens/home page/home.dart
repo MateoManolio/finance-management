@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/expenses_controller.dart';
+import '../load_expense/load_expense_screen.dart';
 import 'widgets/big_button.dart';
 import 'widgets/dashboard_header.dart';
 import 'widgets/display_expenses.dart';
@@ -10,8 +11,6 @@ class Home extends GetView<ExpensesController> {
 
   @override
   Widget build(BuildContext context) {
-    // Force reload to ensure mock data is fresh
-    controller.loadExpenses();
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -37,7 +36,7 @@ class Home extends GetView<ExpensesController> {
                     offset: const Offset(0, -50),
                     child: BigButton(
                       value: 50,
-                      onTap: _handleAddExpense,
+                      onTap: () => _handleAddExpense(context),
                       leadingIcon: Icons.add,
                     ),
                   ),
@@ -50,10 +49,27 @@ class Home extends GetView<ExpensesController> {
     );
   }
 
-  void _handleAddExpense() {
-    // This is where you would navigate to add expense screen
-    // For now, just print
-    debugPrint('Add expense button pressed');
-    // Example: Get.toNamed(Routes.ADD_EXPENSE);
+  void _handleAddExpense(BuildContext context) {
+    Get.generalDialog(
+      barrierColor: Colors.black.withValues(alpha: 0.2),
+      barrierDismissible: true,
+      barrierLabel: 'Dismiss',
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const LoadExpenseScreen(),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeOutCubic;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 400),
+    );
   }
 }

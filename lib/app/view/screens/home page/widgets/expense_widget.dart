@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wise_wallet/app/controllers/display_expenses_controller.dart';
 
-import '../../../../domain/expense.dart';
+import '../../../../domain/entity/expense.dart';
 import 'liquid_glass_card.dart';
 
 class ExpenseWidget extends StatelessWidget {
@@ -19,8 +19,9 @@ class ExpenseWidget extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: _Name(
-              name:
-                  expense.tags.isNotEmpty ? expense.tags.first.tag : 'Expense',
+              name: expense.tags.isNotEmpty
+                  ? expense.tags.first.tag
+                  : expense.category.name,
               description: expense.note,
             ),
           ),
@@ -60,7 +61,7 @@ class _Leading extends StatelessWidget {
         ],
       ),
       child: Icon(
-        expense.icon,
+        expense.category.icon,
         color: Colors.white,
         size: 20,
       ),
@@ -70,11 +71,11 @@ class _Leading extends StatelessWidget {
 
 class _Name extends StatelessWidget {
   final String name;
-  final String description;
+  final String? description;
 
   const _Name({
     required this.name,
-    required this.description,
+    this.description,
   });
 
   @override
@@ -82,6 +83,7 @@ class _Name extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           name,
@@ -90,15 +92,17 @@ class _Name extends StatelessWidget {
             color: theme.colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 4),
-        Text(
-          description,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+        if (description != null && description!.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(
+            description!,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        ],
       ],
     );
   }

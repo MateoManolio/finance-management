@@ -15,6 +15,7 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import '../../../../app/data/models/category_dao.dart';
 import '../../../../app/data/models/expense_dao.dart';
 import '../../../../app/data/models/tag_dao.dart';
 
@@ -24,7 +25,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 5919817927012936905),
       name: 'ExpenseDao',
-      lastPropertyId: const obx_int.IdUid(7, 1494924912565155595),
+      lastPropertyId: const obx_int.IdUid(9, 2922509187325330259),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -48,15 +49,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 10,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 3265471650160425111),
-            name: 'color',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 1494924912565155595),
-            name: 'iconCodePoint',
-            type: 6,
-            flags: 0)
+            id: const obx_int.IdUid(8, 2796075415949339620),
+            name: 'categoryId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(2, 4613352209867354644),
+            relationTarget: 'CategoryDao')
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
@@ -83,6 +81,40 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 6383428610470993746),
+            name: 'color',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(6, 3393782162671296317),
+      name: 'CategoryDao',
+      lastPropertyId: const obx_int.IdUid(6, 7755097635590964978),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 6366750666482516730),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 1476329779750957291),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 8721166927382276505),
+            name: 'iconCodePoint',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 2545399002649085515),
+            name: 'group',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7755097635590964978),
             name: 'color',
             type: 6,
             flags: 0)
@@ -126,8 +158,8 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(5, 3158100299059240116),
-      lastIndexId: const obx_int.IdUid(1, 1128386827182227114),
+      lastEntityId: const obx_int.IdUid(6, 3393782162671296317),
+      lastIndexId: const obx_int.IdUid(2, 4613352209867354644),
       lastRelationId: const obx_int.IdUid(4, 24130832137686415),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -142,7 +174,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         72597092580267512,
         849968182285221238,
         640440764480911258,
-        2238330895478964221
+        2238330895478964221,
+        3265471650160425111,
+        1494924912565155595,
+        2265806399890665750,
+        2922509187325330259
       ],
       retiredRelationUids: const [3099708585342056500],
       modelVersion: 5,
@@ -152,7 +188,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final bindings = <Type, obx_int.EntityDefinition>{
     ExpenseDao: obx_int.EntityDefinition<ExpenseDao>(
         model: _entities[0],
-        toOneRelations: (ExpenseDao object) => [],
+        toOneRelations: (ExpenseDao object) => [object.category],
         toManyRelations: (ExpenseDao object) =>
             {obx_int.RelInfo<ExpenseDao>.toMany(4, object.id): object.tags},
         getId: (ExpenseDao object) => object.id,
@@ -160,14 +196,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (ExpenseDao object, fb.Builder fbb) {
-          final noteOffset = fbb.writeString(object.note);
-          fbb.startTable(8);
+          final noteOffset =
+              object.note == null ? null : fbb.writeString(object.note!);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
           fbb.addInt64(3, object.time.millisecondsSinceEpoch);
-          fbb.addInt64(5, object.color);
-          fbb.addInt64(6, object.iconCodePoint);
+          fbb.addInt64(7, object.category.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -177,20 +213,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0);
           final noteParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
+              .vTableGetNullable(buffer, rootOffset, 8);
           final timeParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
-          final colorParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          final iconCodePointParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
           final object = ExpenseDao(
-              value: valueParam,
-              note: noteParam,
-              time: timeParam,
-              color: colorParam,
-              iconCodePoint: iconCodePointParam)
+              value: valueParam, note: noteParam, time: timeParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.category.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          object.category.attach(store);
           obx_int.InternalToManyAccess.setRelInfo<ExpenseDao>(object.tags,
               store, obx_int.RelInfo<ExpenseDao>.toMany(4, object.id));
           return object;
@@ -223,6 +254,47 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
+        }),
+    CategoryDao: obx_int.EntityDefinition<CategoryDao>(
+        model: _entities[2],
+        toOneRelations: (CategoryDao object) => [],
+        toManyRelations: (CategoryDao object) => {},
+        getId: (CategoryDao object) => object.id,
+        setId: (CategoryDao object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CategoryDao object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          final groupOffset =
+              object.group == null ? null : fbb.writeString(object.group!);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.addInt64(2, object.iconCodePoint);
+          fbb.addOffset(3, groupOffset);
+          fbb.addInt64(5, object.color);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final iconCodePointParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final groupParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 10);
+          final colorParam =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14);
+          final object = CategoryDao(
+              name: nameParam,
+              iconCodePoint: iconCodePointParam,
+              group: groupParam,
+              color: colorParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
         })
   };
 
@@ -247,13 +319,9 @@ class ExpenseDao_ {
   static final time =
       obx.QueryDateProperty<ExpenseDao>(_entities[0].properties[3]);
 
-  /// see [ExpenseDao.color]
-  static final color =
-      obx.QueryIntegerProperty<ExpenseDao>(_entities[0].properties[4]);
-
-  /// see [ExpenseDao.iconCodePoint]
-  static final iconCodePoint =
-      obx.QueryIntegerProperty<ExpenseDao>(_entities[0].properties[5]);
+  /// see [ExpenseDao.category]
+  static final category = obx.QueryRelationToOne<ExpenseDao, CategoryDao>(
+      _entities[0].properties[4]);
 
   /// see [ExpenseDao.tags]
   static final tags =
@@ -273,4 +341,27 @@ class TagDao_ {
   /// see [TagDao.color]
   static final color =
       obx.QueryIntegerProperty<TagDao>(_entities[1].properties[2]);
+}
+
+/// [CategoryDao] entity fields to define ObjectBox queries.
+class CategoryDao_ {
+  /// see [CategoryDao.id]
+  static final id =
+      obx.QueryIntegerProperty<CategoryDao>(_entities[2].properties[0]);
+
+  /// see [CategoryDao.name]
+  static final name =
+      obx.QueryStringProperty<CategoryDao>(_entities[2].properties[1]);
+
+  /// see [CategoryDao.iconCodePoint]
+  static final iconCodePoint =
+      obx.QueryIntegerProperty<CategoryDao>(_entities[2].properties[2]);
+
+  /// see [CategoryDao.group]
+  static final group =
+      obx.QueryStringProperty<CategoryDao>(_entities[2].properties[3]);
+
+  /// see [CategoryDao.color]
+  static final color =
+      obx.QueryIntegerProperty<CategoryDao>(_entities[2].properties[4]);
 }

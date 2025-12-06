@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+import '../../../../core/app_constants.dart';
+
+class EmptyExpensesPlaceholder extends StatelessWidget {
+  const EmptyExpensesPlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(AppConstants.largePadding),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.05),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
+            child: Icon(
+              Icons.receipt_long_rounded,
+              size: 64,
+              color: Colors.white.withValues(alpha: 0.3),
+            ),
+          ),
+          const SizedBox(height: AppConstants.defaultPadding),
+          Text(
+            'No hay gastos aún',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: AppConstants.smallPadding),
+          Text(
+            'Tus gastos aparecerán aquí',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.4),
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
