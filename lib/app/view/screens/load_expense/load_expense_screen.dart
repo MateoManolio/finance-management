@@ -4,6 +4,7 @@ import '../../widgets/glass_container.dart';
 import '../../../controllers/load_expense_controller.dart';
 import 'widgets/expense_drag_handle.dart';
 import 'widgets/expense_amount_input.dart';
+import 'widgets/expense_card_selector.dart';
 import 'widgets/expense_category_selector.dart';
 import 'widgets/expense_date_selector.dart';
 import 'widgets/expense_note_input.dart';
@@ -61,9 +62,13 @@ class LoadExpenseScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Card Selector
+                              const ExpenseCardSelector(),
+                              const SizedBox(height: 20),
+
                               // Category Selector
-                              ExpenseCategorySelector(),
-                              SizedBox(height: 16),
+                              const ExpenseCategorySelector(),
+                              const SizedBox(height: 16),
 
                               // Date Selector
                               ExpenseDateSelector(),

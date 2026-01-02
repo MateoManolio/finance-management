@@ -3,6 +3,7 @@ import 'package:wise_wallet/app/core/errors/failures.dart';
 import 'package:wise_wallet/app/data/datasource/app_database.dart';
 import 'package:wise_wallet/app/data/datasource/objectbox/objectbox.g.dart'; // Importante para ExpenseDao_, etc.
 import 'package:wise_wallet/app/data/mappers/expense_mapper.dart';
+import 'package:wise_wallet/app/data/mappers/credit_card_mapper.dart';
 import 'package:wise_wallet/app/data/models/expense_dao.dart';
 import 'package:wise_wallet/app/data/models/category_dao.dart';
 import 'package:wise_wallet/app/data/models/tag_dao.dart';
@@ -48,6 +49,9 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
       // Set relationships
       expenseDao.category.target = categoryDao;
       expenseDao.tags.addAll(tagDaos);
+      if (expense.card != null) {
+        expenseDao.card.target = CreditCardMapper.toDao(expense.card!);
+      }
 
       // Save to database
       final id = _expenseBox.put(expenseDao);
