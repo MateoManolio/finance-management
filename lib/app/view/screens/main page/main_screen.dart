@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../controllers/navigation_controller.dart';
 import '../home page/home.dart';
 import '../home page/widgets/animated_blur_bubble.dart';
+import '../hub page/hub_screen.dart';
 import 'widgets/navigation_bar.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
@@ -79,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> screens = [
       const Home(),
       const _AnalysisScreen(),
-      const _CardsScreen(),
+      const HubScreen(),
       const _ProfileScreen(),
     ];
 
