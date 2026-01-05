@@ -7,7 +7,6 @@ import '../domain/entity/credit_card.dart';
 import '../domain/entity/subscription.dart';
 import '../domain/usecases/save_subscription_usecase.dart';
 import 'subscriptions_controller.dart';
-import 'load_expense_controller.dart'; // Reuse data if possible, or duplicate for independence
 
 class AddSubscriptionController extends GetxController {
   final nameController = TextEditingController();
@@ -46,10 +45,11 @@ class AddSubscriptionController extends GetxController {
     // Listen to tax input
     taxController.addListener(() {
       final val = double.tryParse(taxController.text);
-      if (val != null)
+      if (val != null) {
         taxPercentage.value = val;
-      else
+      } else {
         taxPercentage.value = 0.0;
+      }
     });
   }
 
@@ -78,9 +78,10 @@ class AddSubscriptionController extends GetxController {
           color: Colors.yellow),
       // Add more as needed
     ];
-    if (availableCategories.isNotEmpty)
+    if (availableCategories.isNotEmpty) {
       selectedCategory.value =
           availableCategories[2]; // Default to Entertainment
+    }
 
     availableTags = [
       Tag(tag: 'Mensual', color: Colors.blue),
