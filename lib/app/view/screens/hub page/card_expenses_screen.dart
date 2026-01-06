@@ -45,7 +45,7 @@ class CardExpensesScreen extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    card.color.withOpacity(0.3),
+                    card.color.withValues(alpha: 0.3),
                     Colors.black,
                     Colors.black,
                   ],
@@ -69,7 +69,7 @@ class CardExpensesScreen extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back_ios_new_rounded,
                             color: Colors.white),
                         style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.1),
+                          backgroundColor: Colors.white.withValues(alpha: 0.1),
                           padding: const EdgeInsets.all(12),
                         ),
                       ),
@@ -135,10 +135,10 @@ class CardExpensesScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
-                          border:
-                              Border.all(color: Colors.white.withOpacity(0.1)),
+                          border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.1)),
                         ),
                         child: Text(
                           '${filteredExpenses.length} Transacciones',
@@ -159,11 +159,12 @@ class CardExpensesScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.05),
+                      color: Colors.white.withValues(alpha: 0.05),
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(30)),
                       border: Border(
-                        top: BorderSide(color: Colors.white.withOpacity(0.1)),
+                        top: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.1)),
                       ),
                     ),
                     child: ClipRRect(
@@ -176,7 +177,8 @@ class CardExpensesScreen extends StatelessWidget {
                                 children: [
                                   Icon(Icons.receipt_long_rounded,
                                       size: 60,
-                                      color: Colors.white.withOpacity(0.2)),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.2)),
                                   const SizedBox(height: 16),
                                   Text(
                                     'Sin movimientos',
