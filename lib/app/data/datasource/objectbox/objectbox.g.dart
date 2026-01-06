@@ -16,7 +16,9 @@ import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../../../../app/data/models/category_dao.dart';
+import '../../../../app/data/models/credit_card_dao.dart';
 import '../../../../app/data/models/expense_dao.dart';
+import '../../../../app/data/models/subscription_dao.dart';
 import '../../../../app/data/models/tag_dao.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -25,7 +27,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 5919817927012936905),
       name: 'ExpenseDao',
-      lastPropertyId: const obx_int.IdUid(9, 2922509187325330259),
+      lastPropertyId: const obx_int.IdUid(10, 5620443540309895286),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -54,7 +56,14 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(2, 4613352209867354644),
-            relationTarget: 'CategoryDao')
+            relationTarget: 'CategoryDao'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 5620443540309895286),
+            name: 'cardId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(4, 2834181971530382959),
+            relationTarget: 'CreditCardDao')
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
@@ -120,6 +129,123 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(7, 8445603323851752585),
+      name: 'CreditCardDao',
+      lastPropertyId: const obx_int.IdUid(8, 5824745874490540154),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4961737592928691345),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 8558151195287283451),
+            name: 'cardNumber',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 5335799391301192086),
+            name: 'holderName',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 3268434557798066084),
+            name: 'expiryDate',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 7357709932517450156),
+            name: 'closingDay',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 2804694125692121516),
+            name: 'dueDay',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 3385977480107580113),
+            name: 'color',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 5824745874490540154),
+            name: 'cardType',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(8, 4682781076433017614),
+      name: 'SubscriptionDao',
+      lastPropertyId: const obx_int.IdUid(10, 3861221567018217888),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4548396326727660402),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 4084577404653065970),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 4438940236899984087),
+            name: 'value',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 8806360343990798655),
+            name: 'cycle',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 7863802301125278495),
+            name: 'nextPaymentDate',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 660564981356285830),
+            name: 'isAutoPay',
+            type: 1,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 8663098719702650251),
+            name: 'taxPercentage',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 7273677235937782734),
+            name: 'note',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(9, 8182732957857453030),
+            name: 'categoryId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(3, 3298386781401118933),
+            relationTarget: 'CategoryDao'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 3861221567018217888),
+            name: 'cardId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(5, 1803719598457424279),
+            relationTarget: 'CreditCardDao')
+      ],
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(5, 8560510091104629211),
+            name: 'tags',
+            targetId: const obx_int.IdUid(4, 3601738121799794424))
+      ],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -158,9 +284,9 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(6, 3393782162671296317),
-      lastIndexId: const obx_int.IdUid(2, 4613352209867354644),
-      lastRelationId: const obx_int.IdUid(4, 24130832137686415),
+      lastEntityId: const obx_int.IdUid(8, 4682781076433017614),
+      lastIndexId: const obx_int.IdUid(5, 1803719598457424279),
+      lastRelationId: const obx_int.IdUid(5, 8560510091104629211),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
         3124102123521736051,
@@ -188,7 +314,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final bindings = <Type, obx_int.EntityDefinition>{
     ExpenseDao: obx_int.EntityDefinition<ExpenseDao>(
         model: _entities[0],
-        toOneRelations: (ExpenseDao object) => [object.category],
+        toOneRelations: (ExpenseDao object) => [object.category, object.card],
         toManyRelations: (ExpenseDao object) =>
             {obx_int.RelInfo<ExpenseDao>.toMany(4, object.id): object.tags},
         getId: (ExpenseDao object) => object.id,
@@ -198,12 +324,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (ExpenseDao object, fb.Builder fbb) {
           final noteOffset =
               object.note == null ? null : fbb.writeString(object.note!);
-          fbb.startTable(10);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
           fbb.addInt64(3, object.time.millisecondsSinceEpoch);
           fbb.addInt64(7, object.category.targetId);
+          fbb.addInt64(9, object.card.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -222,6 +349,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.category.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
           object.category.attach(store);
+          object.card.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
+          object.card.attach(store);
           obx_int.InternalToManyAccess.setRelInfo<ExpenseDao>(object.tags,
               store, obx_int.RelInfo<ExpenseDao>.toMany(4, object.id));
           return object;
@@ -295,6 +425,129 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
+        }),
+    CreditCardDao: obx_int.EntityDefinition<CreditCardDao>(
+        model: _entities[3],
+        toOneRelations: (CreditCardDao object) => [],
+        toManyRelations: (CreditCardDao object) => {},
+        getId: (CreditCardDao object) => object.id,
+        setId: (CreditCardDao object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CreditCardDao object, fb.Builder fbb) {
+          final cardNumberOffset = fbb.writeString(object.cardNumber);
+          final holderNameOffset = fbb.writeString(object.holderName);
+          final expiryDateOffset = fbb.writeString(object.expiryDate);
+          fbb.startTable(9);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, cardNumberOffset);
+          fbb.addOffset(2, holderNameOffset);
+          fbb.addOffset(3, expiryDateOffset);
+          fbb.addInt64(4, object.closingDay);
+          fbb.addInt64(5, object.dueDay);
+          fbb.addInt64(6, object.color);
+          fbb.addInt64(7, object.cardType);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final cardNumberParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final holderNameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 8, '');
+          final expiryDateParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final closingDayParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          final dueDayParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
+          final colorParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final cardTypeParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          final object = CreditCardDao(
+              id: idParam,
+              cardNumber: cardNumberParam,
+              holderName: holderNameParam,
+              expiryDate: expiryDateParam,
+              closingDay: closingDayParam,
+              dueDay: dueDayParam,
+              color: colorParam,
+              cardType: cardTypeParam);
+
+          return object;
+        }),
+    SubscriptionDao: obx_int.EntityDefinition<SubscriptionDao>(
+        model: _entities[4],
+        toOneRelations: (SubscriptionDao object) =>
+            [object.category, object.card],
+        toManyRelations: (SubscriptionDao object) => {
+              obx_int.RelInfo<SubscriptionDao>.toMany(5, object.id): object.tags
+            },
+        getId: (SubscriptionDao object) => object.id,
+        setId: (SubscriptionDao object, int id) {
+          object.id = id;
+        },
+        objectToFB: (SubscriptionDao object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          final cycleOffset = fbb.writeString(object.cycle);
+          final noteOffset =
+              object.note == null ? null : fbb.writeString(object.note!);
+          fbb.startTable(11);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.addFloat64(2, object.value);
+          fbb.addOffset(3, cycleOffset);
+          fbb.addInt64(4, object.nextPaymentDate.millisecondsSinceEpoch);
+          fbb.addBool(5, object.isAutoPay);
+          fbb.addFloat64(6, object.taxPercentage);
+          fbb.addOffset(7, noteOffset);
+          fbb.addInt64(8, object.category.targetId);
+          fbb.addInt64(9, object.card.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final valueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final cycleParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final nextPaymentDateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0));
+          final isAutoPayParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 14, false);
+          final taxPercentageParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final noteParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 18);
+          final object = SubscriptionDao(
+              id: idParam,
+              name: nameParam,
+              value: valueParam,
+              cycle: cycleParam,
+              nextPaymentDate: nextPaymentDateParam,
+              isAutoPay: isAutoPayParam,
+              taxPercentage: taxPercentageParam,
+              note: noteParam);
+          object.category.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.category.attach(store);
+          object.card.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
+          object.card.attach(store);
+          obx_int.InternalToManyAccess.setRelInfo<SubscriptionDao>(object.tags,
+              store, obx_int.RelInfo<SubscriptionDao>.toMany(5, object.id));
+          return object;
         })
   };
 
@@ -322,6 +575,10 @@ class ExpenseDao_ {
   /// see [ExpenseDao.category]
   static final category = obx.QueryRelationToOne<ExpenseDao, CategoryDao>(
       _entities[0].properties[4]);
+
+  /// see [ExpenseDao.card]
+  static final card = obx.QueryRelationToOne<ExpenseDao, CreditCardDao>(
+      _entities[0].properties[5]);
 
   /// see [ExpenseDao.tags]
   static final tags =
@@ -364,4 +621,86 @@ class CategoryDao_ {
   /// see [CategoryDao.color]
   static final color =
       obx.QueryIntegerProperty<CategoryDao>(_entities[2].properties[4]);
+}
+
+/// [CreditCardDao] entity fields to define ObjectBox queries.
+class CreditCardDao_ {
+  /// see [CreditCardDao.id]
+  static final id =
+      obx.QueryIntegerProperty<CreditCardDao>(_entities[3].properties[0]);
+
+  /// see [CreditCardDao.cardNumber]
+  static final cardNumber =
+      obx.QueryStringProperty<CreditCardDao>(_entities[3].properties[1]);
+
+  /// see [CreditCardDao.holderName]
+  static final holderName =
+      obx.QueryStringProperty<CreditCardDao>(_entities[3].properties[2]);
+
+  /// see [CreditCardDao.expiryDate]
+  static final expiryDate =
+      obx.QueryStringProperty<CreditCardDao>(_entities[3].properties[3]);
+
+  /// see [CreditCardDao.closingDay]
+  static final closingDay =
+      obx.QueryIntegerProperty<CreditCardDao>(_entities[3].properties[4]);
+
+  /// see [CreditCardDao.dueDay]
+  static final dueDay =
+      obx.QueryIntegerProperty<CreditCardDao>(_entities[3].properties[5]);
+
+  /// see [CreditCardDao.color]
+  static final color =
+      obx.QueryIntegerProperty<CreditCardDao>(_entities[3].properties[6]);
+
+  /// see [CreditCardDao.cardType]
+  static final cardType =
+      obx.QueryIntegerProperty<CreditCardDao>(_entities[3].properties[7]);
+}
+
+/// [SubscriptionDao] entity fields to define ObjectBox queries.
+class SubscriptionDao_ {
+  /// see [SubscriptionDao.id]
+  static final id =
+      obx.QueryIntegerProperty<SubscriptionDao>(_entities[4].properties[0]);
+
+  /// see [SubscriptionDao.name]
+  static final name =
+      obx.QueryStringProperty<SubscriptionDao>(_entities[4].properties[1]);
+
+  /// see [SubscriptionDao.value]
+  static final value =
+      obx.QueryDoubleProperty<SubscriptionDao>(_entities[4].properties[2]);
+
+  /// see [SubscriptionDao.cycle]
+  static final cycle =
+      obx.QueryStringProperty<SubscriptionDao>(_entities[4].properties[3]);
+
+  /// see [SubscriptionDao.nextPaymentDate]
+  static final nextPaymentDate =
+      obx.QueryDateProperty<SubscriptionDao>(_entities[4].properties[4]);
+
+  /// see [SubscriptionDao.isAutoPay]
+  static final isAutoPay =
+      obx.QueryBooleanProperty<SubscriptionDao>(_entities[4].properties[5]);
+
+  /// see [SubscriptionDao.taxPercentage]
+  static final taxPercentage =
+      obx.QueryDoubleProperty<SubscriptionDao>(_entities[4].properties[6]);
+
+  /// see [SubscriptionDao.note]
+  static final note =
+      obx.QueryStringProperty<SubscriptionDao>(_entities[4].properties[7]);
+
+  /// see [SubscriptionDao.category]
+  static final category = obx.QueryRelationToOne<SubscriptionDao, CategoryDao>(
+      _entities[4].properties[8]);
+
+  /// see [SubscriptionDao.card]
+  static final card = obx.QueryRelationToOne<SubscriptionDao, CreditCardDao>(
+      _entities[4].properties[9]);
+
+  /// see [SubscriptionDao.tags]
+  static final tags = obx.QueryRelationToMany<SubscriptionDao, TagDao>(
+      _entities[4].relations[0]);
 }

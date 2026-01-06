@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wise_wallet/app/domain/entity/tag.dart';
 import 'package:wise_wallet/app/domain/entity/category.dart';
+import 'package:wise_wallet/app/domain/entity/credit_card.dart';
 
 class Expense {
   final int id; // ID único para base de datos (0 si es nuevo)
@@ -11,6 +12,7 @@ class Expense {
   final List<Tag> tags;
 
   final Category category;
+  final CreditCard? card; // Tarjeta asociada (opcional, si es null es efectivo)
   final Color?
       customColor; // Color personalizado opcional, si no usa el de la categoría
 
@@ -21,6 +23,7 @@ class Expense {
     required this.time,
     required this.tags,
     required this.category,
+    this.card,
     this.customColor,
   });
 

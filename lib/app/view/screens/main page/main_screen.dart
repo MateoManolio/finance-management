@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../../../controllers/navigation_controller.dart';
 import '../home page/home.dart';
 import '../home page/widgets/animated_blur_bubble.dart';
+import '../hub page/hub_screen.dart';
+import '../analysis/analysis_screen.dart';
 import 'widgets/navigation_bar.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
@@ -78,8 +80,8 @@ class _MainScreenState extends State<MainScreen> {
     // Define screens for each navigation item
     final List<Widget> screens = [
       const Home(),
-      const _AnalysisScreen(),
-      const _CardsScreen(),
+      const AnalysisScreen(),
+      const HubScreen(),
       const _ProfileScreen(),
     ];
 
@@ -175,45 +177,6 @@ class _MainScreenState extends State<MainScreen> {
 /// Placeholder screens for demonstration
 /// Replace these with your actual screens
 
-class _AnalysisScreen extends StatelessWidget {
-  const _AnalysisScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.analytics_rounded,
-              size: 80,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Análisis',
-              style: theme.textTheme.headlineLarge?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Visualiza tus gastos y tendencias',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _ProfileScreen extends StatelessWidget {
   const _ProfileScreen();
 
@@ -242,45 +205,6 @@ class _ProfileScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               'Configura tu cuenta y preferencias',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CardsScreen extends StatelessWidget {
-  const _CardsScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.credit_card_rounded,
-              size: 80,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Tarjetas',
-              style: theme.textTheme.headlineLarge?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Gestiona tus gastos y tendencias',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),

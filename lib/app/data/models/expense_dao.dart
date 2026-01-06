@@ -1,6 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:wise_wallet/app/data/models/tag_dao.dart';
 import 'package:wise_wallet/app/data/models/category_dao.dart';
+import 'package:wise_wallet/app/data/models/credit_card_dao.dart';
 
 @Entity()
 class ExpenseDao {
@@ -11,6 +12,7 @@ class ExpenseDao {
   final DateTime time;
   var tags = ToMany<TagDao>();
   final category = ToOne<CategoryDao>(); // Relación con categoría
+  final card = ToOne<CreditCardDao>(); // Relación con tarjeta
 
   ExpenseDao({
     required this.value,

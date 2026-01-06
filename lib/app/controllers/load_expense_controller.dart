@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../domain/entity/expense.dart';
 import '../domain/entity/tag.dart';
 import '../domain/entity/category.dart';
+import '../domain/entity/credit_card.dart';
 import 'expenses_controller.dart';
 
 class LoadExpenseController extends GetxController {
@@ -13,6 +14,9 @@ class LoadExpenseController extends GetxController {
   final Rx<Category?> selectedCategory = Rx<Category?>(null);
   final Rx<Color?> customColor = Rx<Color?>(null);
   final selectedTags = <Tag>[].obs;
+
+  // Selected Card (Null represents Cash)
+  final Rx<CreditCard?> selectedCard = Rx<CreditCard?>(null);
 
   // Modal State
   final modalHeight = 0.7.obs;
@@ -139,6 +143,7 @@ class LoadExpenseController extends GetxController {
     // Clear tags and custom color
     selectedTags.clear();
     customColor.value = null;
+    selectedCard.value = null; // Default to Cash
 
     // Reset modal height
     modalHeight.value = 0.7;
@@ -198,6 +203,7 @@ class LoadExpenseController extends GetxController {
       time: selectedDate.value,
       tags: selectedTags.toList(),
       category: selectedCategory.value!,
+      card: selectedCard.value,
     );
 
     // Save expense using the controller's async method
@@ -219,6 +225,8 @@ class LoadExpenseController extends GetxController {
     if (availableCategories.isNotEmpty) {
       selectedCategory.value = availableCategories[0];
     }
+
+    selectedCard.value = null;
 
     Get.back();
   }

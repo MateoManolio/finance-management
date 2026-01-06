@@ -5,6 +5,7 @@ import 'package:wise_wallet/app/data/models/tag_dao.dart';
 import 'package:wise_wallet/app/domain/entity/expense.dart';
 import 'package:wise_wallet/app/domain/entity/category.dart';
 import 'package:wise_wallet/app/domain/entity/tag.dart';
+import 'package:wise_wallet/app/data/mappers/credit_card_mapper.dart';
 
 /// Mapper for converting between Expense domain model and ExpenseDao data model
 /// Following Clean Architecture separation of concerns
@@ -18,6 +19,9 @@ class ExpenseMapper {
       time: dao.time,
       tags: dao.tags.map((tagDao) => TagMapper.toDomain(tagDao)).toList(),
       category: CategoryMapper.toDomain(dao.category.target!),
+      card: dao.card.target != null
+          ? CreditCardMapper.toEntity(dao.card.target!)
+          : null,
     );
   }
 
@@ -47,6 +51,11 @@ class ExpenseMapper {
     dao.tags.addAll(
       expense.tags.map((tag) => TagMapper.toDao(tag)).toList(),
     );
+    if (expense.card != null) {
+      dao.card.target = CreditCardMapper.toDao(expense.card!);
+    } else {
+      dao.card.target = null;
+    }
   }
 }
 

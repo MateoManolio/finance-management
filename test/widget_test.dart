@@ -60,11 +60,6 @@ class TestExpensesController extends ExpensesController {
   });
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   Future<void> loadExpenses() async {
     // No-op
   }

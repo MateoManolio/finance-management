@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5919817927012936905",
-      "lastPropertyId": "9:2922509187325330259",
+      "lastPropertyId": "10:5620443540309895286",
       "name": "ExpenseDao",
       "properties": [
         {
@@ -36,6 +36,14 @@
           "flags": 520,
           "indexId": "2:4613352209867354644",
           "relationTarget": "CategoryDao"
+        },
+        {
+          "id": "10:5620443540309895286",
+          "name": "cardId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "4:2834181971530382959",
+          "relationTarget": "CreditCardDao"
         }
       ],
       "relations": [
@@ -103,11 +111,131 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "7:8445603323851752585",
+      "lastPropertyId": "8:5824745874490540154",
+      "name": "CreditCardDao",
+      "properties": [
+        {
+          "id": "1:4961737592928691345",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8558151195287283451",
+          "name": "cardNumber",
+          "type": 9
+        },
+        {
+          "id": "3:5335799391301192086",
+          "name": "holderName",
+          "type": 9
+        },
+        {
+          "id": "4:3268434557798066084",
+          "name": "expiryDate",
+          "type": 9
+        },
+        {
+          "id": "5:7357709932517450156",
+          "name": "closingDay",
+          "type": 6
+        },
+        {
+          "id": "6:2804694125692121516",
+          "name": "dueDay",
+          "type": 6
+        },
+        {
+          "id": "7:3385977480107580113",
+          "name": "color",
+          "type": 6
+        },
+        {
+          "id": "8:5824745874490540154",
+          "name": "cardType",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "8:4682781076433017614",
+      "lastPropertyId": "10:3861221567018217888",
+      "name": "SubscriptionDao",
+      "properties": [
+        {
+          "id": "1:4548396326727660402",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4084577404653065970",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:4438940236899984087",
+          "name": "value",
+          "type": 8
+        },
+        {
+          "id": "4:8806360343990798655",
+          "name": "cycle",
+          "type": 9
+        },
+        {
+          "id": "5:7863802301125278495",
+          "name": "nextPaymentDate",
+          "type": 10
+        },
+        {
+          "id": "6:660564981356285830",
+          "name": "isAutoPay",
+          "type": 1
+        },
+        {
+          "id": "7:8663098719702650251",
+          "name": "taxPercentage",
+          "type": 8
+        },
+        {
+          "id": "8:7273677235937782734",
+          "name": "note",
+          "type": 9
+        },
+        {
+          "id": "9:8182732957857453030",
+          "name": "categoryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:3298386781401118933",
+          "relationTarget": "CategoryDao"
+        },
+        {
+          "id": "10:3861221567018217888",
+          "name": "cardId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "5:1803719598457424279",
+          "relationTarget": "CreditCardDao"
+        }
+      ],
+      "relations": [
+        {
+          "id": "5:8560510091104629211",
+          "name": "tags",
+          "targetId": "4:3601738121799794424"
+        }
+      ]
     }
   ],
-  "lastEntityId": "6:3393782162671296317",
-  "lastIndexId": "2:4613352209867354644",
-  "lastRelationId": "4:24130832137686415",
+  "lastEntityId": "8:4682781076433017614",
+  "lastIndexId": "5:1803719598457424279",
+  "lastRelationId": "5:8560510091104629211",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

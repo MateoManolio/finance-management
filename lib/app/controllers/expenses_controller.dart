@@ -238,7 +238,7 @@ class ExpensesController extends GetxController {
       'Éxito',
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green.withOpacity(0.8),
+      backgroundColor: Colors.green.withValues(alpha: 0.8),
       colorText: Colors.white,
       duration: const Duration(seconds: 2),
     );
@@ -250,7 +250,7 @@ class ExpensesController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.red.withOpacity(0.8),
+      backgroundColor: Colors.red.withValues(alpha: 0.8),
       colorText: Colors.white,
       duration: const Duration(seconds: 3),
     );
