@@ -21,13 +21,13 @@ class CommonCreditCard extends StatelessWidget {
       aspectRatio: 1.586,
       child: GlassContainer(
         padding: const EdgeInsets.all(24),
-        color: card.color.withOpacity(0.2),
+        color: card.color.withValues(alpha: 0.2),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            card.color.withOpacity(0.6),
-            card.color.withOpacity(0.2),
+            card.color.withValues(alpha: 0.6),
+            card.color.withValues(alpha: 0.2),
           ],
         ),
         child: Column(
@@ -86,7 +86,7 @@ class CommonCreditCard extends StatelessWidget {
                       Text(
                         'TITULAR',
                         style: GoogleFonts.outfit(
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                           fontSize: 10,
                           letterSpacing: 1,
                         ),
@@ -111,7 +111,7 @@ class CommonCreditCard extends StatelessWidget {
                     Text(
                       'EXPIRA',
                       style: GoogleFonts.outfit(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 10,
                         letterSpacing: 1,
                       ),
