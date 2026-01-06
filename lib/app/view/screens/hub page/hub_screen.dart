@@ -78,7 +78,7 @@ class HubScreen extends StatelessWidget {
                         child: Text(
                           'No hay tarjetas guardadas',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                       );
@@ -163,7 +163,7 @@ class HubScreen extends StatelessWidget {
                         child: Text(
                           'No hay suscripciones activas',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                       ),
