@@ -18,6 +18,7 @@ import 'package:wise_wallet/app/data/repositories/subscription_repository_impl.d
 import 'package:wise_wallet/app/domain/usecases/save_subscription_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/get_subscriptions_usecase.dart';
 import 'package:wise_wallet/app/controllers/subscriptions_controller.dart';
+import 'package:wise_wallet/app/controllers/analysis_controller.dart';
 
 /// Database Binding
 /// This binding is responsible for initializing the database
@@ -160,6 +161,15 @@ class ExpensesBinding extends Bindings {
     // Register SubscriptionsController
     Get.lazyPut<SubscriptionsController>(
       () => SubscriptionsController(),
+    );
+
+    // Register AnalysisController
+    Get.lazyPut<AnalysisController>(
+      () => AnalysisController(
+        getExpensesByDateRangeUseCase:
+            Get.find<GetExpensesByDateRangeUseCase>(),
+        getAllExpensesUseCase: Get.find<GetAllExpensesUseCase>(),
+      ),
     );
   }
 }
