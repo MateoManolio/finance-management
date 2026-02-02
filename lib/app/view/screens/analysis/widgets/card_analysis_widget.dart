@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:wise_wallet/app/domain/entity/credit_card.dart';
+import '../../../../controllers/profile_controller.dart';
 
 class CardAnalysisWidget extends StatelessWidget {
   final Map<CreditCard?, double> cardBreakdown;
@@ -56,13 +58,16 @@ class CardAnalysisWidget extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text(
-                    '\$${amount.toStringAsFixed(2)}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
+                  Obx(() {
+                    final profile = Get.find<ProfileController>();
+                    return Text(
+                      profile.formatValue(amount),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    );
+                  }),
                 ],
               ),
             ).animate().fadeIn(delay: (index * 150).ms).slideX(

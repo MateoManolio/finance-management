@@ -4,9 +4,23 @@ import '../domain/entity/expense.dart';
 import '../domain/entity/tag.dart';
 import '../domain/entity/category.dart';
 import '../domain/entity/credit_card.dart';
+import '../domain/usecases/get_categories_usecase.dart';
+import '../domain/usecases/get_tags_usecase.dart';
+import '../domain/usecases/get_exchange_rate_usecase.dart';
 import 'expenses_controller.dart';
+import 'profile_controller.dart';
 
 class LoadExpenseController extends GetxController {
+  final GetCategoriesUseCase getCategoriesUseCase;
+  final GetTagsUseCase getTagsUseCase;
+  final GetExchangeRateUseCase getExchangeRateUseCase;
+
+  LoadExpenseController({
+    required this.getCategoriesUseCase,
+    required this.getTagsUseCase,
+    required this.getExchangeRateUseCase,
+  });
+
   final amountController = TextEditingController();
   final noteController = TextEditingController();
   final amountFocusNode = FocusNode();
@@ -14,6 +28,12 @@ class LoadExpenseController extends GetxController {
   final Rx<Category?> selectedCategory = Rx<Category?>(null);
   final Rx<Color?> customColor = Rx<Color?>(null);
   final selectedTags = <Tag>[].obs;
+
+  final amount = ''.obs;
+  final selectedCurrency = 'ARS'.obs; // Default
+  final exchangeRate = 1.0.obs;
+  final isFetchingRate = false.obs;
+  final conversionError = Rx<String?>(null);
 
   // Selected Card (Null represents Cash)
   final Rx<CreditCard?> selectedCard = Rx<CreditCard?>(null);
@@ -28,76 +48,28 @@ class LoadExpenseController extends GetxController {
   // Dependencies
   final ExpensesController _expensesController = Get.find<ExpensesController>();
 
-  // Available Categories with groups
-  final List<Category> availableCategories = [
-    // Comida y Bebida
-    Category(
-      name: 'Comida',
-      icon: Icons.fastfood_rounded,
-      group: 'Comida y Bebida',
-      color: Colors.orange,
-    ),
-    Category(
-      name: 'Café',
-      icon: Icons.local_cafe_rounded,
-      group: 'Comida y Bebida',
-      color: Colors.brown,
-    ),
-    // Compras
-    Category(
-      name: 'Compras',
-      icon: Icons.shopping_bag_rounded,
-      group: 'Compras',
-      color: Colors.purple,
-    ),
-    // Transporte
-    Category(
-      name: 'Transporte',
-      icon: Icons.directions_car_rounded,
-      group: 'Transporte',
-      color: Colors.blue,
-    ),
-    Category(
-      name: 'Vuelo',
-      icon: Icons.flight_rounded,
-      group: 'Transporte',
-      color: Colors.lightBlue,
-    ),
-    // Hogar
-    Category(
-      name: 'Hogar',
-      icon: Icons.home_rounded,
-      group: 'Hogar',
-      color: Colors.green,
-    ),
-    // Salud y Fitness
-    Category(
-      name: 'Gimnasio',
-      icon: Icons.fitness_center_rounded,
-      group: 'Salud y Fitness',
-      color: Colors.red,
-    ),
-    Category(
-      name: 'Médico',
-      icon: Icons.medical_services_rounded,
-      group: 'Salud y Fitness',
-      color: Colors.redAccent,
-    ),
-    // Entretenimiento
-    Category(
-      name: 'Cine',
-      icon: Icons.movie_rounded,
-      group: 'Entretenimiento',
-      color: Colors.pink,
-    ),
-    // Educación
-    Category(
-      name: 'Educación',
-      icon: Icons.school_rounded,
-      group: 'Educación',
-      color: Colors.indigo,
-    ),
-  ];
+  // Reactive available data
+  final _allCategories = <Category>[].obs;
+  final _allTags = <Tag>[].obs;
+
+  // Filtered categories (only daughter categories)
+  List<Category> get availableCategories {
+    if (_allCategories.isEmpty) return [];
+
+    // Identificamos IDs de categorías que son padres de otras
+    final parentIds = _allCategories
+        .where((c) => c.parentId != null && c.parentId != 0)
+        .map((c) => c.parentId!)
+        .toSet();
+
+    // Las categorías seleccionables son aquellas que NO son padres
+    return _allCategories.where((c) {
+      if (c.id == null || c.id == 0) return true;
+      return !parentIds.contains(c.id);
+    }).toList();
+  }
+
+  List<Tag> get availableTags => _allTags;
 
   final List<Color> availableColors = [
     Color(Colors.blue.value),
@@ -110,16 +82,93 @@ class LoadExpenseController extends GetxController {
     Color(Colors.indigo.value),
   ];
 
-  final List<Tag> availableTags = [
-    Tag(tag: 'Personal', color: Colors.blue),
-    Tag(tag: 'Work', color: Colors.orange),
-    Tag(tag: 'Family', color: Colors.green),
-  ];
-
   @override
   void onInit() {
     super.onInit();
+    selectedCurrency.value = Get.find<ProfileController>().currency.value;
+    amountController.addListener(() {
+      amount.value = amountController.text;
+    });
+
+    ever(_allCategories, (_) {
+      if (selectedCategory.value == null && availableCategories.isNotEmpty) {
+        selectedCategory.value = availableCategories[0];
+      }
+    });
+
+    _loadInitialData();
+  }
+
+  Future<void> _loadInitialData() async {
+    await loadCategories();
+    await loadTags();
+    fetchExchangeRate(); // Initial fetch
     resetForm();
+  }
+
+  Future<void> loadCategories() async {
+    // If ProfileController is already loaded, use its categories
+    if (Get.isRegistered<ProfileController>()) {
+      final profileCats = Get.find<ProfileController>().categories;
+      if (profileCats.isNotEmpty) {
+        _allCategories.value = profileCats.toList();
+        _initializeSelection();
+        return;
+      }
+    }
+
+    final result = await getCategoriesUseCase.execute();
+    result.fold(
+      (failure) =>
+          Get.snackbar('Error', 'No se pudieron cargar las categorías'),
+      (list) {
+        _allCategories.value = list;
+        _initializeSelection();
+      },
+    );
+  }
+
+  void _initializeSelection() {
+    if (selectedCategory.value == null && availableCategories.isNotEmpty) {
+      selectedCategory.value = availableCategories[0];
+    }
+  }
+
+  Future<void> loadTags() async {
+    final result = await getTagsUseCase.execute();
+    result.fold(
+      (failure) => Get.snackbar('Error', 'No se pudieron cargar las etiquetas'),
+      (list) {
+        _allTags.value = list
+          ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+      },
+    );
+  }
+
+  Future<void> fetchExchangeRate() async {
+    if (selectedCurrency.value == 'ARS') {
+      exchangeRate.value = 1.0;
+      return;
+    }
+
+    isFetchingRate.value = true;
+    conversionError.value = null;
+
+    final result = await getExchangeRateUseCase.execute(
+      date: selectedDate.value,
+    );
+
+    result.fold(
+      (failure) {
+        exchangeRate.value = 1.0;
+        conversionError.value = 'Error al obtener cotización';
+      },
+      (rate) {
+        exchangeRate.value = rate;
+      },
+    );
+
+    isFetchingRate.value = false;
   }
 
   @override
@@ -138,6 +187,8 @@ class LoadExpenseController extends GetxController {
     // Reset to first category
     if (availableCategories.isNotEmpty) {
       selectedCategory.value = availableCategories[0];
+    } else {
+      selectedCategory.value = null;
     }
 
     // Clear tags and custom color
@@ -155,10 +206,21 @@ class LoadExpenseController extends GetxController {
     } else {
       selectedDate.value = DateTime.now();
     }
+
+    // Sync currency from profile
+    selectedCurrency.value = Get.find<ProfileController>().currency.value;
+    fetchExchangeRate();
   }
 
   void updateDate(DateTime newDate) {
     selectedDate.value = newDate;
+    fetchExchangeRate(); // Date change might change historical rate
+  }
+
+  void toggleCurrency() {
+    selectedCurrency.value = selectedCurrency.value == 'ARS' ? 'USD' : 'ARS';
+    Get.find<ProfileController>().changeCurrency(selectedCurrency.value);
+    fetchExchangeRate();
   }
 
   void toggleTag(Tag tag) {
@@ -195,8 +257,13 @@ class LoadExpenseController extends GetxController {
       return;
     }
 
+    final baseAmount = amount;
+    final finalAmount = selectedCurrency.value == 'ARS'
+        ? baseAmount
+        : baseAmount * exchangeRate.value;
+
     final expense = Expense(
-      value: amount,
+      value: finalAmount,
       note: noteController.text.trim().isEmpty
           ? null
           : noteController.text.trim(),

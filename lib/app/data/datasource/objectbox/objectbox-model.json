@@ -56,7 +56,7 @@
     },
     {
       "id": "4:3601738121799794424",
-      "lastPropertyId": "3:6383428610470993746",
+      "lastPropertyId": "4:6424160278689821139",
       "name": "TagDao",
       "properties": [
         {
@@ -74,13 +74,18 @@
           "id": "3:6383428610470993746",
           "name": "color",
           "type": 6
+        },
+        {
+          "id": "4:6424160278689821139",
+          "name": "displayOrder",
+          "type": 6
         }
       ],
       "relations": []
     },
     {
       "id": "6:3393782162671296317",
-      "lastPropertyId": "6:7755097635590964978",
+      "lastPropertyId": "8:494872354336738956",
       "name": "CategoryDao",
       "properties": [
         {
@@ -108,13 +113,23 @@
           "id": "6:7755097635590964978",
           "name": "color",
           "type": 6
+        },
+        {
+          "id": "7:7824590487083745201",
+          "name": "parentId",
+          "type": 6
+        },
+        {
+          "id": "8:494872354336738956",
+          "name": "displayOrder",
+          "type": 6
         }
       ],
       "relations": []
     },
     {
       "id": "7:8445603323851752585",
-      "lastPropertyId": "8:5824745874490540154",
+      "lastPropertyId": "9:6438333928535064894",
       "name": "CreditCardDao",
       "properties": [
         {
@@ -157,6 +172,11 @@
           "id": "8:5824745874490540154",
           "name": "cardType",
           "type": 6
+        },
+        {
+          "id": "9:6438333928535064894",
+          "name": "bankName",
+          "type": 9
         }
       ],
       "relations": []
@@ -231,9 +251,78 @@
           "targetId": "4:3601738121799794424"
         }
       ]
+    },
+    {
+      "id": "9:3354584546240971987",
+      "lastPropertyId": "12:2170867165309409881",
+      "name": "BankDiscountDao",
+      "properties": [
+        {
+          "id": "1:8674725321655793364",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3984877170839995375",
+          "name": "bankName",
+          "type": 9
+        },
+        {
+          "id": "3:3263647413679923250",
+          "name": "discountPercentage",
+          "type": 8
+        },
+        {
+          "id": "4:5855358590782649770",
+          "name": "daysOfWeekCsv",
+          "type": 9
+        },
+        {
+          "id": "5:57883172598926493",
+          "name": "paymentMethod",
+          "type": 9
+        },
+        {
+          "id": "6:5323689072793739046",
+          "name": "expiryDate",
+          "type": 10
+        },
+        {
+          "id": "7:4717929861857819099",
+          "name": "maxCashback",
+          "type": 8
+        },
+        {
+          "id": "8:4335132045868899882",
+          "name": "installments",
+          "type": 9
+        },
+        {
+          "id": "9:6599042422452136374",
+          "name": "bankColor",
+          "type": 6
+        },
+        {
+          "id": "10:7197132442869337009",
+          "name": "category",
+          "type": 9
+        },
+        {
+          "id": "11:4665753890794428711",
+          "name": "merchantName",
+          "type": 9
+        },
+        {
+          "id": "12:2170867165309409881",
+          "name": "specificDate",
+          "type": 10
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "8:4682781076433017614",
+  "lastEntityId": "9:3354584546240971987",
   "lastIndexId": "5:1803719598457424279",
   "lastRelationId": "5:8560510091104629211",
   "lastSequenceId": "0:0",

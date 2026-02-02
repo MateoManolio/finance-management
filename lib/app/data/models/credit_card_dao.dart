@@ -12,6 +12,7 @@ class CreditCardDao {
   final int dueDay;
   final int color;
   final int cardType; // 0: Credit, 1: Debit
+  final String? bankName;
 
   CreditCardDao({
     this.id = 0,
@@ -22,5 +23,6 @@ class CreditCardDao {
     required this.dueDay,
     required this.color,
     required this.cardType,
+    this.bankName,
   });
 }

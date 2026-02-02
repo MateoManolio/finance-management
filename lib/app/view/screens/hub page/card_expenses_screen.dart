@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../controllers/expenses_controller.dart';
+import '../../../controllers/profile_controller.dart';
 import '../../../controllers/display_expenses_controller.dart';
 import 'package:wise_wallet/app/domain/entity/credit_card.dart';
 import 'package:wise_wallet/app/domain/entity/expense.dart';
@@ -37,21 +38,31 @@ class CardExpensesScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Background Gradient
+          // Background Gradient with Fade Animation
           Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    card.color.withValues(alpha: 0.3),
-                    Colors.black,
-                    Colors.black,
-                  ],
-                  stops: const [0.0, 0.4, 1.0],
-                ),
-              ),
+            child: AnimatedBuilder(
+              animation: ModalRoute.of(context)?.animation ??
+                  const AlwaysStoppedAnimation(1.0),
+              builder: (context, child) {
+                final opacity = ModalRoute.of(context)?.animation?.value ?? 1.0;
+                return Opacity(
+                  opacity: opacity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          card.color.withValues(alpha: 0.3),
+                          Colors.black,
+                          Colors.black,
+                        ],
+                        stops: const [0.0, 0.4, 1.0],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
 
@@ -121,14 +132,17 @@ class CardExpensesScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            '\$${totalSpent.toStringAsFixed(2)}',
-                            style: GoogleFonts.outfit(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          Obx(() {
+                            final profile = Get.find<ProfileController>();
+                            return Text(
+                              profile.formatValue(totalSpent),
+                              style: GoogleFonts.outfit(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
                         ],
                       ),
                       Container(

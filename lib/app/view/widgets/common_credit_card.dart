@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../domain/entity/credit_card.dart';
 import '../../core/utils/card_number_formatter.dart';
 import '../../core/utils/card_validator.dart';
+import '../../controllers/bank_discounts_controller.dart';
 import 'glass_container.dart';
 
 class CommonCreditCard extends StatelessWidget {
@@ -59,6 +61,8 @@ class CommonCreditCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     const Icon(Icons.contactless_rounded,
                         color: Colors.white70, size: 20),
+                    const SizedBox(width: 8),
+                    _DiscountBadge(bankName: card.bankName),
                   ],
                 ),
               ],
@@ -131,6 +135,57 @@ class CommonCreditCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DiscountBadge extends StatelessWidget {
+  final String? bankName;
+
+  const _DiscountBadge({this.bankName});
+
+  @override
+  Widget build(BuildContext context) {
+    if (bankName == null || bankName!.isEmpty) return const SizedBox.shrink();
+
+    return GetX<BankDiscountsController>(
+      builder: (controller) {
+        final activeDiscount = controller.activeTodayDiscounts.firstWhereOrNull(
+          (d) => d.bankName.toLowerCase() == bankName!.toLowerCase(),
+        );
+
+        if (activeDiscount == null) return const SizedBox.shrink();
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.star_rounded, color: Colors.amber.shade700, size: 14),
+              const SizedBox(width: 4),
+              Text(
+                '${activeDiscount.discountPercentage.toStringAsFixed(0)}%',
+                style: GoogleFonts.outfit(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

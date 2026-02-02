@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/profile_controller.dart';
 
 class TotalSpentCard extends StatelessWidget {
   final double total;
@@ -56,13 +58,16 @@ class TotalSpentCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            '\$${total.toStringAsFixed(2)}',
-            style: theme.textTheme.displaySmall?.copyWith(
-              color: theme.colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Obx(() {
+            final profile = Get.find<ProfileController>();
+            return Text(
+              profile.formatValue(total),
+              style: theme.textTheme.displaySmall?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          }),
           if (!isAllTime) ...[
             const SizedBox(height: 16),
             Container(
@@ -71,12 +76,15 @@ class TotalSpentCard extends StatelessWidget {
                 color: Colors.white.withValues(alpha: .2),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
-                'Total Histórico: \$${allTimeTotal.toStringAsFixed(0)}',
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.onPrimary,
-                ),
-              ),
+              child: Obx(() {
+                final profile = Get.find<ProfileController>();
+                return Text(
+                  'Total Histórico: ${profile.formatValue(allTimeTotal)}',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                );
+              }),
             ),
           ],
         ],

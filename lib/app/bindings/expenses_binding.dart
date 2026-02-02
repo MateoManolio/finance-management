@@ -19,6 +19,22 @@ import 'package:wise_wallet/app/domain/usecases/save_subscription_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/get_subscriptions_usecase.dart';
 import 'package:wise_wallet/app/controllers/subscriptions_controller.dart';
 import 'package:wise_wallet/app/controllers/analysis_controller.dart';
+import 'package:wise_wallet/app/controllers/profile_controller.dart';
+import 'package:wise_wallet/app/domain/repositories/category_repository.dart';
+import 'package:wise_wallet/app/data/repositories/category_repository_impl.dart';
+import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
+import 'package:wise_wallet/app/data/repositories/tag_repository_impl.dart';
+import 'package:wise_wallet/app/data/services/dio_client.dart';
+import 'package:wise_wallet/app/domain/repositories/currency_repository.dart';
+import 'package:wise_wallet/app/data/repositories/currency_repository_impl.dart';
+import 'package:wise_wallet/app/domain/usecases/get_exchange_rate_usecase.dart';
+import 'package:wise_wallet/app/domain/usecases/get_categories_usecase.dart';
+import 'package:wise_wallet/app/domain/usecases/get_tags_usecase.dart';
+import 'package:wise_wallet/app/controllers/load_expense_controller.dart';
+import 'package:wise_wallet/app/controllers/add_subscription_controller.dart';
+import 'package:wise_wallet/app/domain/repositories/bank_discount_repository.dart';
+import 'package:wise_wallet/app/data/repositories/bank_discount_repository_impl.dart';
+import 'package:wise_wallet/app/controllers/bank_discounts_controller.dart';
 
 /// Database Binding
 /// This binding is responsible for initializing the database
@@ -34,6 +50,10 @@ class DatabaseBinding extends Bindings {
         () async => await AppDB.create(),
         permanent: true,
       );
+    }
+    // Register DioClient as a permanent dependency
+    if (!Get.isRegistered<DioClient>()) {
+      Get.put(DioClient(), permanent: true);
     }
   }
 }
@@ -56,6 +76,22 @@ class RepositoryBinding extends Bindings {
     );
     Get.lazyPut<SubscriptionRepository>(
       () => SubscriptionRepositoryImpl(Get.find<AppDB>()),
+      fenix: true,
+    );
+    Get.lazyPut<CategoryRepository>(
+      () => CategoryRepositoryImpl(Get.find<AppDB>()),
+      fenix: true,
+    );
+    Get.lazyPut<TagRepository>(
+      () => TagRepositoryImpl(Get.find<AppDB>()),
+      fenix: true,
+    );
+    Get.lazyPut<CurrencyRepository>(
+      () => CurrencyRepositoryImpl(Get.find<DioClient>()),
+      fenix: true,
+    );
+    Get.lazyPut<BankDiscountRepository>(
+      () => BankDiscountRepositoryImpl(Get.find<AppDB>()),
       fenix: true,
     );
   }
@@ -109,6 +145,21 @@ class UseCasesBinding extends Bindings {
       () => GetSubscriptionsUseCase(Get.find<SubscriptionRepository>()),
       fenix: true,
     );
+
+    Get.lazyPut<GetExchangeRateUseCase>(
+      () => GetExchangeRateUseCase(Get.find<CurrencyRepository>()),
+      fenix: true,
+    );
+
+    Get.lazyPut<GetCategoriesUseCase>(
+      () => GetCategoriesUseCase(Get.find<CategoryRepository>()),
+      fenix: true,
+    );
+
+    Get.lazyPut<GetTagsUseCase>(
+      () => GetTagsUseCase(Get.find<TagRepository>()),
+      fenix: true,
+    );
   }
 }
 
@@ -118,22 +169,28 @@ class UseCasesBinding extends Bindings {
 class ExpensesBinding extends Bindings {
   @override
   void dependencies() {
-    // First ensure database is initialized
-    if (!Get.isRegistered<AppDB>()) {
+    // First ensure database and services are initialized
+    if (!Get.isRegistered<AppDB>() || !Get.isRegistered<DioClient>()) {
       DatabaseBinding().dependencies();
     }
 
     // Then ensure repositories are available
     if (!Get.isRegistered<ExpenseRepository>() ||
         !Get.isRegistered<CreditCardRepository>() ||
-        !Get.isRegistered<SubscriptionRepository>()) {
+        !Get.isRegistered<SubscriptionRepository>() ||
+        !Get.isRegistered<CurrencyRepository>() ||
+        !Get.isRegistered<CategoryRepository>() ||
+        !Get.isRegistered<TagRepository>()) {
       RepositoryBinding().dependencies();
     }
 
     // Then ensure use cases are available
     if (!Get.isRegistered<SaveExpenseUseCase>() ||
         !Get.isRegistered<SaveCardUseCase>() ||
-        !Get.isRegistered<SaveSubscriptionUseCase>()) {
+        !Get.isRegistered<SaveSubscriptionUseCase>() ||
+        !Get.isRegistered<GetExchangeRateUseCase>() ||
+        !Get.isRegistered<GetCategoriesUseCase>() ||
+        !Get.isRegistered<GetTagsUseCase>()) {
       UseCasesBinding().dependencies();
     }
 
@@ -170,6 +227,44 @@ class ExpensesBinding extends Bindings {
             Get.find<GetExpensesByDateRangeUseCase>(),
         getAllExpensesUseCase: Get.find<GetAllExpensesUseCase>(),
       ),
+    );
+
+    // Register ProfileController
+    Get.put<ProfileController>(
+      ProfileController(
+        categoryRepository: Get.find<CategoryRepository>(),
+        tagRepository: Get.find<TagRepository>(),
+        getExchangeRateUseCase: Get.find<GetExchangeRateUseCase>(),
+      ),
+      permanent: true,
+    );
+
+    // Register LoadExpenseController
+    Get.lazyPut<LoadExpenseController>(
+      () => LoadExpenseController(
+        getCategoriesUseCase: Get.find<GetCategoriesUseCase>(),
+        getTagsUseCase: Get.find<GetTagsUseCase>(),
+        getExchangeRateUseCase: Get.find<GetExchangeRateUseCase>(),
+      ),
+      fenix: true,
+    );
+
+    // Register AddSubscriptionController
+    Get.lazyPut<AddSubscriptionController>(
+      () => AddSubscriptionController(
+        getCategoriesUseCase: Get.find<GetCategoriesUseCase>(),
+        getTagsUseCase: Get.find<GetTagsUseCase>(),
+        getExchangeRateUseCase: Get.find<GetExchangeRateUseCase>(),
+      ),
+      fenix: true,
+    );
+
+    // Register BankDiscountsController
+    Get.lazyPut<BankDiscountsController>(
+      () => BankDiscountsController(
+        repository: Get.find<BankDiscountRepository>(),
+      ),
+      fenix: true,
     );
   }
 }

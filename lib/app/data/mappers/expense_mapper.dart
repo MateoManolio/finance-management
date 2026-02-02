@@ -64,21 +64,30 @@ class CategoryMapper {
   /// Converts CategoryDao to Category domain model
   static Category toDomain(CategoryDao dao) {
     return Category(
+      id: dao.id,
       name: dao.name,
       icon: IconData(dao.iconCodePoint, fontFamily: 'MaterialIcons'),
       group: dao.group,
       color: dao.color != null ? Color(dao.color!) : null,
+      parentId: dao.parentId,
+      displayOrder: dao.displayOrder,
     );
   }
 
   /// Converts Category domain model to CategoryDao
   static CategoryDao toDao(Category category) {
-    return CategoryDao(
+    final dao = CategoryDao(
       name: category.name,
       iconCodePoint: category.icon.codePoint,
       group: category.group,
       color: category.color?.value,
+      parentId: category.parentId,
+      displayOrder: category.displayOrder,
     );
+    if (category.id != null) {
+      dao.id = category.id!;
+    }
+    return dao;
   }
 }
 
@@ -87,16 +96,23 @@ class TagMapper {
   /// Converts TagDao to Tag domain model
   static Tag toDomain(TagDao dao) {
     return Tag(
+      id: dao.id,
       tag: dao.tag,
       color: Color(dao.color),
+      displayOrder: dao.displayOrder,
     );
   }
 
   /// Converts Tag domain model to TagDao
   static TagDao toDao(Tag tag) {
-    return TagDao(
+    final dao = TagDao(
       tag: tag.tag,
       color: tag.color.value,
+      displayOrder: tag.displayOrder,
     );
+    if (tag.id != null) {
+      dao.id = tag.id!;
+    }
+    return dao;
   }
 }

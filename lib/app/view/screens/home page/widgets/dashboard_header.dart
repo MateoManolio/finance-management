@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/expenses_controller.dart';
+import '../../../../controllers/profile_controller.dart';
 import '../../../widgets/glass_container.dart';
 
 class DashboardHeader extends GetView<ExpensesController> {
@@ -35,38 +36,44 @@ class DashboardHeader extends GetView<ExpensesController> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const Text(
-                '\$850 USD',
-                style: TextStyle(
-                  color: Color(0xFF4CAF50), // Green
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
+              Obx(() {
+                final profile = Get.find<ProfileController>();
+                return Text(
+                  profile.formatValue(850.0), // Mocked balance for now
+                  style: const TextStyle(
+                    color: Color(0xFF4CAF50),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                );
+              }),
             ],
           ),
           const SizedBox(height: 4),
-          Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Gastos del Mes: ',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.7),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+          Obx(() {
+            final profile = Get.find<ProfileController>();
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Gastos del Mes: ',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Text(
-                    '\$${controller.getTotalExpenses().toStringAsFixed(0)} USD',
-                    style: const TextStyle(
-                      color: Color(0xFFE57373), // Red
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                ),
+                Text(
+                  profile.formatValue(controller.getTotalExpenses()),
+                  style: const TextStyle(
+                    color: Color(0xFFE57373),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
-                ],
-              )),
+                ),
+              ],
+            );
+          }),
         ],
       ),
     );

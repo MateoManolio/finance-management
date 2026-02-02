@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../../controllers/profile_controller.dart';
 import '../../../controllers/add_subscription_controller.dart';
 import '../../widgets/glass_container.dart';
 import '../../widgets/modal_drag_handle.dart';
@@ -12,7 +13,7 @@ class AddSubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AddSubscriptionController());
+    final controller = Get.find<AddSubscriptionController>();
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
@@ -115,12 +116,97 @@ class AddSubscriptionScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
 
-                              inputField(
-                                  'Precio Base', controller.priceController,
-                                  type: const TextInputType.numberWithOptions(
-                                      decimal: true),
-                                  placeholder: '0.00',
-                                  icon: Icons.attach_money),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  label('Precio Base'),
+                                  Obx(() => GestureDetector(
+                                        onTap: controller.toggleCurrency,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.primary
+                                                .withValues(alpha: 0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                                color: theme.colorScheme.primary
+                                                    .withValues(alpha: 0.3)),
+                                          ),
+                                          child: Text(
+                                            controller.selectedCurrency.value,
+                                            style: GoogleFonts.outfit(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: theme.colorScheme.primary,
+                                            ),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.05),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: TextField(
+                                  controller: controller.priceController,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  style: GoogleFonts.outfit(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  onChanged: (_) => controller.update(),
+                                  decoration: InputDecoration(
+                                    hintText: '0.00',
+                                    hintStyle: GoogleFonts.outfit(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.3)),
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 14),
+                                    prefixIcon: const Icon(Icons.attach_money,
+                                        color: Colors.white70, size: 20),
+                                  ),
+                                ),
+                              ),
+                              // Conversion Preview for Subscription
+                              Obx(() {
+                                if (controller.selectedCurrency.value ==
+                                    'ARS') {
+                                  return const SizedBox.shrink();
+                                }
+                                if (controller.isFetchingRate.value) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 4, left: 16),
+                                    child: SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white54)),
+                                  );
+                                }
+                                final price =
+                                    double.tryParse(controller.price.value) ??
+                                        0.0;
+                                final converted =
+                                    price * controller.exchangeRate.value;
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 4, left: 16),
+                                  child: Text(
+                                    '≈ ARS ${converted.toStringAsFixed(2)}',
+                                    style: GoogleFonts.outfit(
+                                        fontSize: 12, color: Colors.white70),
+                                  ),
+                                );
+                              }),
                               const SizedBox(height: 16),
 
                               // Category Selector (Simplified UI for now)
@@ -199,8 +285,9 @@ class AddSubscriptionScreen extends StatelessWidget {
                                       );
                                     },
                                   );
-                                  if (picked != null)
+                                  if (picked != null) {
                                     controller.updateDate(picked);
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(16),
@@ -256,8 +343,9 @@ class AddSubscriptionScreen extends StatelessWidget {
                                             color: Colors.white70),
                                         isExpanded: true,
                                         onChanged: (val) {
-                                          if (val != null)
+                                          if (val != null) {
                                             controller.renewalCycle.value = val;
+                                          }
                                         },
                                         items: [
                                           'Mensual',
@@ -278,7 +366,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                                     contentPadding: EdgeInsets.zero,
                                     inactiveTrackColor:
                                         Colors.white.withValues(alpha: 0.1),
-                                    activeColor: theme.colorScheme.primary,
+                                    activeThumbColor: theme.colorScheme.primary,
                                     title: Text('Pago Automático',
                                         style: GoogleFonts.outfit(
                                             color: Colors.white,
@@ -329,16 +417,17 @@ class AddSubscriptionScreen extends StatelessWidget {
                                                 BorderRadius.circular(12),
                                           ),
                                           child: Obx(() {
-                                            double price = double.tryParse(
-                                                    controller.priceController
-                                                        .text) ??
+                                            double priceValue = double.tryParse(
+                                                    controller.price.value) ??
                                                 0.0;
                                             double tax =
                                                 controller.taxPercentage.value;
-                                            double total =
-                                                price + (price * (tax / 100));
+                                            double total = priceValue +
+                                                (priceValue * (tax / 100));
+                                            final profile =
+                                                Get.find<ProfileController>();
                                             return Text(
-                                              '\$${total.toStringAsFixed(2)}',
+                                              profile.formatValue(total),
                                               style: GoogleFonts.outfit(
                                                 color:
                                                     theme.colorScheme.primary,

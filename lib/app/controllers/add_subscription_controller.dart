@@ -6,13 +6,34 @@ import '../domain/entity/tag.dart';
 import '../domain/entity/credit_card.dart';
 import '../domain/entity/subscription.dart';
 import '../domain/usecases/save_subscription_usecase.dart';
+import '../domain/usecases/get_categories_usecase.dart';
+import '../domain/usecases/get_tags_usecase.dart';
+import '../domain/usecases/get_exchange_rate_usecase.dart';
 import 'subscriptions_controller.dart';
+import 'profile_controller.dart';
 
 class AddSubscriptionController extends GetxController {
+  final GetCategoriesUseCase getCategoriesUseCase;
+  final GetTagsUseCase getTagsUseCase;
+  final GetExchangeRateUseCase getExchangeRateUseCase;
+
+  AddSubscriptionController({
+    required this.getCategoriesUseCase,
+    required this.getTagsUseCase,
+    required this.getExchangeRateUseCase,
+  });
+
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final noteController = TextEditingController();
   final taxController = TextEditingController(); // Tax percentage
+
+  final RxString price = ''.obs;
+  // Currency related
+  final selectedCurrency = 'ARS'.obs;
+  final exchangeRate = 1.0.obs;
+  final isFetchingRate = false.obs;
+  final conversionError = Rx<String?>(null);
 
   final RxString renewalCycle = 'Mensual'.obs;
 
@@ -30,64 +51,123 @@ class AddSubscriptionController extends GetxController {
   final modalHeight = 0.85.obs;
   double _dragStartHeight = 0.85;
 
-  // Data Sources (Ideally from a Repository)
-  // We'll init these similar to LoadExpenseController for now
-  late List<Category> availableCategories;
-  late List<Tag> availableTags;
+  // Reactive available data
+  final _allCategories = <Category>[].obs;
+  final _allTags = <Tag>[].obs;
+
+  // Filtered categories (only daughter categories)
+  List<Category> get availableCategories {
+    if (_allCategories.isEmpty) return [];
+
+    // Identificamos IDs de categorías que son padres de otras
+    final parentIds = _allCategories
+        .where((c) => c.parentId != null && c.parentId != 0)
+        .map((c) => c.parentId!)
+        .toSet();
+
+    // Las categorías seleccionables son aquellas que NO son padres
+    return _allCategories.where((c) {
+      if (c.id == null || c.id == 0) return true;
+      return !parentIds.contains(c.id);
+    }).toList();
+  }
+
+  List<Tag> get availableTags => _allTags;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize data - For now, we can instantiate a temporary LoadExpenseController to steal its data
-    // Or better, define it here. Let's define a few defaults to ensure it works.
-    _initData();
+    selectedCurrency.value = Get.find<ProfileController>().currency.value;
+    _loadInitialData();
+    fetchExchangeRate();
+
+    priceController.addListener(() {
+      price.value = priceController.text;
+    });
+
+    ever(_allCategories, (_) {
+      if (selectedCategory.value == null && availableCategories.isNotEmpty) {
+        selectedCategory.value = availableCategories[0];
+      }
+    });
 
     // Listen to tax input
     taxController.addListener(() {
       final val = double.tryParse(taxController.text);
-      if (val != null) {
-        taxPercentage.value = val;
-      } else {
-        taxPercentage.value = 0.0;
-      }
+      taxPercentage.value = val ?? 0.0;
     });
   }
 
-  void _initData() {
-    // Copying simplified logic for demo. In real app, fetch from Repo.
-    availableCategories = [
-      Category(
-          name: 'Comida',
-          icon: Icons.fastfood_rounded,
-          group: 'Comida y Bebida',
-          color: Colors.orange),
-      Category(
-          name: 'Transporte',
-          icon: Icons.directions_car_rounded,
-          group: 'Transporte',
-          color: Colors.blue),
-      Category(
-          name: 'Entretenimiento',
-          icon: Icons.movie_rounded,
-          group: 'Entretenimiento',
-          color: Colors.pink),
-      Category(
-          name: 'Servicios',
-          icon: Icons.bolt_rounded,
-          group: 'Hogar',
-          color: Colors.yellow),
-      // Add more as needed
-    ];
-    if (availableCategories.isNotEmpty) {
-      selectedCategory.value =
-          availableCategories[2]; // Default to Entertainment
+  Future<void> fetchExchangeRate() async {
+    if (selectedCurrency.value == 'ARS') {
+      exchangeRate.value = 1.0;
+      return;
     }
 
-    availableTags = [
-      Tag(tag: 'Mensual', color: Colors.blue),
-      Tag(tag: 'Anual', color: Colors.orange),
-      Tag(tag: 'Trial', color: Colors.green),
-    ];
+    isFetchingRate.value = true;
+    conversionError.value = null;
+
+    final result = await getExchangeRateUseCase.execute(
+      date: nextPaymentDate.value,
+    );
+
+    result.fold(
+      (failure) {
+        exchangeRate.value = 1.0;
+        conversionError.value = 'Error al obtener cotización';
+      },
+      (rate) {
+        exchangeRate.value = rate;
+      },
+    );
+
+    isFetchingRate.value = false;
+  }
+
+  void toggleCurrency() {
+    selectedCurrency.value = selectedCurrency.value == 'ARS' ? 'USD' : 'ARS';
+    Get.find<ProfileController>().changeCurrency(selectedCurrency.value);
+    fetchExchangeRate();
+  }
+
+  Future<void> _loadInitialData() async {
+    // If ProfileController is already loaded, use its categories
+    if (Get.isRegistered<ProfileController>()) {
+      final profileCats = Get.find<ProfileController>().categories;
+      if (profileCats.isNotEmpty) {
+        _allCategories.value = profileCats.toList();
+        if (availableCategories.isNotEmpty) {
+          selectedCategory.value = availableCategories[0];
+        }
+      } else {
+        await _fetchCategoriesFromSource();
+      }
+    } else {
+      await _fetchCategoriesFromSource();
+    }
+
+    final tagResult = await getTagsUseCase.execute();
+    tagResult.fold(
+      (failure) => Get.snackbar('Error', 'No se pudieron cargar las etiquetas'),
+      (list) {
+        _allTags.value = list
+          ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+      },
+    );
+  }
+
+  Future<void> _fetchCategoriesFromSource() async {
+    final catResult = await getCategoriesUseCase.execute();
+    catResult.fold(
+      (failure) =>
+          Get.snackbar('Error', 'No se pudieron cargar las categorías'),
+      (list) {
+        _allCategories.value = list;
+        if (availableCategories.isNotEmpty) {
+          selectedCategory.value = availableCategories[0];
+        }
+      },
+    );
   }
 
   void onDragStart(DragStartDetails details) {
@@ -126,11 +206,14 @@ class AddSubscriptionController extends GetxController {
       return;
     }
 
-    final price = double.tryParse(priceController.text) ?? 0.0;
+    final basePrice = double.tryParse(priceController.text) ?? 0.0;
+    final finalPrice = selectedCurrency.value == 'ARS'
+        ? basePrice
+        : basePrice * exchangeRate.value;
 
     final subscription = Subscription(
       name: nameController.text,
-      value: price,
+      value: finalPrice,
       cycle: renewalCycle.value,
       nextPaymentDate: nextPaymentDate.value,
       category: selectedCategory.value!,

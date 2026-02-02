@@ -64,7 +64,7 @@ class AddCardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Card Preview (Optional, but looks nice)
+            // Card Preview
             Obx(() => Container(
                   height: 200,
                   width: double.infinity,
@@ -185,6 +185,15 @@ class AddCardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  label('Banco / Entidad'),
+                  TextField(
+                    controller: controller.bankNameController,
+                    decoration: inputDecoration('Ej: Galicia, Santander',
+                        icon: Icons.account_balance_rounded),
+                    style: GoogleFonts.outfit(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+
                   label('Número de Tarjeta'),
                   TextField(
                     controller: controller.cardNumberController,
@@ -225,22 +234,6 @@ class AddCardScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            label('CVV'),
-                            TextField(
-                              decoration: inputDecoration('123',
-                                  icon: Icons.lock_outline),
-                              keyboardType: TextInputType.number,
-                              obscureText: true,
-                              style: GoogleFonts.outfit(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -249,39 +242,6 @@ class AddCardScreen extends StatelessWidget {
                   label('Tipo de Tarjeta'),
                   Obx(() => Row(
                         children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => controller.selectedCardType.value =
-                                  CardType.credit,
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                decoration: BoxDecoration(
-                                  color: controller.selectedCardType.value ==
-                                          CardType.credit
-                                      ? Colors.white.withValues(alpha: 0.1)
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: controller.selectedCardType.value ==
-                                            CardType.credit
-                                        ? Colors.white
-                                        : Colors.white.withValues(alpha: 0.2),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'DÉBITO',
-                                    style: GoogleFonts.outfit(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
                           Expanded(
                             child: GestureDetector(
                               onTap: () => controller.selectedCardType.value =
@@ -304,6 +264,39 @@ class AddCardScreen extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
+                                    'DÉBITO',
+                                    style: GoogleFonts.outfit(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => controller.selectedCardType.value =
+                                  CardType.credit,
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                decoration: BoxDecoration(
+                                  color: controller.selectedCardType.value ==
+                                          CardType.credit
+                                      ? Colors.white.withValues(alpha: 0.1)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: controller.selectedCardType.value ==
+                                            CardType.credit
+                                        ? Colors.white
+                                        : Colors.white.withValues(alpha: 0.2),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
                                     'CRÉDITO',
                                     style: GoogleFonts.outfit(
                                       color: Colors.white,
@@ -319,41 +312,46 @@ class AddCardScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Closing date and Due date
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            label('Día de Cierre'),
-                            TextField(
-                              controller: controller.closingDateController,
-                              decoration: inputDecoration('Ej: 25',
-                                  icon: Icons.event_busy),
-                              keyboardType: TextInputType.number,
-                              style: GoogleFonts.outfit(color: Colors.white),
-                            ),
-                          ],
+                  Obx(() {
+                    if (controller.selectedCardType.value == CardType.debit) {
+                      return const SizedBox.shrink();
+                    }
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              label('Día de Cierre'),
+                              TextField(
+                                controller: controller.closingDateController,
+                                decoration: inputDecoration('Ej: 25',
+                                    icon: Icons.event_busy),
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.outfit(color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            label('Día de Pago'),
-                            TextField(
-                              controller: controller.dueDateController,
-                              decoration: inputDecoration('Ej: 5',
-                                  icon: Icons.event_available),
-                              keyboardType: TextInputType.number,
-                              style: GoogleFonts.outfit(color: Colors.white),
-                            ),
-                          ],
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              label('Día de Pago'),
+                              TextField(
+                                controller: controller.dueDateController,
+                                decoration: inputDecoration('Ej: 5',
+                                    icon: Icons.event_available),
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.outfit(color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),

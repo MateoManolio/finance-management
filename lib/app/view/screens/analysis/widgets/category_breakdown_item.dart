@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wise_wallet/app/domain/entity/category.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/profile_controller.dart';
 
 class CategoryBreakdownItem extends StatelessWidget {
   final Category category;
@@ -71,12 +73,15 @@ class CategoryBreakdownItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                '\$${amount.toStringAsFixed(2)}',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Obx(() {
+                final profile = Get.find<ProfileController>();
+                return Text(
+                  profile.formatValue(amount),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }),
               Text(
                 '${percentage.toStringAsFixed(1)}%',
                 style: theme.textTheme.bodySmall?.copyWith(

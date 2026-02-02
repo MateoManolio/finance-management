@@ -34,7 +34,11 @@ class ExpenseCategorySelector extends StatelessWidget {
                 final isSelected =
                     controller.selectedCategory.value == category;
                 return GestureDetector(
-                  onTap: () => controller.selectedCategory.value = category,
+                  onTap: () {
+                    controller.selectedCategory.value = category;
+                    controller.selectedCategory.refresh();
+                  },
+                  behavior: HitTestBehavior.opaque,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     width: 65,

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/app_constants.dart';
+import '../../../controllers/profile_controller.dart';
 import '../../widgets/glass_container.dart';
 import '../../../controllers/cards_controller.dart';
 import '../../../controllers/subscriptions_controller.dart';
@@ -9,6 +10,7 @@ import 'add_card_screen.dart';
 import 'add_subscription_screen.dart';
 import 'card_expenses_screen.dart';
 import '../../widgets/common_credit_card.dart';
+import 'widgets/bank_discount_today_card.dart';
 
 class HubScreen extends StatelessWidget {
   const HubScreen({super.key});
@@ -38,6 +40,9 @@ class HubScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppConstants.defaultPadding),
 
+              // Bank Discounts Section
+              const BankDiscountTodayCard(),
+
               // Cards Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +59,7 @@ class HubScreen extends StatelessWidget {
                       Get.to(
                         () => const AddCardScreen(),
                         transition: Transition.downToUp,
-                        duration: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeOutExpo,
                       );
                     },
@@ -97,7 +102,7 @@ class HubScreen extends StatelessWidget {
                               Get.to(
                                 () => CardExpensesScreen(card: card),
                                 transition: Transition.downToUp,
-                                duration: const Duration(milliseconds: 600),
+                                duration: const Duration(milliseconds: 100),
                                 curve: Curves.easeOutExpo,
                               );
                             },
@@ -177,14 +182,17 @@ class HubScreen extends StatelessWidget {
                         const SizedBox(height: AppConstants.smallPadding),
                     itemBuilder: (context, index) {
                       final sub = controller.subscriptions[index];
-                      return _buildSubscriptionItem(
-                        context,
-                        name: sub.name,
-                        price: '\$${sub.totalValue.toStringAsFixed(2)}',
-                        cycle: sub.cycle,
-                        icon: sub.category.icon,
-                        color: sub.color,
-                      );
+                      return Obx(() {
+                        final profile = Get.find<ProfileController>();
+                        return _buildSubscriptionItem(
+                          context,
+                          name: sub.name,
+                          price: profile.formatValue(sub.totalValue),
+                          cycle: sub.cycle,
+                          icon: sub.category.icon,
+                          color: sub.color,
+                        );
+                      });
                     },
                   );
                 },
