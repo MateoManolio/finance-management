@@ -11,6 +11,7 @@ class AddCardController extends GetxController {
   final expiryDateController = TextEditingController();
   final closingDateController = TextEditingController();
   final dueDateController = TextEditingController();
+  final bankNameController = TextEditingController();
 
   final Rx<Color> cardColor = Colors.blueAccent.obs;
   final RxString cardIssuer = ''.obs; // Visa, Mastercard, etc.
@@ -71,11 +72,14 @@ class AddCardController extends GetxController {
       return;
     }
 
+    final isCredit = selectedCardType.value == CardType.credit;
+
     if (holderNameController.text.isEmpty ||
         expiryDateController.text.isEmpty ||
-        closingDateController.text.isEmpty ||
-        dueDateController.text.isEmpty) {
-      Get.snackbar('Error', 'Please fill all fields',
+        (isCredit &&
+            (closingDateController.text.isEmpty ||
+                dueDateController.text.isEmpty))) {
+      Get.snackbar('Error', 'Por favor completa todos los campos requeridos',
           backgroundColor: Colors.red.withValues(alpha: 0.5),
           colorText: Colors.white);
       return;
@@ -89,6 +93,7 @@ class AddCardController extends GetxController {
       dueDay: int.tryParse(dueDateController.text) ?? 10,
       color: cardColor.value,
       type: selectedCardType.value,
+      bankName: bankNameController.text,
     );
 
     try {

@@ -13,6 +13,7 @@ class CreditCardMapper {
       dueDay: dao.dueDay,
       color: Color(dao.color),
       type: CardType.values[dao.cardType],
+      bankName: dao.bankName,
     );
   }
 
@@ -26,6 +27,7 @@ class CreditCardMapper {
       dueDay: entity.dueDay,
       color: entity.color.value,
       cardType: entity.type.index,
+      bankName: entity.bankName,
     );
   }
 }

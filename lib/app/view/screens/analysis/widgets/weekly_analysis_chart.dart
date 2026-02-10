@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:wise_wallet/app/controllers/analysis_controller.dart';
+import '../../../../controllers/profile_controller.dart';
 
 class WeeklyAnalysisChart extends StatelessWidget {
   final AnalysisController controller;
@@ -63,6 +64,22 @@ class WeeklyAnalysisChart extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: BarChart(
               BarChartData(
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  touchTooltipData: BarTouchTooltipData(
+                    getTooltipColor: (_) => theme.colorScheme.surface,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      final profile = Get.find<ProfileController>();
+                      return BarTooltipItem(
+                        profile.formatValue(rod.toY),
+                        TextStyle(
+                          color: theme.colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 maxY: maxVal * 1.2,
                 barGroups: breakdown.entries.map((e) {
                   return BarChartGroupData(
@@ -86,8 +103,9 @@ class WeeklyAnalysisChart extends StatelessWidget {
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
                         int idx = value.toInt() - 1;
-                        if (idx < 0 || idx >= labels.length)
+                        if (idx < 0 || idx >= labels.length) {
                           return const SizedBox.shrink();
+                        }
                         return Text(labels[idx],
                             style: theme.textTheme.labelSmall);
                       },

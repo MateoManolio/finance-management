@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wise_wallet/app/controllers/display_expenses_controller.dart';
+import 'package:wise_wallet/app/controllers/profile_controller.dart';
 
 import '../../../../domain/entity/expense.dart';
 import 'liquid_glass_card.dart';
@@ -113,11 +114,14 @@ class _Price extends StatelessWidget {
   const _Price({required this.price});
 
   @override
-  Widget build(BuildContext context) => Text(
-        '-\$${price.toStringAsFixed(0)} USD',
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFFF5F5DC),
-            ),
-      );
+  Widget build(BuildContext context) => Obx(() {
+        final profile = Get.find<ProfileController>();
+        return Text(
+          '-${profile.formatValue(price)}',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFF5F5DC),
+              ),
+        );
+      });
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/profile_controller.dart';
 import 'package:wise_wallet/app/controllers/analysis_controller.dart';
 
 class ComparisonChart extends StatelessWidget {
@@ -35,8 +37,9 @@ class ComparisonChart extends StatelessWidget {
                 touchTooltipData: BarTouchTooltipData(
                   getTooltipColor: (_) => theme.colorScheme.surface,
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    final profile = Get.find<ProfileController>();
                     return BarTooltipItem(
-                      '\$${rod.toY.toStringAsFixed(2)}',
+                      profile.formatValue(rod.toY),
                       TextStyle(
                         color: theme.colorScheme.onSurface,
                         fontWeight: FontWeight.bold,

@@ -16,7 +16,7 @@ class LoadExpenseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(LoadExpenseController());
+    final controller = Get.find<LoadExpenseController>();
     final screenHeight = MediaQuery.of(context).size.height;
 
     // Request focus on amount field when modal opens
@@ -63,12 +63,12 @@ class LoadExpenseScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Card Selector
-                              const ExpenseCardSelector(),
-                              const SizedBox(height: 20),
+                              ExpenseCardSelector(),
+                              SizedBox(height: 20),
 
                               // Category Selector
-                              const ExpenseCategorySelector(),
-                              const SizedBox(height: 16),
+                              ExpenseCategorySelector(),
+                              SizedBox(height: 16),
 
                               // Date Selector
                               ExpenseDateSelector(),

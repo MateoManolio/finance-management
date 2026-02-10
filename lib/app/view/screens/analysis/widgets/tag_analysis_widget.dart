@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:wise_wallet/app/domain/entity/tag.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/profile_controller.dart';
 
 class TagAnalysisWidget extends StatelessWidget {
   final List<MapEntry<Tag, double>> tagBreakdown;
@@ -58,10 +60,13 @@ class TagAnalysisWidget extends StatelessWidget {
                         color: theme.colorScheme.onSecondaryContainer,
                       ),
                     ),
-                    Text(
-                      '\$${entry.value.toStringAsFixed(0)}',
-                      style: theme.textTheme.labelSmall,
-                    ),
+                    Obx(() {
+                      final profile = Get.find<ProfileController>();
+                      return Text(
+                        profile.formatValue(entry.value),
+                        style: theme.textTheme.labelSmall,
+                      );
+                    }),
                   ],
                 ),
               ).animate().fadeIn(delay: (index * 100).ms).scale(

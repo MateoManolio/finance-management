@@ -14,6 +14,7 @@ class CreditCard {
   final int dueDay;
   final Color color;
   final CardType type;
+  final String? bankName;
 
   CreditCard({
     this.id = 0,
@@ -24,5 +25,6 @@ class CreditCard {
     required this.dueDay,
     required this.color,
     required this.type,
+    this.bankName,
   });
 }

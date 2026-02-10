@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:wise_wallet/app/bindings/expenses_binding.dart';
 import 'package:wise_wallet/app/core/app_theme.dart';
 import 'package:wise_wallet/app/data/datasource/app_database.dart';
@@ -12,6 +13,9 @@ void main() async {
 
   // Initialize date formatting
   await initializeDateFormatting('es_ES', null);
+
+  // Initialize GetStorage
+  await GetStorage.init();
 
   // Initialize Database
   final db = await AppDB.create();

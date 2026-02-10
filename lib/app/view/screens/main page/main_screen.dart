@@ -5,6 +5,7 @@ import '../home page/home.dart';
 import '../home page/widgets/animated_blur_bubble.dart';
 import '../hub page/hub_screen.dart';
 import '../analysis/analysis_screen.dart';
+import '../profile/profile_screen.dart';
 import 'widgets/navigation_bar.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
@@ -82,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
       const Home(),
       const AnalysisScreen(),
       const HubScreen(),
-      const _ProfileScreen(),
+      const ProfileScreen(),
     ];
 
     return Scaffold(
@@ -176,42 +177,3 @@ class _MainScreenState extends State<MainScreen> {
 
 /// Placeholder screens for demonstration
 /// Replace these with your actual screens
-
-class _ProfileScreen extends StatelessWidget {
-  const _ProfileScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.person_rounded,
-              size: 80,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Perfil',
-              style: theme.textTheme.headlineLarge?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Configura tu cuenta y preferencias',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
