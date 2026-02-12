@@ -14,7 +14,7 @@ class ExpenseTagsSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'TAGS',
+          'tags_label'.tr.toUpperCase(),
           style: GoogleFonts.outfit(
               fontSize: 11,
               fontWeight: FontWeight.bold,

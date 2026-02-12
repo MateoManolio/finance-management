@@ -5,7 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:wise_wallet/app/bindings/expenses_binding.dart';
 import 'package:wise_wallet/app/core/app_theme.dart';
 import 'package:wise_wallet/app/data/datasource/app_database.dart';
+import 'package:wise_wallet/app/translations/messages.dart'; // Added
 import 'package:wise_wallet/app/view/screens/main%20page/main_screen.dart';
+import 'package:wise_wallet/app/view/screens/lock/lock_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   // Ensure Flutter is initialized
@@ -21,10 +24,30 @@ void main() async {
   final db = await AppDB.create();
   Get.put<AppDB>(db, permanent: true);
 
+  final storage = GetStorage();
+  final String savedLanguage = storage.read('language') ?? 'es_ARG';
+  final List<String> langParts = savedLanguage.split('_');
+  final Locale initialLocale =
+      Locale(langParts[0], langParts.length > 1 ? langParts[1] : null);
+
+  final bool usePasscode = storage.read('usePasscode') ?? false;
+
   runApp(GetMaterialApp(
     theme: AppTheme().appTheme(),
-    home: const MainScreen(),
+    translations: Messages(), // Added translations
+    home: usePasscode ? const LockScreen() : const MainScreen(),
     debugShowCheckedModeBanner: false,
     initialBinding: InitialBinding(),
+    localizationsDelegates: const [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: const [
+      Locale('es', 'AR'), // Updated for es_ARG
+      Locale('en', 'US'),
+    ],
+    locale: initialLocale, // Updated to use saved locale
+    fallbackLocale: const Locale('es', 'AR'),
   ));
 }

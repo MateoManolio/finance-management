@@ -54,7 +54,7 @@ class AddCardScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Nueva Tarjeta',
+          'new_card'.tr,
           style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -108,8 +108,8 @@ class AddCardScreen extends StatelessWidget {
                         child: Obx(() => Text(
                               controller.selectedCardType.value ==
                                       CardType.credit
-                                  ? 'CRÉDITO'
-                                  : 'DÉBITO',
+                                  ? 'credit'.tr
+                                  : 'debit'.tr,
                               style: GoogleFonts.outfit(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
@@ -136,7 +136,7 @@ class AddCardScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'TITULAR',
+                                'holder'.tr.toUpperCase(),
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 10,
@@ -156,7 +156,7 @@ class AddCardScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'EXPIRA',
+                                'expiration'.tr.toUpperCase(),
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 10,
@@ -185,16 +185,16 @@ class AddCardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  label('Banco / Entidad'),
+                  label('bank_entity'.tr),
                   TextField(
                     controller: controller.bankNameController,
-                    decoration: inputDecoration('Ej: Galicia, Santander',
+                    decoration: inputDecoration('bank_example'.tr,
                         icon: Icons.account_balance_rounded),
                     style: GoogleFonts.outfit(color: Colors.white),
                   ),
                   const SizedBox(height: 20),
 
-                  label('Número de Tarjeta'),
+                  label('card_number'.tr),
                   TextField(
                     controller: controller.cardNumberController,
                     decoration: inputDecoration('0000 0000 0000 0000',
@@ -208,10 +208,10 @@ class AddCardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  label('Titular'),
+                  label('holder'.tr),
                   TextField(
                     controller: controller.holderNameController,
-                    decoration: inputDecoration('NOMBRE APELLIDO',
+                    decoration: inputDecoration('holder_example'.tr,
                         icon: Icons.person_outline),
                     style: GoogleFonts.outfit(color: Colors.white),
                   ),
@@ -223,7 +223,7 @@ class AddCardScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            label('Vencimiento'),
+                            label('expiration'.tr),
                             TextField(
                               controller: controller.expiryDateController,
                               decoration: inputDecoration('MM/AA',
@@ -239,7 +239,7 @@ class AddCardScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Card Type Selector (Credit / Debit)
-                  label('Tipo de Tarjeta'),
+                  label('card_type'.tr),
                   Obx(() => Row(
                         children: [
                           Expanded(
@@ -264,7 +264,7 @@ class AddCardScreen extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'DÉBITO',
+                                    'debit'.tr,
                                     style: GoogleFonts.outfit(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -297,7 +297,7 @@ class AddCardScreen extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'CRÉDITO',
+                                    'credit'.tr,
                                     style: GoogleFonts.outfit(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -322,7 +322,7 @@ class AddCardScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              label('Día de Cierre'),
+                              label('closing_day'.tr),
                               TextField(
                                 controller: controller.closingDateController,
                                 decoration: inputDecoration('Ej: 25',
@@ -338,7 +338,7 @@ class AddCardScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              label('Día de Pago'),
+                              label('due_day'.tr),
                               TextField(
                                 controller: controller.dueDateController,
                                 decoration: inputDecoration('Ej: 5',
@@ -371,7 +371,7 @@ class AddCardScreen extends StatelessWidget {
                   elevation: 0,
                 ),
                 child: Text(
-                  'Guardar Tarjeta',
+                  'save_card'.tr,
                   style: GoogleFonts.outfit(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

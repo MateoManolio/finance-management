@@ -7,6 +7,9 @@ import '../hub page/hub_screen.dart';
 import '../analysis/analysis_screen.dart';
 import '../profile/profile_screen.dart';
 import 'widgets/navigation_bar.dart';
+import '../../../controllers/profile_controller.dart';
+import '../lock/lock_screen.dart';
+import '../../../service/auth_service.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
 class MainScreen extends StatefulWidget {
@@ -16,7 +19,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   late PageController _pageController;
   final NavigationController _navigationController =
       Get.put(NavigationController());
@@ -26,12 +29,32 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _pageController =
         PageController(initialPage: _navigationController.currentIndex);
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      final profileController = Get.find<ProfileController>();
+      final authService = Get.find<AuthService>();
+
+      // Only lock if:
+      // 1. Passcode is enabled
+      // 2. We are NOT already on the LockScreen
+      // 3. We are NOT currently in the middle of an authentication prompt
+      if (profileController.usePasscode.value &&
+          Get.currentRoute != '/LockScreen' &&
+          !authService.isAuthenticated.value) {
+        Get.to(() => const LockScreen(), routeName: '/LockScreen');
+      }
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
     super.dispose();
   }
@@ -59,22 +82,22 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     // Define navigation items
-    const navigationItems = [
+    final navigationItems = [
       NavigationItemModel(
         icon: Icons.home_rounded,
-        label: 'Inicio',
+        label: 'nav_home'.tr,
       ),
       NavigationItemModel(
         icon: Icons.analytics_rounded,
-        label: 'Análisis',
+        label: 'nav_analysis'.tr,
       ),
       NavigationItemModel(
         icon: Icons.credit_card_rounded,
-        label: 'Tarjetas',
+        label: 'nav_cards'.tr,
       ),
       NavigationItemModel(
         icon: Icons.person_rounded,
-        label: 'Perfil',
+        label: 'nav_profile'.tr,
       ),
     ];
 

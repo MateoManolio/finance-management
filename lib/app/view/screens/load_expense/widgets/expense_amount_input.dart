@@ -18,7 +18,7 @@ class ExpenseAmountInput extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'MONTO',
+              'amount'.tr.toUpperCase(),
               style: GoogleFonts.outfit(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,

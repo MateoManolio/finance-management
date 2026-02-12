@@ -14,7 +14,7 @@ class ExpenseCategorySelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'CATEGORY',
+          'category'.tr.toUpperCase(),
           style: GoogleFonts.outfit(
               fontSize: 11,
               fontWeight: FontWeight.bold,

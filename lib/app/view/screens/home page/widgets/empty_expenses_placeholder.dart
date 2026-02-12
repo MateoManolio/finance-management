@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../core/app_constants.dart';
 
 class EmptyExpensesPlaceholder extends StatelessWidget {
@@ -28,7 +29,7 @@ class EmptyExpensesPlaceholder extends StatelessWidget {
           ),
           const SizedBox(height: AppConstants.defaultPadding),
           Text(
-            'No hay gastos aún',
+            'no_expenses'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.8),
               fontSize: 18,
@@ -38,7 +39,7 @@ class EmptyExpensesPlaceholder extends StatelessWidget {
           ),
           const SizedBox(height: AppConstants.smallPadding),
           Text(
-            'Tus gastos aparecerán aquí',
+            'expenses_appear_here'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.4),
               fontSize: 14,

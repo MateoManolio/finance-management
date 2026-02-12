@@ -1,25 +1,54 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:wise_wallet/app/domain/entity/bank_discount.dart';
 import 'package:wise_wallet/app/domain/entity/category.dart';
+import 'package:wise_wallet/app/domain/entity/credit_card.dart';
+import 'package:wise_wallet/app/domain/entity/expense.dart';
+import 'package:wise_wallet/app/domain/entity/subscription.dart';
 import 'package:wise_wallet/app/domain/entity/tag.dart';
+import 'package:wise_wallet/app/domain/repositories/bank_discount_repository.dart';
 import 'package:wise_wallet/app/domain/repositories/category_repository.dart';
+import 'package:wise_wallet/app/domain/repositories/credit_card_repository.dart';
+import 'package:wise_wallet/app/domain/repositories/expense_repository.dart';
+import 'package:wise_wallet/app/domain/repositories/subscription_repository.dart';
 import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
 import 'package:wise_wallet/app/domain/usecases/get_exchange_rate_usecase.dart';
+import 'package:wise_wallet/app/service/auth_service.dart';
 
 class ProfileController extends GetxController {
   final CategoryRepository _categoryRepository;
   final TagRepository _tagRepository;
+  final ExpenseRepository _expenseRepository;
+  final CreditCardRepository _creditCardRepository;
+  final SubscriptionRepository _subscriptionRepository;
+  final BankDiscountRepository _bankDiscountRepository;
   final GetExchangeRateUseCase _getExchangeRateUseCase;
+  final AuthService _authService;
   final _storage = GetStorage();
 
   ProfileController({
     required CategoryRepository categoryRepository,
     required TagRepository tagRepository,
+    required ExpenseRepository expenseRepository,
+    required CreditCardRepository creditCardRepository,
+    required SubscriptionRepository subscriptionRepository,
+    required BankDiscountRepository bankDiscountRepository,
     required GetExchangeRateUseCase getExchangeRateUseCase,
+    required AuthService authService,
   })  : _categoryRepository = categoryRepository,
         _tagRepository = tagRepository,
-        _getExchangeRateUseCase = getExchangeRateUseCase;
+        _expenseRepository = expenseRepository,
+        _creditCardRepository = creditCardRepository,
+        _subscriptionRepository = subscriptionRepository,
+        _bankDiscountRepository = bankDiscountRepository,
+        _getExchangeRateUseCase = getExchangeRateUseCase,
+        _authService = authService;
 
   // Categories state
   final categories = <Category>[].obs;
@@ -35,6 +64,7 @@ class ProfileController extends GetxController {
   final language = 'es_ARG'.obs;
   final isDarkMode = true.obs;
   final usePasscode = false.obs;
+  final balance = 0.0.obs; // Initial balance is zero
 
   @override
   void onInit() {
@@ -66,8 +96,7 @@ class ProfileController extends GetxController {
     isLoadingCategories.value = true;
     final result = await _categoryRepository.getAllCategories();
     result.fold(
-      (failure) =>
-          Get.snackbar('Error', 'No se pudieron cargar las categorías'),
+      (failure) => Get.snackbar('error'.tr, 'error_categories'.tr),
       (list) async {
         if (list.isEmpty) {
           await _seedDefaultCategories();
@@ -134,7 +163,7 @@ class ProfileController extends GetxController {
   Future<void> addCategory(Category category) async {
     final result = await _categoryRepository.saveCategory(category);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo guardar la categoría'),
+      (failure) => Get.snackbar('error'.tr, 'error_save_category'.tr),
       (saved) {
         categories.add(saved);
         Get.back();
@@ -145,7 +174,7 @@ class ProfileController extends GetxController {
   Future<void> editCategory(Category category) async {
     final result = await _categoryRepository.updateCategory(category);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo actualizar la categoría'),
+      (failure) => Get.snackbar('error'.tr, 'error_update_category'.tr),
       (updated) {
         final index = categories.indexWhere((c) => c.id == updated.id);
         if (index != -1) {
@@ -160,7 +189,7 @@ class ProfileController extends GetxController {
   Future<void> deleteCategory(int id) async {
     final result = await _categoryRepository.deleteCategory(id);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo eliminar la categoría'),
+      (failure) => Get.snackbar('error'.tr, 'error_delete_category'.tr),
       (_) => categories.removeWhere((c) => c.id == id),
     );
   }
@@ -188,7 +217,7 @@ class ProfileController extends GetxController {
     isLoadingTags.value = true;
     final result = await _tagRepository.getAllTags();
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudieron cargar los tags'),
+      (failure) => Get.snackbar('error'.tr, 'error_tags'.tr),
       (list) async {
         if (list.isEmpty) {
           await _seedDefaultTags();
@@ -224,7 +253,7 @@ class ProfileController extends GetxController {
   Future<void> addTag(Tag tag) async {
     final result = await _tagRepository.saveTag(tag);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo guardar el tag'),
+      (failure) => Get.snackbar('error'.tr, 'error_save_tag'.tr),
       (saved) {
         tags.add(saved);
         Get.back();
@@ -235,7 +264,7 @@ class ProfileController extends GetxController {
   Future<void> editTag(Tag tag) async {
     final result = await _tagRepository.updateTag(tag);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo actualizar el tag'),
+      (failure) => Get.snackbar('error'.tr, 'error_update_tag'.tr),
       (updated) {
         final index = tags.indexWhere((t) => t.id == updated.id);
         if (index != -1) {
@@ -250,7 +279,7 @@ class ProfileController extends GetxController {
   Future<void> deleteTag(int id) async {
     final result = await _tagRepository.deleteTag(id);
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudo eliminar el tag'),
+      (failure) => Get.snackbar('error'.tr, 'error_delete_tag'.tr),
       (_) => tags.removeWhere((t) => t.id == id),
     );
   }
@@ -293,29 +322,202 @@ class ProfileController extends GetxController {
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
   }
 
-  void togglePasscode(bool val) {
-    usePasscode.value = val;
-    _storage.write('usePasscode', val);
+  Future<void> togglePasscode(bool val) async {
+    // Determine the desired state
+    if (val == usePasscode.value) return;
+
+    // Authenticate before changing state (either to enable or disable)
+    final authenticated = await _authService.authenticate();
+
+    if (authenticated) {
+      usePasscode.value = val;
+      _storage.write('usePasscode', val);
+      Get.snackbar(
+          'success'.tr, val ? 'passcode_enabled'.tr : 'passcode_disabled'.tr);
+    } else {
+      // If auth fails, we need to refresh the UI to revert the switch
+      usePasscode.refresh();
+      Get.snackbar('error'.tr, 'auth_failed'.tr);
+    }
   }
 
-  void exportData() {
-    // Placeholder logic for export
-    Get.snackbar('Exportar', 'Exportando datos a JSON...');
+  Future<void> exportData() async {
+    try {
+      // Show loading
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      final data = <String, dynamic>{};
+
+      // Fetch all data
+      final categoriesResult = await _categoryRepository.getAllCategories();
+      final tagsResult = await _tagRepository.getAllTags();
+      final expensesResult = await _expenseRepository.getAllExpenses();
+      final cards = await _creditCardRepository.getCards();
+      final subscriptions = await _subscriptionRepository.getSubscriptions();
+      final bankDiscountsResult =
+          await _bankDiscountRepository.getAllDiscounts();
+
+      data['categories'] = categoriesResult.fold(
+          (_) => [], (l) => l.map((e) => _categoryToMap(e)).toList());
+      data['tags'] = tagsResult.fold(
+          (_) => [], (l) => l.map((e) => _tagToMap(e)).toList());
+      data['expenses'] = expensesResult.fold(
+          (_) => [], (l) => l.map((e) => _expenseToMap(e)).toList());
+      data['cards'] = cards.map((e) => _cardToMap(e)).toList();
+      data['subscriptions'] =
+          subscriptions.map((e) => _subscriptionToMap(e)).toList();
+      data['bank_discounts'] = bankDiscountsResult.fold(
+          (_) => [], (l) => l.map((e) => _discountToMap(e)).toList());
+
+      data['export_date'] = DateTime.now().toIso8601String();
+      data['app_version'] = '1.0.0';
+
+      final jsonString = const JsonEncoder.withIndent('  ').convert(data);
+
+      Directory? directory;
+      if (Platform.isAndroid) {
+        // Request storage permission via native MethodChannel
+        const channel = MethodChannel('com.example.finance_management/storage');
+        final bool granted =
+            await channel.invokeMethod('requestStoragePermission');
+        if (granted) {
+          directory = Directory('/storage/emulated/0/Documents');
+          if (!await directory.exists()) {
+            await directory.create(recursive: true);
+          }
+        } else {
+          // Fallback to app-specific external directory (no permission needed)
+          directory = await getExternalStorageDirectory();
+        }
+      } else {
+        directory = await getApplicationDocumentsDirectory();
+      }
+
+      final fileName =
+          'wallet_wise_export_${DateTime.now().millisecondsSinceEpoch}.json';
+      final file = File('${directory!.path}/$fileName');
+      await file.writeAsString(jsonString);
+
+      Get.back(); // Close loading
+      Get.snackbar(
+        'export_success'.tr,
+        'export_message'.trParams({'path': file.path}),
+        duration: const Duration(seconds: 8),
+        snackPosition: SnackPosition.BOTTOM,
+        mainButton: TextButton(
+          onPressed: () async {
+            if (Platform.isAndroid) {
+              const channel =
+                  MethodChannel('com.example.finance_management/storage');
+              final success = await channel.invokeMethod('openDocumentsFolder');
+              if (success != true) {
+                Get.snackbar(
+                  'error'.tr,
+                  'open_error_message'
+                      .trParams({'error': 'No file manager found'}),
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+              }
+            } else {
+              await OpenFilex.open(file.path, type: "application/json");
+            }
+          },
+          child: Text(
+            'open'.tr,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    } catch (e) {
+      Get.back(); // Close loading
+      Get.snackbar('error'.tr, 'export_error'.tr);
+    }
   }
+
+  Map<String, dynamic> _categoryToMap(Category c) => {
+        'id': c.id,
+        'name': c.name,
+        'icon': c.icon.codePoint,
+        'color': c.color?.value,
+        'displayOrder': c.displayOrder,
+        'parentId': c.parentId,
+      };
+
+  Map<String, dynamic> _tagToMap(Tag t) => {
+        'id': t.id,
+        'tag': t.tag,
+        'color': t.color.value,
+        'displayOrder': t.displayOrder,
+      };
+
+  Map<String, dynamic> _expenseToMap(Expense e) => {
+        'id': e.id,
+        'value': e.value,
+        'note': e.note,
+        'time': e.time.toIso8601String(),
+        'categoryId': e.category.id,
+        'cardId': e.card?.id,
+        'customColor': e.customColor?.value,
+        'tags': e.tags.map((t) => t.id).toList(),
+      };
+
+  Map<String, dynamic> _cardToMap(CreditCard c) => {
+        'id': c.id,
+        'cardNumber': c.cardNumber,
+        'holderName': c.holderName,
+        'expiryDate': c.expiryDate,
+        'closingDay': c.closingDay,
+        'dueDay': c.dueDay,
+        'color': c.color.value,
+        'type': c.type.toString(),
+        'bankName': c.bankName,
+      };
+
+  Map<String, dynamic> _subscriptionToMap(Subscription s) => {
+        'id': s.id,
+        'name': s.name,
+        'value': s.value,
+        'cycle': s.cycle,
+        'nextPaymentDate': s.nextPaymentDate.toIso8601String(),
+        'categoryId': s.category.id,
+        'cardId': s.card?.id,
+        'isAutoPay': s.isAutoPay,
+        'taxPercentage': s.taxPercentage,
+        'note': s.note,
+        'tags': s.tags.map((t) => t.id).toList(),
+      };
+
+  Map<String, dynamic> _discountToMap(BankDiscount d) => {
+        'id': d.id,
+        'bankName': d.bankName,
+        'discountPercentage': d.discountPercentage,
+        'daysOfWeek': d.daysOfWeek,
+        'paymentMethod': d.paymentMethod,
+        'expiryDate': d.expiryDate?.toIso8601String(),
+        'maxCashback': d.maxCashback,
+        'installments': d.installments,
+        'bankColor': d.bankColor.value,
+        'category': d.category,
+        'merchantName': d.merchantName,
+        'specificDate': d.specificDate?.toIso8601String(),
+        'note': d.note,
+      };
 
   void clearData() {
     // Placeholder logic for clearing data
     Get.defaultDialog(
-      title: 'Borrar todo',
-      middleText:
-          '¿Estás seguro de que quieres borrar todos tus datos? Esta acción es irreversible.',
-      textConfirm: 'Borrar',
-      textCancel: 'Cancelar',
+      title: 'clear_all'.tr,
+      middleText: 'confirm_clear'.tr,
+      textConfirm: 'delete'.tr,
+      textCancel: 'cancel'.tr,
       confirmTextColor: Colors.white,
       onConfirm: () {
         // Implement actual deletion logic
         Get.back();
-        Get.snackbar('Datos borrados', 'Se han eliminado todos los registros');
+        Get.snackbar('data_cleared'.tr, 'records_deleted'.tr);
       },
     );
   }

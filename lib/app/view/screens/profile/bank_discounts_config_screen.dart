@@ -17,7 +17,7 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Descuentos Bancarios'),
+        title: Text('bank_discounts'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -50,7 +50,7 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No hay descuentos configurados',
+                      'no_discounts'.tr,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color:
                             theme.colorScheme.onSurface.withValues(alpha: 0.6),
@@ -77,7 +77,7 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddEditDiscountDialog(context),
-        label: const Text('Agregar Descuento'),
+        label: Text('add_discount'.tr),
         icon: const Icon(Icons.add),
       ).animate().scale(delay: 400.ms),
     );
@@ -123,7 +123,9 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                discount == null ? 'Nuevo Descuento' : 'Editar Descuento',
+                discount == null
+                    ? 'add_discount'.tr
+                    : 'edit_tag'.tr, // Reuse edit_tag or add edit_discount?
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -131,9 +133,9 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
               const SizedBox(height: 24),
               TextField(
                 controller: bankNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre del Banco/Entidad',
-                  prefixIcon: Icon(Icons.account_balance_rounded),
+                decoration: InputDecoration(
+                  labelText: 'bank_name_label'.tr,
+                  prefixIcon: const Icon(Icons.account_balance_rounded),
                 ),
               ),
               const SizedBox(height: 16),
@@ -143,9 +145,9 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                     child: TextField(
                       controller: discountPercentageController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Descuento (%)',
-                        prefixIcon: Icon(Icons.percent_rounded),
+                      decoration: InputDecoration(
+                        labelText: 'discount_label'.tr,
+                        prefixIcon: const Icon(Icons.percent_rounded),
                       ),
                     ),
                   ),
@@ -167,8 +169,8 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Días de la semana',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('days_of_week'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -196,13 +198,13 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                 }),
               ),
               const SizedBox(height: 16),
-              const Text('Fecha específica (Opcional)',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('specific_date_label'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Obx(() => ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(selectedSpecificDate.value == null
-                        ? 'Seleccionar fecha única'
+                        ? 'select_single_date'.tr
                         : '${selectedSpecificDate.value!.day}/${selectedSpecificDate.value!.month}/${selectedSpecificDate.value!.year}'),
                     leading: const Icon(Icons.calendar_today_rounded),
                     trailing: selectedSpecificDate.value != null
@@ -229,39 +231,39 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
               const SizedBox(height: 16),
               TextField(
                 controller: merchantNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Lugar/Comercio (e.g. Vea, Shell)',
-                  prefixIcon: Icon(Icons.storefront_rounded),
+                decoration: InputDecoration(
+                  labelText: 'merchant_label'.tr,
+                  prefixIcon: const Icon(Icons.storefront_rounded),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: paymentMethodController,
-                decoration: const InputDecoration(
-                  labelText: 'Forma de Pago (e.g. Visa, QR MODO)',
-                  prefixIcon: Icon(Icons.payment_rounded),
+                decoration: InputDecoration(
+                  labelText: 'payment_method_label'.tr,
+                  prefixIcon: const Icon(Icons.payment_rounded),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: installmentsController,
-                decoration: const InputDecoration(
-                  labelText: 'Cuotas (e.g. 3 cuotas sin interés)',
-                  prefixIcon: Icon(Icons.credit_card_rounded),
+                decoration: InputDecoration(
+                  labelText: 'installments_label'.tr,
+                  prefixIcon: const Icon(Icons.credit_card_rounded),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: maxCashbackController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Tope de reintegro (opcional)',
-                  prefixIcon: Icon(Icons.money_off_rounded),
+                decoration: InputDecoration(
+                  labelText: 'cashback_limit_label'.tr,
+                  prefixIcon: const Icon(Icons.money_off_rounded),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('Categoría',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('category'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Obx(() => SizedBox(
                     height: 50,
@@ -291,9 +293,9 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
               TextField(
                 controller: noteController,
                 maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: 'Notas adicionales (Opcional)',
-                  prefixIcon: Icon(Icons.notes_rounded),
+                decoration: InputDecoration(
+                  labelText: 'additional_notes_label'.tr,
+                  prefixIcon: const Icon(Icons.notes_rounded),
                 ),
               ),
               const SizedBox(height: 32),
@@ -307,7 +309,7 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                         (selectedDays.isEmpty &&
                             selectedSpecificDate.value == null)) {
                       Get.snackbar(
-                          'Error', 'Por favor completa los campos básicos');
+                          'error'.tr, 'Por favor completa los campos básicos');
                       return;
                     }
 
@@ -335,7 +337,8 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
                     }
                     Get.back();
                   },
-                  child: Text(discount == null ? 'Crear' : 'Actualizar'),
+                  child: Text(
+                      discount == null ? 'create_label'.tr : 'update_label'.tr),
                 ),
               ),
               const SizedBox(height: 16),
@@ -361,7 +364,7 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
 
     Get.dialog(
       AlertDialog(
-        title: const Text('Color de la entidad'),
+        title: Text('entity_color'.tr),
         content: Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -390,19 +393,19 @@ class BankDiscountsConfigScreen extends GetView<BankDiscountsController> {
   String _getDayName(int day) {
     switch (day) {
       case 1:
-        return 'Lun';
+        return 'short_monday'.tr;
       case 2:
-        return 'Mar';
+        return 'short_tuesday'.tr;
       case 3:
-        return 'Mié';
+        return 'short_wednesday'.tr;
       case 4:
-        return 'Jue';
+        return 'short_thursday'.tr;
       case 5:
-        return 'Vie';
+        return 'short_friday'.tr;
       case 6:
-        return 'Sáb';
+        return 'short_saturday'.tr;
       case 7:
-        return 'Dom';
+        return 'short_sunday'.tr;
       default:
         return '';
     }
@@ -525,10 +528,10 @@ class _BankDiscountItem extends StatelessWidget {
   void _showDeleteConfirmation(
       BuildContext context, BankDiscountsController controller) {
     Get.defaultDialog(
-      title: 'Eliminar descuento',
-      middleText: '¿Estás seguro de que deseas eliminar este descuento?',
-      textConfirm: 'Eliminar',
-      textCancel: 'Cancelar',
+      title: 'delete_discount_title'.tr,
+      middleText: 'delete_discount_confirm'.tr,
+      textConfirm: 'delete'.tr,
+      textCancel: 'cancel'.tr,
       confirmTextColor: Colors.white,
       onConfirm: () {
         controller.deleteDiscount(discount.id);
@@ -538,8 +541,16 @@ class _BankDiscountItem extends StatelessWidget {
   }
 
   String _getDaysString(List<int> days) {
-    if (days.length == 7) return 'Todos los días';
-    final names = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    if (days.length == 7) return 'every_day'.tr;
+    final names = [
+      'short_monday'.tr,
+      'short_tuesday'.tr,
+      'short_wednesday'.tr,
+      'short_thursday'.tr,
+      'short_friday'.tr,
+      'short_saturday'.tr,
+      'short_sunday'.tr
+    ];
     return days.map((d) => names[d - 1]).join(', ');
   }
 }

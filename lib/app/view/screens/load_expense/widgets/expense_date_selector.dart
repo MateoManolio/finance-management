@@ -16,7 +16,7 @@ class ExpenseDateSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'DATE',
+          'date'.tr.toUpperCase(),
           style: GoogleFonts.outfit(
               fontSize: 11,
               fontWeight: FontWeight.bold,

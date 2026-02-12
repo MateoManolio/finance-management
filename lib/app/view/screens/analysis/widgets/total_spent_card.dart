@@ -46,7 +46,7 @@ class TotalSpentCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isAllTime ? 'Gasto Histórico' : 'Gasto del Mes',
+                isAllTime ? 'all_time_spending'.tr : 'monthly_spending'.tr,
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: theme.colorScheme.onPrimary.withValues(alpha: .8),
                 ),
@@ -79,7 +79,7 @@ class TotalSpentCard extends StatelessWidget {
               child: Obx(() {
                 final profile = Get.find<ProfileController>();
                 return Text(
-                  'Total Histórico: ${profile.formatValue(allTimeTotal)}',
+                  '${'all_time_total_label'.tr}${profile.formatValue(allTimeTotal)}',
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.onPrimary,
                   ),

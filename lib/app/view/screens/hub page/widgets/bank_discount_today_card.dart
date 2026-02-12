@@ -25,7 +25,7 @@ class BankDiscountTodayCard extends GetView<BankDiscountsController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Beneficios de Hoy',
+              'today_benefits'.tr,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface,
