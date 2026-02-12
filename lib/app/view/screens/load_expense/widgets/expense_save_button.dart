@@ -33,7 +33,7 @@ class ExpenseSaveButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            'Save Transaction',
+            'save_transaction'.tr,
             style: GoogleFonts.outfit(
               fontSize: 16,
               fontWeight: FontWeight.bold,

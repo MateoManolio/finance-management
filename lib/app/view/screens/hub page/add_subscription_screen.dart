@@ -96,7 +96,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ModalDragHandle(
-                        title: 'Nueva Suscripción',
+                        title: 'new_subscription'.tr,
                         onVerticalDragStart: controller.onDragStart,
                         onVerticalDragUpdate: controller.onDragUpdate,
                       ),
@@ -105,8 +105,8 @@ class AddSubscriptionScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              inputField('Nombre', controller.nameController,
-                                  placeholder: 'Netflix, Spotify...',
+                              inputField('name'.tr, controller.nameController,
+                                  placeholder: 'name_placeholder'.tr,
                                   icon: Icons.subscriptions_outlined),
                               const SizedBox(height: 16),
 
@@ -120,7 +120,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  label('Precio Base'),
+                                  label('base_price'.tr),
                                   Obx(() => GestureDetector(
                                         onTap: controller.toggleCurrency,
                                         child: Container(
@@ -210,7 +210,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                               const SizedBox(height: 16),
 
                               // Category Selector (Simplified UI for now)
-                              label('CATEGORÍA'),
+                              label('category'.tr.toUpperCase()),
                               const SizedBox(height: 8),
                               Obx(() => Container(
                                     height: 50,
@@ -232,7 +232,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                                         icon: const Icon(Icons.arrow_drop_down,
                                             color: Colors.white70),
                                         isExpanded: true,
-                                        hint: Text('Seleccionar Categoría',
+                                        hint: Text('select_category'.tr,
                                             style: GoogleFonts.outfit(
                                                 color: Colors.white54)),
                                         onChanged: (val) {
@@ -261,7 +261,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                               const SizedBox(height: 16),
 
                               // Date Selection
-                              label('PRÓXIMO PAGO'),
+                              label('next_payment'.tr.toUpperCase()),
                               const SizedBox(height: 8),
                               GestureDetector(
                                 onTap: () async {
@@ -320,7 +320,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                               const SizedBox(height: 16),
 
                               // Renewal Cycle Selector
-                              label('CICLO DE RENOVACIÓN'),
+                              label('renewal_cycle'.tr.toUpperCase()),
                               const SizedBox(height: 8),
                               Obx(() => Container(
                                     height: 50,
@@ -348,13 +348,14 @@ class AddSubscriptionScreen extends StatelessWidget {
                                           }
                                         },
                                         items: [
-                                          'Mensual',
-                                          'Anual',
-                                          'Semanal',
-                                          'Trimestral'
+                                          'monthly',
+                                          'yearly',
+                                          'weekly',
+                                          'quarterly'
                                         ]
-                                            .map((e) => DropdownMenuItem(
-                                                value: e, child: Text(e)))
+                                            .map((key) => DropdownMenuItem(
+                                                value: key,
+                                                child: Text(key.tr)))
                                             .toList(),
                                       ),
                                     ),
@@ -367,12 +368,11 @@ class AddSubscriptionScreen extends StatelessWidget {
                                     inactiveTrackColor:
                                         Colors.white.withValues(alpha: 0.1),
                                     activeThumbColor: theme.colorScheme.primary,
-                                    title: Text('Pago Automático',
+                                    title: Text('auto_pay'.tr,
                                         style: GoogleFonts.outfit(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
-                                    subtitle: Text(
-                                        'Se descontará automáticamente',
+                                    subtitle: Text('auto_pay_desc'.tr,
                                         style: GoogleFonts.outfit(
                                             color: Colors.white54,
                                             fontSize: 12)),
@@ -387,7 +387,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: inputField(
-                                      'Impuestos (%)',
+                                      'taxes'.tr,
                                       controller.taxController,
                                       type:
                                           const TextInputType.numberWithOptions(
@@ -403,7 +403,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        label('TOTAL ESTIMADO'),
+                                        label('estimated_total'.tr),
                                         const SizedBox(height: 8),
                                         Container(
                                           height: 56,
@@ -445,7 +445,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                               const SizedBox(height: 16),
 
                               // Tags selection (Mockup for now)
-                              label('ETIQUETAS'),
+                              label('tags_label'.tr.toUpperCase()),
                               const SizedBox(height: 8),
                               Obx(() => Wrap(
                                     spacing: 8,
@@ -491,8 +491,8 @@ class AddSubscriptionScreen extends StatelessWidget {
 
                               const SizedBox(height: 16),
 
-                              inputField('Notas', controller.noteController,
-                                  placeholder: 'Opcional...',
+                              inputField('notes'.tr, controller.noteController,
+                                  placeholder: 'notes_placeholder'.tr,
                                   icon: Icons.text_snippet_outlined),
                               const SizedBox(height: 24),
                             ],
@@ -515,7 +515,7 @@ class AddSubscriptionScreen extends StatelessWidget {
                             elevation: 0,
                           ),
                           child: Text(
-                            'Guardar Suscripción',
+                            'save_subscription'.tr,
                             style: GoogleFonts.outfit(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

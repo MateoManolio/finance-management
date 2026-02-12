@@ -39,8 +39,24 @@ class AnalysisController extends GetxController {
   void toggleWeeklyView() =>
       _showByWeekOfMonth.value = !_showByWeekOfMonth.value;
 
-  String get currentMonthName =>
-      DateFormat('MMMM yyyy', 'es_ES').format(_currentDate.value);
+  String get currentMonthName {
+    final monthKeys = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december'
+    ];
+    final month = monthKeys[_currentDate.value.month - 1].tr;
+    return '$month ${_currentDate.value.year}';
+  }
 
   @override
   void onInit() {
@@ -174,7 +190,22 @@ class AnalysisController extends GetxController {
       final total = result.fold(
           (_) => 0.0, (exps) => exps.fold(0.0, (sum, e) => sum + e.value));
 
-      data.add(MapEntry(DateFormat('MMM', 'es_ES').format(date), total));
+      final monthKeys = [
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december'
+      ];
+      final monthLabel = monthKeys[date.month - 1].tr.substring(0, 3);
+      data.add(MapEntry(monthLabel, total));
     }
     return data;
   }

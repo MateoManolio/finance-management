@@ -31,7 +31,7 @@ class HubScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  'Hub',
+                  'hub'.tr,
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onSurface,
@@ -48,7 +48,7 @@ class HubScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Mis Tarjetas',
+                    'my_cards'.tr,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurface,
@@ -81,7 +81,7 @@ class HubScreen extends StatelessWidget {
                     if (controller.cards.isEmpty) {
                       return Center(
                         child: Text(
-                          'No hay tarjetas guardadas',
+                          'no_cards'.tr,
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.5),
                           ),
@@ -131,7 +131,7 @@ class HubScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Suscripciones',
+                    'subscriptions'.tr,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurface,
@@ -166,7 +166,7 @@ class HubScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Text(
-                          'No hay suscripciones activas',
+                          'no_subscriptions'.tr,
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.5),
                           ),
@@ -188,7 +188,7 @@ class HubScreen extends StatelessWidget {
                           context,
                           name: sub.name,
                           price: profile.formatValue(sub.totalValue),
-                          cycle: sub.cycle,
+                          cycle: sub.cycle.tr,
                           icon: sub.category.icon,
                           color: sub.color,
                         );

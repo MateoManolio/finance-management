@@ -35,7 +35,7 @@ class AddSubscriptionController extends GetxController {
   final isFetchingRate = false.obs;
   final conversionError = Rx<String?>(null);
 
-  final RxString renewalCycle = 'Mensual'.obs;
+  final RxString renewalCycle = 'monthly'.obs;
 
   // Replaced paymentDay with nextPaymentDate
   final Rx<DateTime> nextPaymentDate = DateTime.now().obs;
@@ -114,7 +114,7 @@ class AddSubscriptionController extends GetxController {
     result.fold(
       (failure) {
         exchangeRate.value = 1.0;
-        conversionError.value = 'Error al obtener cotización';
+        conversionError.value = 'rate_fetch_error'.tr;
       },
       (rate) {
         exchangeRate.value = rate;
@@ -148,7 +148,7 @@ class AddSubscriptionController extends GetxController {
 
     final tagResult = await getTagsUseCase.execute();
     tagResult.fold(
-      (failure) => Get.snackbar('Error', 'No se pudieron cargar las etiquetas'),
+      (failure) => Get.snackbar('error'.tr, 'error_tags'.tr),
       (list) {
         _allTags.value = list
           ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
@@ -159,8 +159,7 @@ class AddSubscriptionController extends GetxController {
   Future<void> _fetchCategoriesFromSource() async {
     final catResult = await getCategoriesUseCase.execute();
     catResult.fold(
-      (failure) =>
-          Get.snackbar('Error', 'No se pudieron cargar las categorías'),
+      (failure) => Get.snackbar('error'.tr, 'error_categories'.tr),
       (list) {
         _allCategories.value = list;
         if (availableCategories.isNotEmpty) {
@@ -193,14 +192,14 @@ class AddSubscriptionController extends GetxController {
 
   void saveSubscription() async {
     if (nameController.text.isEmpty || priceController.text.isEmpty) {
-      Get.snackbar('Error', 'Please enter name and price',
+      Get.snackbar('error'.tr, 'invalid_amount'.tr,
           backgroundColor: Colors.red.withValues(alpha: 0.5),
           colorText: Colors.white);
       return;
     }
 
     if (selectedCategory.value == null) {
-      Get.snackbar('Error', 'Please select a category',
+      Get.snackbar('error'.tr, 'select_category_error'.tr,
           backgroundColor: Colors.red.withValues(alpha: 0.5),
           colorText: Colors.white);
       return;
@@ -233,11 +232,14 @@ class AddSubscriptionController extends GetxController {
       }
 
       Get.back();
-      Get.snackbar('Success', 'Subscription saved successfully',
+      Get.snackbar(
+          'success'.tr,
+          'save_subscription'
+              .tr, // Actually maybe a 'saved_success' key? I'll use save_subscription for now
           backgroundColor: Colors.green.withValues(alpha: 0.5),
           colorText: Colors.white);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save: $e',
+      Get.snackbar('error'.tr, 'Failed to save: $e',
           backgroundColor: Colors.red.withValues(alpha: 0.5),
           colorText: Colors.white);
     }

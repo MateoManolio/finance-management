@@ -100,7 +100,7 @@ class BankDiscountDetailScreen extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         discount.specificDate != null
-                            ? 'Solo el ${discount.specificDate!.day}/${discount.specificDate!.month}'
+                            ? '${'only_on'.tr} ${discount.specificDate!.day}/${discount.specificDate!.month}'
                             : _getDaysString(discount.daysOfWeek),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white70,
@@ -116,14 +116,14 @@ class BankDiscountDetailScreen extends StatelessWidget {
                     children: [
                       _buildInfoCard(
                         context,
-                        'Descuento',
+                        'discount'.tr,
                         '${discount.discountPercentage.toStringAsFixed(0)}%',
                         Icons.percent_rounded,
                       ),
                       const SizedBox(width: 16),
                       _buildInfoCard(
                         context,
-                        'Pago',
+                        'payment'.tr,
                         discount.paymentMethod,
                         Icons.payment_rounded,
                       ),
@@ -144,7 +144,7 @@ class BankDiscountDetailScreen extends StatelessWidget {
                                   color: theme.colorScheme.primary),
                               const SizedBox(width: 12),
                               Text(
-                                'Tope de Reintegro',
+                                'cashback_limit'.tr,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -169,7 +169,7 @@ class BankDiscountDetailScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  'Gasto máximo optimizado:',
+                                  'optimized_spend'.tr,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: Colors.white70,
                                   ),
@@ -186,7 +186,12 @@ class BankDiscountDetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Gastando más de ${profileController.formatValue(maxSpend)}, el reintegro seguirá siendo ${profileController.formatValue(discount.maxCashback!)}.',
+                            'optimized_spend_desc'.trParams({
+                              'maxSpend':
+                                  profileController.formatValue(maxSpend),
+                              'maxCashback': profileController
+                                  .formatValue(discount.maxCashback!),
+                            }),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white.withValues(alpha: 0.4),
                               fontStyle: FontStyle.italic,
@@ -201,7 +206,7 @@ class BankDiscountDetailScreen extends StatelessWidget {
                   if (discount.installments != null &&
                       discount.installments!.isNotEmpty)
                     _buildDetailRow(context, Icons.credit_card_rounded,
-                            'Financiación', discount.installments!)
+                            'financing'.tr, discount.installments!)
                         .animate()
                         .fadeIn(delay: 400.ms),
 
@@ -218,7 +223,7 @@ class BankDiscountDetailScreen extends StatelessWidget {
                                   color: Colors.white70, size: 20),
                               const SizedBox(width: 12),
                               Text(
-                                'Notas',
+                                'notes'.tr,
                                 style: theme.textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white70,
@@ -302,15 +307,15 @@ class BankDiscountDetailScreen extends StatelessWidget {
   }
 
   String _getDaysString(List<int> days) {
-    if (days.length == 7) return 'Todos los días';
+    if (days.length == 7) return 'every_day'.tr;
     final names = [
-      'Lunes',
-      'Martes',
-      'Miércoles',
-      'Jueves',
-      'Viernes',
-      'Sábado',
-      'Domiongo'
+      'monday'.tr,
+      'tuesday'.tr,
+      'wednesday'.tr,
+      'thursday'.tr,
+      'friday'.tr,
+      'saturday'.tr,
+      'sunday'.tr
     ];
     return days.map((d) => names[d - 1]).join(', ');
   }

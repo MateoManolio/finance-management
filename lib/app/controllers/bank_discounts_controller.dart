@@ -21,7 +21,7 @@ class BankDiscountsController extends GetxController {
     isLoading.value = true;
     final result = await _repository.getAllDiscounts();
     result.fold(
-      (failure) => Get.snackbar('Error', failure.message),
+      (failure) => Get.snackbar('error'.tr, failure.message),
       (list) => discounts.value = list,
     );
     isLoading.value = false;
@@ -30,7 +30,7 @@ class BankDiscountsController extends GetxController {
   Future<void> addDiscount(BankDiscount discount) async {
     final result = await _repository.saveDiscount(discount);
     result.fold(
-      (failure) => Get.snackbar('Error', failure.message),
+      (failure) => Get.snackbar('error'.tr, failure.message),
       (saved) {
         discounts.add(saved);
         Get.back();
@@ -41,7 +41,7 @@ class BankDiscountsController extends GetxController {
   Future<void> updateDiscount(BankDiscount discount) async {
     final result = await _repository.updateDiscount(discount);
     result.fold(
-      (failure) => Get.snackbar('Error', failure.message),
+      (failure) => Get.snackbar('error'.tr, failure.message),
       (updated) {
         final index = discounts.indexWhere((d) => d.id == updated.id);
         if (index != -1) {
@@ -56,7 +56,7 @@ class BankDiscountsController extends GetxController {
   Future<void> deleteDiscount(int id) async {
     final result = await _repository.deleteDiscount(id);
     result.fold(
-      (failure) => Get.snackbar('Error', failure.message),
+      (failure) => Get.snackbar('error'.tr, failure.message),
       (_) => discounts.removeWhere((d) => d.id == id),
     );
   }

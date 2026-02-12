@@ -119,8 +119,7 @@ class LoadExpenseController extends GetxController {
 
     final result = await getCategoriesUseCase.execute();
     result.fold(
-      (failure) =>
-          Get.snackbar('Error', 'No se pudieron cargar las categorías'),
+      (failure) => Get.snackbar('error'.tr, 'error_categories'.tr),
       (list) {
         _allCategories.value = list;
         _initializeSelection();
@@ -137,7 +136,7 @@ class LoadExpenseController extends GetxController {
   Future<void> loadTags() async {
     final result = await getTagsUseCase.execute();
     result.fold(
-      (failure) => Get.snackbar('Error', 'No se pudieron cargar las etiquetas'),
+      (failure) => Get.snackbar('error'.tr, 'error_tags'.tr),
       (list) {
         _allTags.value = list
           ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
@@ -161,7 +160,7 @@ class LoadExpenseController extends GetxController {
     result.fold(
       (failure) {
         exchangeRate.value = 1.0;
-        conversionError.value = 'Error al obtener cotización';
+        conversionError.value = 'rate_fetch_error'.tr;
       },
       (rate) {
         exchangeRate.value = rate;
@@ -238,8 +237,8 @@ class LoadExpenseController extends GetxController {
     // Solo validar el precio (obligatorio)
     if (amount == null || amount <= 0) {
       Get.snackbar(
-        'Error',
-        'Please enter a valid amount',
+        'error'.tr,
+        'invalid_amount'.tr,
         backgroundColor: Colors.red.withValues(alpha: 0.5),
         colorText: Colors.white,
       );
@@ -249,8 +248,8 @@ class LoadExpenseController extends GetxController {
     // Validar que haya una categoría seleccionada
     if (selectedCategory.value == null) {
       Get.snackbar(
-        'Error',
-        'Please select a category',
+        'error'.tr,
+        'select_category_error'.tr,
         backgroundColor: Colors.red.withValues(alpha: 0.5),
         colorText: Colors.white,
       );
@@ -314,25 +313,29 @@ class LoadExpenseController extends GetxController {
     final dateToCheck = DateTime(date.year, date.month, date.day);
 
     if (dateToCheck == today) {
-      return 'Hoy';
+      return 'today'.tr;
     } else if (dateToCheck == yesterday) {
-      return 'Ayer';
+      return 'yesterday'.tr;
     } else {
-      const months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
+      final monthKeys = [
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december'
       ];
-      return '${months[date.month - 1]} ${date.day}, ${date.year}';
+      final monthName = monthKeys[date.month - 1].tr;
+      return 'date_format'.trParams({
+        'day': date.day.toString(),
+        'month': monthName,
+      });
     }
   }
 }

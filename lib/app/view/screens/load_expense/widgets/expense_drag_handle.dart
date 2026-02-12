@@ -38,7 +38,7 @@ class ExpenseDragHandle extends StatelessWidget {
             const SizedBox(height: 16),
             // Title
             Text(
-              'Add Transaction',
+              'save_transaction'.tr,
               style: GoogleFonts.outfit(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,

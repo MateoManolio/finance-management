@@ -15,7 +15,7 @@ class ExpenseNoteInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'NOTE',
+          'notes'.tr.toUpperCase(),
           style: GoogleFonts.outfit(
               fontSize: 11,
               fontWeight: FontWeight.bold,
@@ -31,7 +31,7 @@ class ExpenseNoteInput extends StatelessWidget {
             controller: controller.noteController,
             style: GoogleFonts.outfit(color: Colors.white, fontSize: 14),
             decoration: InputDecoration(
-              hintText: 'What is this for?',
+              hintText: 'note_placeholder'.tr,
               hintStyle: GoogleFonts.outfit(
                   color: Colors.white.withValues(alpha: 0.4), fontSize: 14),
               border: InputBorder.none,

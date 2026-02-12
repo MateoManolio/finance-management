@@ -10,14 +10,14 @@ class TagManagementPage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestionar Etiquetas'),
+        title: Text('manage_tags_title'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showTagForm(context),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Nueva Etiqueta'),
+        label: Text('new_tag'.tr),
       ),
       body: Obx(() {
         if (controller.isLoadingTags.value) {
@@ -25,7 +25,7 @@ class TagManagementPage extends GetView<ProfileController> {
         }
 
         if (controller.tags.isEmpty) {
-          return const Center(child: Text('No hay etiquetas'));
+          return Center(child: Text('no_tags'.tr));
         }
 
         return ReorderableListView.builder(
@@ -53,16 +53,16 @@ class TagManagementPage extends GetView<ProfileController> {
 
     Get.dialog(
       AlertDialog(
-        title: Text(tag == null ? 'Nueva Etiqueta' : 'Editar Etiqueta'),
+        title: Text(tag == null ? 'new_tag'.tr : 'edit_tag'.tr),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Nombre'),
+              decoration: InputDecoration(labelText: 'name_label'.tr),
             ),
             const SizedBox(height: 16),
-            const Text('Color'),
+            Text('color_label'.tr),
             const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -104,8 +104,7 @@ class TagManagementPage extends GetView<ProfileController> {
           ],
         ),
         actions: [
-          TextButton(
-              onPressed: () => Get.back(), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
           ElevatedButton(
             onPressed: () {
               if (nameController.text.isNotEmpty) {
@@ -123,7 +122,7 @@ class TagManagementPage extends GetView<ProfileController> {
                 }
               }
             },
-            child: const Text('Guardar'),
+            child: Text('save_label'.tr),
           ),
         ],
       ),
@@ -132,10 +131,10 @@ class TagManagementPage extends GetView<ProfileController> {
 
   void _showDeleteConfirmation(BuildContext context, Tag tag) {
     Get.defaultDialog(
-      title: 'Eliminar Etiqueta',
-      middleText: '¿Estás seguro de que deseas eliminar "${tag.tag}"?',
-      textConfirm: 'Eliminar',
-      textCancel: 'Cancelar',
+      title: 'delete_tag_title'.tr,
+      middleText: 'delete_tag_confirm'.trParams({'name': tag.tag}),
+      textConfirm: 'delete'.tr,
+      textCancel: 'cancel'.tr,
       confirmTextColor: Colors.white,
       onConfirm: () {
         if (tag.id != null) {

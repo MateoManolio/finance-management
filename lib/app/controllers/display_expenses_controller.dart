@@ -10,25 +10,29 @@ class DisplayExpensesController extends GetxController {
     final dateToCheck = DateTime(date.year, date.month, date.day);
 
     if (dateToCheck == today) {
-      return 'Hoy';
+      return 'today'.tr;
     } else if (dateToCheck == yesterday) {
-      return 'Ayer';
+      return 'yesterday'.tr;
     } else {
-      const months = [
-        'Enero',
-        'Febrero',
-        'Marzo',
-        'Abril',
-        'Mayo',
-        'Junio',
-        'Julio',
-        'Agosto',
-        'Septiembre',
-        'Octubre',
-        'Noviembre',
-        'Diciembre'
+      final monthKeys = [
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december'
       ];
-      return '${date.day} de ${months[date.month - 1]}';
+      final monthName = monthKeys[date.month - 1].tr;
+      return 'date_format'.trParams({
+        'day': date.day.toString(),
+        'month': monthName,
+      });
     }
   }
 

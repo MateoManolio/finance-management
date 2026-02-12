@@ -26,7 +26,7 @@ class ViewToggle extends StatelessWidget {
               ),
             ),
             child: Text(
-              controller.isAllTimeView ? 'Mensual' : 'Todo el tiempo',
+              controller.isAllTimeView ? 'monthly'.tr : 'all_time'.tr,
               style: theme.textTheme.labelLarge?.copyWith(
                 color: controller.isAllTimeView
                     ? theme.colorScheme.primary

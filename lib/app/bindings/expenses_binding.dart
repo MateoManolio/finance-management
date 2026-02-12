@@ -20,6 +20,7 @@ import 'package:wise_wallet/app/domain/usecases/get_subscriptions_usecase.dart';
 import 'package:wise_wallet/app/controllers/subscriptions_controller.dart';
 import 'package:wise_wallet/app/controllers/analysis_controller.dart';
 import 'package:wise_wallet/app/controllers/profile_controller.dart';
+import 'package:wise_wallet/app/service/auth_service.dart';
 import 'package:wise_wallet/app/domain/repositories/category_repository.dart';
 import 'package:wise_wallet/app/data/repositories/category_repository_impl.dart';
 import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
@@ -169,6 +170,9 @@ class UseCasesBinding extends Bindings {
 class ExpensesBinding extends Bindings {
   @override
   void dependencies() {
+    // Register AuthService
+    Get.put(AuthService(), permanent: true);
+
     // First ensure database and services are initialized
     if (!Get.isRegistered<AppDB>() || !Get.isRegistered<DioClient>()) {
       DatabaseBinding().dependencies();
@@ -234,7 +238,12 @@ class ExpensesBinding extends Bindings {
       ProfileController(
         categoryRepository: Get.find<CategoryRepository>(),
         tagRepository: Get.find<TagRepository>(),
+        expenseRepository: Get.find<ExpenseRepository>(),
+        creditCardRepository: Get.find<CreditCardRepository>(),
+        subscriptionRepository: Get.find<SubscriptionRepository>(),
+        bankDiscountRepository: Get.find<BankDiscountRepository>(),
         getExchangeRateUseCase: Get.find<GetExchangeRateUseCase>(),
+        authService: Get.find<AuthService>(),
       ),
       permanent: true,
     );

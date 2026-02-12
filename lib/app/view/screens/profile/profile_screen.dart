@@ -28,7 +28,7 @@ class ProfileScreen extends GetView<ProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mi Perfil',
+                      'profile'.tr,
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.onSurface,
@@ -36,7 +36,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     ).animate().fadeIn().slideX(begin: -0.2),
                     const SizedBox(height: 8),
                     Text(
-                      'Gestiona tus preferencias y datos',
+                      'manage_preferences'.tr,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color:
                             theme.colorScheme.onSurface.withValues(alpha: 0.7),
@@ -50,24 +50,24 @@ class ProfileScreen extends GetView<ProfileController> {
             // Personalización section
             SliverToBoxAdapter(
               child: SettingsSection(
-                title: 'Personalización',
+                title: 'customization'.tr,
                 items: [
                   SettingsItem(
                     icon: Icons.category_rounded,
-                    title: 'Categorías',
-                    subtitle: 'Gestiona y reordena tus categorías',
+                    title: 'categories'.tr,
+                    subtitle: 'manage_categories'.tr,
                     onTap: () => Get.to(() => const CategoryManagementPage()),
                   ),
                   SettingsItem(
                     icon: Icons.label_rounded,
-                    title: 'Etiquetas',
-                    subtitle: 'Crea y elimina etiquetas personalizadas',
+                    title: 'tags'.tr,
+                    subtitle: 'manage_tags'.tr,
                     onTap: () => Get.to(() => const TagManagementPage()),
                   ),
                   SettingsItem(
                     icon: Icons.account_balance_rounded,
-                    title: 'Descuentos Bancarios',
-                    subtitle: 'Configura tus beneficios del día',
+                    title: 'bank_discounts'.tr,
+                    subtitle: 'setup_benefits'.tr,
                     onTap: () =>
                         Get.to(() => const BankDiscountsConfigScreen()),
                   ),
@@ -78,13 +78,13 @@ class ProfileScreen extends GetView<ProfileController> {
             // Preferencias section
             SliverToBoxAdapter(
               child: SettingsSection(
-                title: 'Preferencias',
+                title: 'preferences'.tr,
                 items: [
                   Obx(() => SettingsItem(
                         icon: Icons.payments_rounded,
-                        title: 'Moneda',
-                        subtitle:
-                            'Moneda principal: ${controller.currency.value}',
+                        title: 'currency'.tr,
+                        subtitle: 'main_currency'
+                            .trParams({'currency': controller.currency.value}),
                         trailing: DropdownButton<String>(
                           value: controller.currency.value,
                           underline: const SizedBox(),
@@ -102,16 +102,16 @@ class ProfileScreen extends GetView<ProfileController> {
                       )),
                   Obx(() => SettingsItem(
                         icon: Icons.language_rounded,
-                        title: 'Idioma',
+                        title: 'language'.tr,
                         subtitle: controller.language.value == 'es_ARG'
-                            ? 'Español (Arg)'
-                            : 'English',
+                            ? 'spanish'.tr
+                            : 'english'.tr,
                         trailing: DropdownButton<String>(
                           value: controller.language.value,
                           underline: const SizedBox(),
                           items: [
-                            {'label': 'Español', 'value': 'es_ARG'},
-                            {'label': 'English', 'value': 'en_US'},
+                            {'label': 'spanish'.tr, 'value': 'es_ARG'},
+                            {'label': 'english'.tr, 'value': 'en_US'},
                           ].map((Map<String, String> item) {
                             return DropdownMenuItem<String>(
                               value: item['value'],
@@ -127,10 +127,10 @@ class ProfileScreen extends GetView<ProfileController> {
                         icon: controller.isDarkMode.value
                             ? Icons.dark_mode_rounded
                             : Icons.light_mode_rounded,
-                        title: 'Tema',
+                        title: 'theme'.tr,
                         subtitle: controller.isDarkMode.value
-                            ? 'Modo Oscuro'
-                            : 'Modo Claro',
+                            ? 'dark_mode'.tr
+                            : 'light_mode'.tr,
                         trailing: Switch(
                           value: controller.isDarkMode.value,
                           onChanged: (_) => controller.toggleTheme(),
@@ -143,12 +143,12 @@ class ProfileScreen extends GetView<ProfileController> {
             // Seguridad y Datos section
             SliverToBoxAdapter(
               child: SettingsSection(
-                title: 'Avanzado',
+                title: 'advanced'.tr,
                 items: [
                   Obx(() => SettingsItem(
                         icon: Icons.lock_rounded,
-                        title: 'Código de acceso',
-                        subtitle: 'Protege tu aplicación',
+                        title: 'passcode'.tr,
+                        subtitle: 'protect_app'.tr,
                         trailing: Switch(
                           value: controller.usePasscode.value,
                           onChanged: (val) => controller.togglePasscode(val),
@@ -156,14 +156,14 @@ class ProfileScreen extends GetView<ProfileController> {
                       )),
                   SettingsItem(
                     icon: Icons.ios_share_rounded,
-                    title: 'Exportar Datos',
-                    subtitle: 'Descarga tus transacciones en JSON',
+                    title: 'export_data'.tr,
+                    subtitle: 'download_json'.tr,
                     onTap: controller.exportData,
                   ),
                   SettingsItem(
                     icon: Icons.delete_forever_rounded,
-                    title: 'Borrar Datos',
-                    subtitle: 'Elimina toda la información local',
+                    title: 'clear_data'.tr,
+                    subtitle: 'delete_local'.tr,
                     titleColor: Colors.redAccent,
                     iconColor: Colors.redAccent,
                     onTap: controller.clearData,

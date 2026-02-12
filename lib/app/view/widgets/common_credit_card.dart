@@ -51,7 +51,7 @@ class CommonCreditCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      card.type == CardType.credit ? 'CRÉDITO' : 'DÉBITO',
+                      card.type == CardType.credit ? 'credit'.tr : 'debit'.tr,
                       style: GoogleFonts.outfit(
                         color: Colors.white70,
                         fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class CommonCreditCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'TITULAR',
+                        'card_holder'.tr,
                         style: GoogleFonts.outfit(
                           color: Colors.white.withValues(alpha: 0.7),
                           fontSize: 10,
@@ -113,7 +113,7 @@ class CommonCreditCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'EXPIRA',
+                      'card_expires'.tr,
                       style: GoogleFonts.outfit(
                         color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 10,

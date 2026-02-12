@@ -17,7 +17,7 @@ class DashboardHeader extends GetView<ExpensesController> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Mi Billetera',
+            'my_wallet'.tr,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -29,7 +29,7 @@ class DashboardHeader extends GetView<ExpensesController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Saldo Actual: ',
+                'current_balance'.tr,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.7),
                   fontSize: 14,
@@ -39,7 +39,7 @@ class DashboardHeader extends GetView<ExpensesController> {
               Obx(() {
                 final profile = Get.find<ProfileController>();
                 return Text(
-                  profile.formatValue(850.0), // Mocked balance for now
+                  profile.formatValue(profile.balance.value),
                   style: const TextStyle(
                     color: Color(0xFF4CAF50),
                     fontWeight: FontWeight.bold,
@@ -56,7 +56,7 @@ class DashboardHeader extends GetView<ExpensesController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Gastos del Mes: ',
+                  'monthly_expenses'.tr,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.7),
                     fontSize: 14,

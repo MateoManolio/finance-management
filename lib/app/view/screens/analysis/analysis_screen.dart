@@ -47,7 +47,7 @@ class AnalysisScreen extends GetView<AnalysisController> {
                         children: [
                           Expanded(
                             child: Text(
-                              'Dashboard Financiero',
+                              'financial_dashboard'.tr,
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -100,7 +100,7 @@ class AnalysisScreen extends GetView<AnalysisController> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),
                         child: Text(
-                          'Comparación Mensual',
+                          'monthly_comparison'.tr,
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -112,12 +112,11 @@ class AnalysisScreen extends GetView<AnalysisController> {
                 ).animate().fadeIn(delay: 300.ms),
               ),
               if (controller.expenses.isEmpty && !controller.isLoading)
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
+                    padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Center(
-                      child:
-                          Text('No hay gastos registrados para este periodo'),
+                      child: Text('no_expenses_period'.tr),
                     ),
                   ),
                 )
@@ -151,7 +150,7 @@ class AnalysisScreen extends GetView<AnalysisController> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 16),
                     child: Text(
-                      'Desglose por Categoría',
+                      'category_breakdown'.tr,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

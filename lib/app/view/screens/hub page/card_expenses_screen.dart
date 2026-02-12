@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import '../../../controllers/expenses_controller.dart';
 import '../../../controllers/profile_controller.dart';
 import '../../../controllers/display_expenses_controller.dart';
@@ -86,7 +85,7 @@ class CardExpensesScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       Text(
-                        'Detalle de Tarjeta',
+                        'card_detail'.tr,
                         style: GoogleFonts.outfit(
                           color: Colors.white,
                           fontSize: 20,
@@ -123,7 +122,7 @@ class CardExpensesScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'TOTAL GASTADO',
+                            'total_spent'.tr,
                             style: GoogleFonts.outfit(
                               color: Colors.white60,
                               fontSize: 12,
@@ -155,7 +154,9 @@ class CardExpensesScreen extends StatelessWidget {
                               color: Colors.white.withValues(alpha: 0.1)),
                         ),
                         child: Text(
-                          '${filteredExpenses.length} Transacciones',
+                          'transactions_count'.trParams({
+                            'count': filteredExpenses.length.toString(),
+                          }),
                           style: GoogleFonts.outfit(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
@@ -195,7 +196,7 @@ class CardExpensesScreen extends StatelessWidget {
                                           Colors.white.withValues(alpha: 0.2)),
                                   const SizedBox(height: 16),
                                   Text(
-                                    'Sin movimientos',
+                                    'no_movements'.tr,
                                     style: GoogleFonts.outfit(
                                       color: Colors.white54,
                                       fontSize: 16,
@@ -244,9 +245,9 @@ class CardExpensesScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8, bottom: 12, top: 8),
               child: Text(
-                DateFormat('EEEE, d MMM', 'es_ES')
-                    .format(date)
-                    .toUpperCase(), // Using simplified format
+                Get.find<DisplayExpensesController>()
+                    .formatDate(date)
+                    .toUpperCase(),
                 style: GoogleFonts.outfit(
                   color: Colors.white60,
                   fontSize: 12,

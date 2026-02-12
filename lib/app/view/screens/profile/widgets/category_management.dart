@@ -11,14 +11,14 @@ class CategoryManagementPage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestionar Categorías'),
+        title: Text('manage_categories_title'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showCategoryForm(context),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Nueva Categoría'),
+        label: Text('new_category'.tr),
       ),
       body: Obx(() {
         if (controller.isLoadingCategories.value) {
@@ -26,7 +26,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
         }
 
         if (controller.categories.isEmpty) {
-          return const Center(child: Text('No hay categorías'));
+          return Center(child: Text('no_categories'.tr));
         }
 
         // Filter root categories (no parent)
@@ -86,7 +86,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
 
     Get.dialog(
       AlertDialog(
-        title: Text(category == null ? 'Nueva Categoría' : 'Editar Categoría'),
+        title: Text(category == null ? 'new_category'.tr : 'edit_category'.tr),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -112,21 +112,21 @@ class CategoryManagementPage extends GetView<ProfileController> {
               const SizedBox(height: 16),
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(labelText: 'Nombre'),
+                decoration: InputDecoration(labelText: 'name_label'.tr),
               ),
               TextField(
                 controller: groupController,
-                decoration: const InputDecoration(labelText: 'Nota (opcional)'),
+                decoration: InputDecoration(labelText: 'note_optional'.tr),
               ),
               const SizedBox(height: 16),
               if (category == null || category.parentId != null)
                 Obx(() => DropdownButtonFormField<int?>(
                       initialValue: parentId.value,
                       decoration:
-                          const InputDecoration(labelText: 'Categoría Padre'),
+                          InputDecoration(labelText: 'parent_category'.tr),
                       items: [
-                        const DropdownMenuItem<int?>(
-                            value: null, child: Text('Ninguna (Raíz)')),
+                        DropdownMenuItem<int?>(
+                            value: null, child: Text('none_root'.tr)),
                         ...controller.categories
                             .where((c) =>
                                 c.parentId == null && c.id != category?.id)
@@ -138,7 +138,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
                       onChanged: (val) => parentId.value = val,
                     )),
               const SizedBox(height: 16),
-              const Text('Color'),
+              Text('color_label'.tr),
               const SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -181,8 +181,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
           ),
         ),
         actions: [
-          TextButton(
-              onPressed: () => Get.back(), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
           ElevatedButton(
             onPressed: () {
               if (nameController.text.isNotEmpty) {
@@ -207,7 +206,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
                 Get.back();
               }
             },
-            child: const Text('Guardar'),
+            child: Text('save_label'.tr),
           ),
         ],
       ),
@@ -216,10 +215,10 @@ class CategoryManagementPage extends GetView<ProfileController> {
 
   void _showDeleteConfirmation(BuildContext context, Category category) {
     Get.defaultDialog(
-      title: 'Eliminar Categoría',
-      middleText: '¿Estás seguro de que deseas eliminar "${category.name}"?',
-      textConfirm: 'Eliminar',
-      textCancel: 'Cancelar',
+      title: 'delete_category_title'.tr,
+      middleText: 'delete_category_confirm'.trParams({'name': category.name}),
+      textConfirm: 'delete'.tr,
+      textCancel: 'cancel'.tr,
       confirmTextColor: Colors.white,
       onConfirm: () {
         if (category.id != null) {
