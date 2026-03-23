@@ -16,47 +16,7 @@ class DisplayExpenses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customGradient = LinearGradient(
-      colors: [
-        Colors.white.withValues(alpha: AppConstants.defaultGlassOpacity),
-        Colors.white.withValues(alpha: AppConstants.defaultGlassOpacity / 2),
-      ],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    );
-
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(
-        bottom: Radius.circular(AppConstants.largeRadius),
-      ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: AppConstants.defaultBlur,
-          sigmaY: AppConstants.defaultBlur,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: customGradient,
-            boxShadow: [
-              BoxShadow(
-                color:
-                    Colors.black.withValues(alpha: AppConstants.shadowOpacity),
-                blurRadius: 20,
-                spreadRadius: 5,
-              ),
-            ],
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.white
-                    .withValues(alpha: AppConstants.defaultGlassOpacity),
-                width: 1,
-              ),
-            ),
-          ),
-          child: _Information(expenses),
-        ),
-      ),
-    );
+    return _Information(expenses);
   }
 }
 
@@ -126,7 +86,7 @@ class _Information extends StatelessWidget {
                 child: Text(
                   Get.find<DisplayExpensesController>().formatDate(date),
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,

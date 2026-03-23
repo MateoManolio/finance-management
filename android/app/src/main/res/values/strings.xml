@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_add_expense_short">Cargar Gasto</string>
+    <string name="shortcut_add_expense_long">Cargar un nuevo gasto</string>
+    <string name="shortcut_view_analysis_short">Análisis</string>
+    <string name="shortcut_view_analysis_long">Ver análisis de gastos</string>
+    
+    <string name="widget_finance_title">Resumen Financiero</string>
+    <string name="widget_finance_desc">Ve tu gasto mensual y saldo actual en tiempo real.</string>
+    <string name="widget_quick_add_title">Carga Rápida</string>
+    <string name="widget_quick_add_desc">Agrega gastos rápidamente desde tu pantalla de inicio.</string>
+</resources>

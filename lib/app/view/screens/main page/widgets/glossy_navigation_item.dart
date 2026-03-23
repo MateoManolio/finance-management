@@ -62,8 +62,13 @@ class _GlossyNavigationItemState extends State<GlossyNavigationItem>
 
   @override
   Widget build(BuildContext context) {
-    final color =
-        widget.isSelected ? widget.primaryColor : widget.unselectedColor;
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final color = widget.isSelected
+        ? (isLight
+            ? Color.alphaBlend(
+                Colors.black.withValues(alpha: 0.2), widget.primaryColor)
+            : widget.primaryColor)
+        : widget.unselectedColor;
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -103,7 +108,7 @@ class _GlossyNavigationItemState extends State<GlossyNavigationItem>
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Theme.of(context).colorScheme.error,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -119,10 +124,10 @@ class _GlossyNavigationItemState extends State<GlossyNavigationItem>
                             widget.item.badgeCount! > 9
                                 ? '9+'
                                 : widget.item.badgeCount.toString(),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onError,
                             ),
                           ),
                         ),
@@ -137,9 +142,9 @@ class _GlossyNavigationItemState extends State<GlossyNavigationItem>
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight:
-                      widget.isSelected ? FontWeight.w600 : FontWeight.w500,
+                      widget.isSelected ? FontWeight.bold : FontWeight.w500,
                   color: color,
-                  letterSpacing: 0.5,
+                  letterSpacing: isLight ? 0.3 : 0.5,
                 ),
                 child: Text(
                   widget.item.label,

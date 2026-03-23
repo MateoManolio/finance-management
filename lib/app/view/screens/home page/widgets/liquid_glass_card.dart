@@ -17,6 +17,7 @@ class LiquidGlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding:
           margin ?? const EdgeInsets.only(bottom: AppConstants.defaultPadding),
@@ -24,51 +25,43 @@ class LiquidGlassCard extends StatelessWidget {
         onTap: onTap,
         child: Stack(
           children: [
-            // Hollow Shadow Layer
-            Positioned.fill(
-              child: ClipPath(
-                clipper: _HollowShadowClipper(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.largeRadius),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black
-                            .withValues(alpha: AppConstants.shadowOpacity),
-                        blurRadius: 15,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
+            // Refined subtle shadow
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
-                ),
+                ],
               ),
             ),
             // Glass Layer
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppConstants.largeRadius),
+                borderRadius: BorderRadius.circular(16.0),
                 border: Border.all(
-                  color: Colors.white
-                      .withValues(alpha: AppConstants.borderOpacity),
-                  width: 1.5,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
+                  width: 1.0,
                 ),
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Colors.white.withValues(
-                        alpha: AppConstants.liquidGlassOpacityStart),
-                    Colors.white
-                        .withValues(alpha: AppConstants.liquidGlassOpacityEnd),
+                    theme.colorScheme.surface.withValues(
+                        alpha: theme.brightness == Brightness.light ? 0.6 : 0.12),
+                    theme.colorScheme.surface.withValues(
+                        alpha: theme.brightness == Brightness.light ? 0.4 : 0.05),
                   ],
                   stops: const [0.0, 1.0],
                 ),
               ),
               padding: padding ??
                   const EdgeInsets.symmetric(
-                    horizontal: AppConstants.defaultPadding + 4,
-                    vertical: 10,
+                    horizontal: 16,
+                    vertical: 12,
                   ),
               child: child,
             ),
@@ -77,22 +70,4 @@ class LiquidGlassCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class _HollowShadowClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.addRect(
-        Rect.fromLTWH(-100, -100, size.width + 200, size.height + 200));
-    path.addRRect(RRect.fromRectAndRadius(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      const Radius.circular(AppConstants.largeRadius),
-    ));
-    path.fillType = PathFillType.evenOdd;
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

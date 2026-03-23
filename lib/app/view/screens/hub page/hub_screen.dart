@@ -83,7 +83,7 @@ class HubScreen extends StatelessWidget {
                         child: Text(
                           'no_cards'.tr,
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
                       );
@@ -168,7 +168,7 @@ class HubScreen extends StatelessWidget {
                         child: Text(
                           'no_subscriptions'.tr,
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
                       ),
@@ -214,8 +214,10 @@ class HubScreen extends StatelessWidget {
     required Color color,
   }) {
     final theme = Theme.of(context);
+    final isLight = theme.brightness == Brightness.light;
     return GlassContainer(
       padding: const EdgeInsets.all(16),
+      opacity: isLight ? 0.4 : AppConstants.defaultGlassOpacity,
       child: Row(
         children: [
           Container(

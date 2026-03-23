@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_expense"
+        android:enabled="true"
+        android:icon="@drawable/launch_background"
+        android:shortcutShortLabel="@string/shortcut_add_expense_short"
+        android:shortcutLongLabel="@string/shortcut_add_expense_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.finance_management"
+            android:targetClass="com.example.finance_management.MainActivity" />
+        <extra android:key="shortcut_type" android:value="add_expense" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="view_analysis"
+        android:enabled="true"
+        android:icon="@drawable/launch_background"
+        android:shortcutShortLabel="@string/shortcut_view_analysis_short"
+        android:shortcutLongLabel="@string/shortcut_view_analysis_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.finance_management"
+            android:targetClass="com.example.finance_management.MainActivity" />
+        <extra android:key="shortcut_type" android:value="view_analysis" />
+    </shortcut>
+</shortcuts>

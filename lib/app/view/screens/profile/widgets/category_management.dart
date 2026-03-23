@@ -99,12 +99,12 @@ class CategoryManagementPage extends GetView<ProfileController> {
                 },
                 child: Obx(() => Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: selectedColor.value.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: selectedColor.value.withOpacity(0.3)),
-                      ),
+                        decoration: BoxDecoration(
+                          color: selectedColor.value.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: selectedColor.value.withValues(alpha: 0.3)),
+                        ),
                       child: Icon(iconData.value,
                           size: 40, color: selectedColor.value),
                     )),
@@ -169,7 +169,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
                                     shape: BoxShape.circle,
                                     border: selectedColor.value == color
                                         ? Border.all(
-                                            color: Colors.white, width: 2)
+                                            color: Theme.of(context).colorScheme.onSurface, width: 2)
                                         : null,
                                   ),
                                 )),
@@ -219,7 +219,7 @@ class CategoryManagementPage extends GetView<ProfileController> {
       middleText: 'delete_category_confirm'.trParams({'name': category.name}),
       textConfirm: 'delete'.tr,
       textCancel: 'cancel'.tr,
-      confirmTextColor: Colors.white,
+      confirmTextColor: Theme.of(context).colorScheme.onPrimary,
       onConfirm: () {
         if (category.id != null) {
           controller.deleteCategory(category.id!);
@@ -250,10 +250,10 @@ class _CategoryTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
         ),
       ),
       child: ListTile(

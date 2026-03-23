@@ -254,7 +254,7 @@
     },
     {
       "id": "9:3354584546240971987",
-      "lastPropertyId": "12:2170867165309409881",
+      "lastPropertyId": "13:6162972385868373437",
       "name": "BankDiscountDao",
       "properties": [
         {
@@ -317,13 +317,55 @@
           "id": "12:2170867165309409881",
           "name": "specificDate",
           "type": 10
+        },
+        {
+          "id": "13:6162972385868373437",
+          "name": "note",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "10:3912907808824102914",
+      "lastPropertyId": "5:8782898853105616480",
+      "name": "IncomeDao",
+      "properties": [
+        {
+          "id": "1:3451198809886046964",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:215161903591326553",
+          "name": "value",
+          "type": 8
+        },
+        {
+          "id": "3:1861395626675204789",
+          "name": "note",
+          "type": 9
+        },
+        {
+          "id": "4:3137571142956319484",
+          "name": "time",
+          "type": 10
+        },
+        {
+          "id": "5:8782898853105616480",
+          "name": "categoryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "6:472417504103244167",
+          "relationTarget": "CategoryDao"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "9:3354584546240971987",
-  "lastIndexId": "5:1803719598457424279",
+  "lastEntityId": "10:3912907808824102914",
+  "lastIndexId": "6:472417504103244167",
   "lastRelationId": "5:8560510091104629211",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

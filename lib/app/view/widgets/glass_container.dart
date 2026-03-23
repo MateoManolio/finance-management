@@ -34,7 +34,10 @@ class GlassContainer extends StatelessWidget {
     final effectiveOpacity = opacity ?? AppConstants.defaultGlassOpacity;
     final effectiveBorderRadius =
         borderRadius ?? BorderRadius.circular(AppConstants.defaultRadius);
-    final effectiveColor = color ?? Colors.white;
+    final effectiveColor = color ??
+        (Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).colorScheme.onSurface);
 
     return Container(
       margin: margin,
@@ -50,7 +53,9 @@ class GlassContainer extends StatelessWidget {
               borderRadius: effectiveBorderRadius,
               border: border ??
                   Border.all(
-                    color: Colors.white
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
                         .withValues(alpha: AppConstants.borderOpacity * 0.67),
                     width: 1.5,
                   ),

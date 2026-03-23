@@ -6,6 +6,8 @@ import 'package:wise_wallet/app/domain/entity/credit_card.dart';
 import 'package:wise_wallet/app/domain/usecases/get_expenses_by_date_range_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/get_all_expenses_usecase.dart';
 import 'package:intl/intl.dart';
+import 'package:home_widget/home_widget.dart';
+import 'package:wise_wallet/app/controllers/profile_controller.dart';
 
 class AnalysisController extends GetxController {
   final GetExpensesByDateRangeUseCase getExpensesByDateRangeUseCase;
@@ -101,10 +103,59 @@ class AnalysisController extends GetxController {
 
     result.fold(
       (failure) => _errorMessage.value = failure.message,
-      (loadedExpenses) => _monthlyExpenses.value = loadedExpenses,
+      (loadedExpenses) async {
+        _monthlyExpenses.value = loadedExpenses;
+        await _updateHomeWidget();
+      },
     );
 
     _isLoading.value = false;
+  }
+
+  Future<void> _updateHomeWidget() async {
+    try {
+      final total = getTotalExpenses();
+      final profileController = Get.find<ProfileController>();
+      final formattedTotal = profileController.formatValue(total);
+
+      // Calculate Balance (Total All Time - Total Expenses) - Assuming balance is tracked in ProfileController
+      final currentBalance = profileController.balance.value;
+      final formattedBalance = profileController.formatValue(currentBalance);
+
+      // Calculate Comparison with last month
+      String comparisonText = "0%";
+      final now = DateTime.now();
+      final lastMonth = DateTime(now.year, now.month - 1, 1);
+      final lastMonthStart = DateTime(lastMonth.year, lastMonth.month, 1);
+      final lastMonthEnd = DateTime(lastMonth.year, lastMonth.month + 1, 0);
+
+      final prevMonthResult = await getExpensesByDateRangeUseCase.execute(
+          lastMonthStart, lastMonthEnd);
+      prevMonthResult.fold(
+        (_) => comparisonText = "0%",
+        (prevExpenses) {
+          final prevTotal = prevExpenses.fold(0.0, (sum, e) => sum + e.value);
+          if (prevTotal > 0) {
+            final diff = ((total - prevTotal) / prevTotal) * 100;
+            comparisonText =
+                "${diff > 0 ? '+' : ''}${diff.toStringAsFixed(0)}%";
+          } else if (total > 0) {
+            comparisonText = "+100%";
+          }
+        },
+      );
+
+      HomeWidget.saveWidgetData<String>('monthly_expense', formattedTotal);
+      HomeWidget.saveWidgetData<String>('current_balance', formattedBalance);
+      HomeWidget.saveWidgetData<String>('monthly_comparison', comparisonText);
+
+      HomeWidget.updateWidget(
+        androidName: 'FinanceWidgetProvider',
+        name: 'FinanceWidgetProvider',
+      );
+    } catch (e) {
+      // Ignore widget update errors
+    }
   }
 
   Future<void> loadAllExpenses() async {

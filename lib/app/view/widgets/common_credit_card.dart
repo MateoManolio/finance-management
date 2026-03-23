@@ -19,17 +19,23 @@ class CommonCreditCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final type = CardValidator.getCardType(card.cardNumber) ?? 'CARD';
 
+    final theme = Theme.of(context);
+    final isLight = theme.brightness == Brightness.light;
+    final cardColor = isLight
+        ? Color.alphaBlend(Colors.white.withValues(alpha: 0.7), card.color)
+        : card.color;
+
     return AspectRatio(
       aspectRatio: 1.586,
       child: GlassContainer(
         padding: const EdgeInsets.all(24),
-        color: card.color.withValues(alpha: 0.2),
+        color: cardColor.withValues(alpha: isLight ? 0.4 : 0.2),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            card.color.withValues(alpha: 0.6),
-            card.color.withValues(alpha: 0.2),
+            cardColor.withValues(alpha: isLight ? 0.8 : 0.6),
+            cardColor.withValues(alpha: isLight ? 0.4 : 0.2),
           ],
         ),
         child: Column(
@@ -42,7 +48,7 @@ class CommonCreditCard extends StatelessWidget {
                 Text(
                   type,
                   style: GoogleFonts.outfit(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     fontStyle: FontStyle.italic,
@@ -53,14 +59,14 @@ class CommonCreditCard extends StatelessWidget {
                     Text(
                       card.type == CardType.credit ? 'credit'.tr : 'debit'.tr,
                       style: GoogleFonts.outfit(
-                        color: Colors.white70,
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Icon(Icons.contactless_rounded,
-                        color: Colors.white70, size: 20),
+                    Icon(Icons.contactless_rounded,
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7), size: 20),
                     const SizedBox(width: 8),
                     _DiscountBadge(bankName: card.bankName),
                   ],
@@ -73,7 +79,7 @@ class CommonCreditCard extends StatelessWidget {
               child: Text(
                 CardNumberInputFormatter.format(card.cardNumber),
                 style: GoogleFonts.spaceMono(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -90,7 +96,7 @@ class CommonCreditCard extends StatelessWidget {
                       Text(
                         'card_holder'.tr,
                         style: GoogleFonts.outfit(
-                          color: Colors.white.withValues(alpha: 0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                           fontSize: 10,
                           letterSpacing: 1,
                         ),
@@ -98,7 +104,7 @@ class CommonCreditCard extends StatelessWidget {
                       Text(
                         card.holderName.toUpperCase(),
                         style: GoogleFonts.outfit(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -114,16 +120,16 @@ class CommonCreditCard extends StatelessWidget {
                   children: [
                     Text(
                       'card_expires'.tr,
-                      style: GoogleFonts.outfit(
-                        color: Colors.white.withValues(alpha: 0.7),
-                        fontSize: 10,
-                        letterSpacing: 1,
-                      ),
+                        style: GoogleFonts.outfit(
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          fontSize: 10,
+                          letterSpacing: 1,
+                        ),
                     ),
                     Text(
                       card.expiryDate,
                       style: GoogleFonts.outfit(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -159,7 +165,7 @@ class _DiscountBadge extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -177,7 +183,7 @@ class _DiscountBadge extends StatelessWidget {
               Text(
                 '${activeDiscount.discountPercentage.toStringAsFixed(0)}%',
                 style: GoogleFonts.outfit(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
