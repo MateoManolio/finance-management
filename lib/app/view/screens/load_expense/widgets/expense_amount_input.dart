@@ -22,7 +22,7 @@ class ExpenseAmountInput extends StatelessWidget {
               style: GoogleFonts.outfit(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: Colors.white.withOpacity(0.6),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 letterSpacing: 1.2,
               ),
             ),
@@ -32,10 +32,10 @@ class ExpenseAmountInput extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withOpacity(0.2),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                          color: theme.colorScheme.primary.withOpacity(0.3)),
+                          color: theme.colorScheme.primary.withValues(alpha: 0.3)),
                     ),
                     child: Text(
                       controller.selectedCurrency.value,
@@ -59,14 +59,14 @@ class ExpenseAmountInput extends StatelessWidget {
           style: GoogleFonts.outfit(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
           decoration: InputDecoration(
             hintText: '0.00',
             hintStyle: GoogleFonts.outfit(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              color: Colors.white.withOpacity(0.3),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
             ),
             border: InputBorder.none,
             prefixIcon: Icon(
@@ -83,13 +83,13 @@ class ExpenseAmountInput extends StatelessWidget {
           }
 
           if (controller.isFetchingRate.value) {
-            return const Padding(
+            return Padding(
               padding: EdgeInsets.only(left: 12),
               child: SizedBox(
                 width: 12,
                 height: 12,
                 child: CircularProgressIndicator(
-                    strokeWidth: 2, color: Colors.white54),
+                    strokeWidth: 2, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
               ),
             );
           }
@@ -100,7 +100,7 @@ class ExpenseAmountInput extends StatelessWidget {
               child: Text(
                 controller.conversionError.value!,
                 style:
-                    GoogleFonts.outfit(fontSize: 12, color: Colors.redAccent),
+                    GoogleFonts.outfit(fontSize: 12, color: theme.colorScheme.error),
               ),
             );
           }
@@ -114,14 +114,14 @@ class ExpenseAmountInput extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12),
             child: Row(
               children: [
-                const Icon(Icons.swap_horiz_rounded,
-                    size: 16, color: Colors.white54),
+                Icon(Icons.swap_horiz_rounded,
+                    size: 16, color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
                 const SizedBox(width: 4),
                 Text(
                   '≈ ARS ${converted.toStringAsFixed(2)}',
                   style: GoogleFonts.outfit(
                     fontSize: 14,
-                    color: Colors.white70,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

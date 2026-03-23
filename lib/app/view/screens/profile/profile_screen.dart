@@ -136,6 +136,15 @@ class ProfileScreen extends GetView<ProfileController> {
                           onChanged: (_) => controller.toggleTheme(),
                         ),
                       )),
+                  Obx(() => SettingsItem(
+                        icon: Icons.account_balance_wallet_rounded,
+                        title: 'monthly_income'.tr,
+                        subtitle:
+                            '${'monthly_income_desc'.tr}: ${controller.formatValue(controller.monthlyIncome.value)}',
+                        onTap: () {
+                          _showIncomeDialog(context, controller);
+                        },
+                      )),
                 ],
               ).animate().fadeIn(delay: 500.ms),
             ),
@@ -162,10 +171,10 @@ class ProfileScreen extends GetView<ProfileController> {
                   ),
                   SettingsItem(
                     icon: Icons.delete_forever_rounded,
-                    title: 'clear_data'.tr,
+                    title: 'clear_all'.tr,
                     subtitle: 'delete_local'.tr,
-                    titleColor: Colors.redAccent,
-                    iconColor: Colors.redAccent,
+                    titleColor: theme.colorScheme.error,
+                    iconColor: theme.colorScheme.error,
                     onTap: controller.clearData,
                   ),
                 ],
@@ -177,6 +186,52 @@ class ProfileScreen extends GetView<ProfileController> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showIncomeDialog(BuildContext context, ProfileController controller) {
+    final theme = Theme.of(context);
+    final textController =
+        TextEditingController(text: controller.monthlyIncome.value.toString());
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: theme.colorScheme.surface,
+        title: Text('monthly_income'.tr,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurface,
+            )),
+        content: TextField(
+          controller: textController,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
+          decoration: InputDecoration(
+            hintText: '0.00',
+            hintStyle: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Get.back(),
+              child: Text('cancel'.tr,
+                  style: TextStyle(color: theme.colorScheme.onSurface))),
+          TextButton(
+            onPressed: () {
+              final val = double.tryParse(textController.text) ?? 0.0;
+              controller.setMonthlyIncome(val);
+              Get.back();
+            },
+            child: Text('save'.tr,
+                style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ],
       ),
     );
   }

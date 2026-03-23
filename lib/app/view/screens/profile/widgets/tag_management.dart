@@ -93,7 +93,7 @@ class TagManagementPage extends GetView<ProfileController> {
                                   shape: BoxShape.circle,
                                   border: selectedColor.value == color
                                       ? Border.all(
-                                          color: Colors.white, width: 2)
+                                          color: Theme.of(context).colorScheme.onSurface, width: 2)
                                       : null,
                                 ),
                               )),
@@ -135,7 +135,7 @@ class TagManagementPage extends GetView<ProfileController> {
       middleText: 'delete_tag_confirm'.trParams({'name': tag.tag}),
       textConfirm: 'delete'.tr,
       textCancel: 'cancel'.tr,
-      confirmTextColor: Colors.white,
+      confirmTextColor: Theme.of(context).colorScheme.onPrimary,
       onConfirm: () {
         if (tag.id != null) {
           controller.deleteTag(tag.id!);
@@ -165,10 +165,10 @@ class _TagTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withOpacity(0.2),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
         ),
       ),
       child: ListTile(

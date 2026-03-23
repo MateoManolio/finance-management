@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:async';
 import '../../../controllers/navigation_controller.dart';
 import '../home page/home.dart';
 import '../home page/widgets/animated_blur_bubble.dart';
@@ -8,8 +9,13 @@ import '../analysis/analysis_screen.dart';
 import '../profile/profile_screen.dart';
 import 'widgets/navigation_bar.dart';
 import '../../../controllers/profile_controller.dart';
+import '../../../controllers/analysis_controller.dart';
 import '../lock/lock_screen.dart';
 import '../../../service/auth_service.dart';
+import 'package:quick_actions/quick_actions.dart';
+import 'package:home_widget/home_widget.dart';
+import '../load_expense/load_expense_screen.dart';
+import '../load_expense/quick_expense_screen.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
 class MainScreen extends StatefulWidget {
@@ -24,14 +30,87 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final NavigationController _navigationController =
       Get.put(NavigationController());
 
+  StreamSubscription? _widgetClickSubscription;
+
   bool _isNavigatingViaBar = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // Initialize AnalysisController to trigger a widget update on start
+    if (!Get.isRegistered<AnalysisController>()) {
+      Get.put(AnalysisController(
+        getExpensesByDateRangeUseCase: Get.find(),
+        getAllExpensesUseCase: Get.find(),
+      ));
+    } else {
+      Get.find<AnalysisController>().refreshData();
+    }
+
     _pageController =
         PageController(initialPage: _navigationController.currentIndex);
+    _initQuickActions();
+    _initHomeWidgetListener();
+    _checkForWidgetLaunch();
+  }
+
+  Future<void> _checkForWidgetLaunch() async {
+    final Uri? launchedUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (launchedUri != null) {
+      _handleWidgetUri(launchedUri);
+    }
+  }
+
+  void _initHomeWidgetListener() {
+    // Listen for widget clicks when app is already running (warm start)
+    _widgetClickSubscription = HomeWidget.widgetClicked.listen((Uri? uri) {
+      if (uri != null) {
+        _handleWidgetUri(uri);
+      }
+    });
+  }
+
+  void _handleWidgetUri(Uri uri) {
+    if (uri.host == 'quick_add') {
+      _openQuickAdd();
+    } else if (uri.host == 'analysis') {
+      _onNavigationItemSelected(1); // Index 1 is Analysis
+    }
+  }
+
+  void _initQuickActions() {
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize((shortcutType) {
+      // Use a delay to ensure navigator is ready
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (shortcutType == 'add_expense') {
+          Get.to(() => const LoadExpenseScreen());
+        } else if (shortcutType == 'view_analysis') {
+          _onNavigationItemSelected(1); // Index 1 is Analysis
+        } else if (shortcutType == 'quick_add') {
+          _openQuickAdd();
+        }
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      ShortcutItem(
+        type: 'add_expense',
+        localizedTitle: 'shortcut_add_expense_short'.tr,
+        icon: 'ic_shortcut_add',
+      ),
+      ShortcutItem(
+        type: 'view_analysis',
+        localizedTitle: 'shortcut_view_analysis_short'.tr,
+        icon: 'ic_shortcut_analysis',
+      ),
+    ]);
+  }
+
+  void _openQuickAdd() {
+    Get.to(() => const QuickExpenseScreen(), opaque: false);
   }
 
   @override
@@ -56,6 +135,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
+    _widgetClickSubscription?.cancel();
     super.dispose();
   }
 
@@ -81,6 +161,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // Define navigation items
     final navigationItems = [
       NavigationItemModel(
@@ -110,6 +191,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     ];
 
     return Scaffold(
+      backgroundColor:
+          theme.scaffoldBackgroundColor,
       extendBody: true,
       body: Stack(
         children: [

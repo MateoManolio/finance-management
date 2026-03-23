@@ -5,8 +5,11 @@ class AppConstants {
   static const double largePadding = 24.0;
   static const double extraLargePadding = 32.0;
 
-  static const double defaultRadius = 20.0;
-  static const double largeRadius = 30.0;
+  static const double extraSmallRadius = 8.0;
+  static const double defaultRadius = 16.0;
+  static const double mediumRadius = 20.0;
+  static const double largeRadius = 24.0;
+  static const double extraLargeRadius = 32.0;
 
   // Blur
   static const double defaultBlur = 10.0;

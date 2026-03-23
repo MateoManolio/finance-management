@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../controllers/bank_discounts_controller.dart';
 import '../../../../domain/entity/bank_discount.dart';
 import '../bank_discount_detail_screen.dart';
+import 'package:wise_wallet/app/core/app_constants.dart';
 
 class BankDiscountTodayCard extends GetView<BankDiscountsController> {
   const BankDiscountTodayCard({super.key});
@@ -20,7 +21,7 @@ class BankDiscountTodayCard extends GetView<BankDiscountsController> {
       }
 
       return Container(
-        margin: const EdgeInsets.only(bottom: 24),
+        margin: const EdgeInsets.only(bottom: AppConstants.largePadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -75,13 +76,13 @@ class _TodayDiscountCard extends StatelessWidget {
         width: 280,
         margin: const EdgeInsets.only(right: 16),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppConstants.largeRadius),
           child: Stack(
             children: [
               // Shadow container
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(AppConstants.largeRadius),
                   boxShadow: [
                     BoxShadow(
                       color: discount.bankColor.withValues(alpha: 0.3),
@@ -90,7 +91,7 @@ class _TodayDiscountCard extends StatelessWidget {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(AppConstants.largeRadius),
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -119,13 +120,13 @@ class _TodayDiscountCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
+                            color: theme.colorScheme.onSurface,
+                            borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
                           ),
                           child: Text(
                             discount.bankName,
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: discount.bankColor,
+                              color: theme.colorScheme.surface,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

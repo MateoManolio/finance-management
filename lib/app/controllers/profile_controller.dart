@@ -20,6 +20,8 @@ import 'package:wise_wallet/app/domain/repositories/subscription_repository.dart
 import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
 import 'package:wise_wallet/app/domain/usecases/get_exchange_rate_usecase.dart';
 import 'package:wise_wallet/app/service/auth_service.dart';
+import 'package:home_widget/home_widget.dart';
+import 'expenses_controller.dart';
 
 class ProfileController extends GetxController {
   final CategoryRepository _categoryRepository;
@@ -64,7 +66,14 @@ class ProfileController extends GetxController {
   final language = 'es_ARG'.obs;
   final isDarkMode = true.obs;
   final usePasscode = false.obs;
-  final balance = 0.0.obs; // Initial balance is zero
+  
+  // Financial state
+  final monthlyIncome = 0.0.obs;
+  final balance = 0.0.obs;
+
+  void updateBalance(double totalExpenses) {
+    balance.value = monthlyIncome.value - totalExpenses;
+  }
 
   @override
   void onInit() {
@@ -88,6 +97,18 @@ class ProfileController extends GetxController {
     language.value = _storage.read('language') ?? 'es_ARG';
     isDarkMode.value = _storage.read('isDarkMode') ?? true;
     usePasscode.value = _storage.read('usePasscode') ?? false;
+    monthlyIncome.value = _storage.read('monthlyIncome') ?? 0.0;
+    // Sync dark mode preference to home widgets
+    _syncDarkModeToWidgets();
+  }
+
+  void setMonthlyIncome(double val) {
+    monthlyIncome.value = val;
+    _storage.write('monthlyIncome', val);
+    // Trigger balance update in expenses controller if available
+    if (Get.isRegistered<ExpensesController>()) {
+      updateBalance(Get.find<ExpensesController>().getTotalMonthlyExpenses());
+    }
   }
 
   // --- Category Management ---
@@ -320,6 +341,19 @@ class ProfileController extends GetxController {
     isDarkMode.value = !isDarkMode.value;
     _storage.write('isDarkMode', isDarkMode.value);
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+    _syncDarkModeToWidgets();
+  }
+
+  void _syncDarkModeToWidgets() {
+    HomeWidget.saveWidgetData<bool>('is_dark_mode', isDarkMode.value);
+    HomeWidget.updateWidget(
+      androidName: 'FinanceWidgetProvider',
+      name: 'FinanceWidgetProvider',
+    );
+    HomeWidget.updateWidget(
+      androidName: 'QuickAddWidgetProvider',
+      name: 'QuickAddWidgetProvider',
+    );
   }
 
   Future<void> togglePasscode(bool val) async {
@@ -513,7 +547,8 @@ class ProfileController extends GetxController {
       middleText: 'confirm_clear'.tr,
       textConfirm: 'delete'.tr,
       textCancel: 'cancel'.tr,
-      confirmTextColor: Colors.white,
+      confirmTextColor: Get.theme.colorScheme.onPrimary,
+      buttonColor: Get.theme.colorScheme.primary,
       onConfirm: () {
         // Implement actual deletion logic
         Get.back();

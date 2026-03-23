@@ -69,17 +69,29 @@ class GlossyNavigationBar extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  backgroundColor?.withValues(alpha: 0.25) ??
-                      colorScheme.surface.withValues(alpha: 0.25),
-                  backgroundColor?.withValues(alpha: 0.15) ??
-                      colorScheme.surface.withValues(alpha: 0.15),
+                  backgroundColor?.withValues(
+                          alpha: theme.brightness == Brightness.light
+                              ? 0.5
+                              : 0.25) ??
+                      colorScheme.surface.withValues(
+                          alpha: theme.brightness == Brightness.light
+                              ? 0.5
+                              : 0.25),
+                  backgroundColor?.withValues(
+                          alpha: theme.brightness == Brightness.light
+                              ? 0.3
+                              : 0.15) ??
+                      colorScheme.surface.withValues(
+                          alpha: theme.brightness == Brightness.light
+                              ? 0.3
+                              : 0.15),
                 ],
               ),
               borderRadius: BorderRadius.circular(AppConstants.largeRadius),
               // Border with glossy effect
               border: Border.all(
                 color: borderColor?.withValues(alpha: 0.3) ??
-                    Colors.white.withValues(alpha: 0.2),
+                    colorScheme.onSurface.withValues(alpha: 0.2),
                 width: 1.5,
               ),
             ),
@@ -99,9 +111,11 @@ class GlossyNavigationBar extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Colors.white.withValues(alpha: 0),
-                              Colors.white.withValues(alpha: 0.4),
-                              Colors.white.withValues(alpha: 0),
+                              colorScheme.onSurface.withValues(alpha: 0),
+                              theme.brightness == Brightness.light 
+                                ? Colors.white.withValues(alpha: 0.8)
+                                : colorScheme.onSurface.withValues(alpha: 0.4),
+                              colorScheme.onSurface.withValues(alpha: 0),
                             ],
                           ),
                         ),
@@ -119,13 +133,28 @@ class GlossyNavigationBar extends StatelessWidget {
                         height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: colorScheme.primary.withValues(alpha: 0.15),
+                          color: colorScheme.primary.withValues(
+                              alpha:
+                                  theme.brightness == Brightness.light ? 0.25 : 0.15),
                           boxShadow: [
                             BoxShadow(
-                              color: colorScheme.primary.withValues(alpha: 0.5),
-                              blurRadius: 20,
-                              spreadRadius: 2,
+                              color: colorScheme.primary.withValues(
+                                  alpha: theme.brightness == Brightness.light
+                                      ? 0.6
+                                      : 0.5),
+                              blurRadius: theme.brightness == Brightness.light
+                                  ? 25
+                                  : 20,
+                              spreadRadius: theme.brightness == Brightness.light
+                                  ? 4
+                                  : 2,
                             ),
+                            if (theme.brightness == Brightness.light)
+                              BoxShadow(
+                                color: colorScheme.primary.withValues(alpha: 0.3),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                              ),
                           ],
                         ),
                       ),

@@ -14,24 +14,24 @@ class EmptyExpensesPlaceholder extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppConstants.largePadding),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
             child: Icon(
               Icons.receipt_long_rounded,
               size: 64,
-              color: Colors.white.withValues(alpha: 0.3),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
             ),
           ),
           const SizedBox(height: AppConstants.defaultPadding),
           Text(
             'no_expenses'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.8),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
               fontSize: 18,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
@@ -41,7 +41,7 @@ class EmptyExpensesPlaceholder extends StatelessWidget {
           Text(
             'expenses_appear_here'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.4),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
               fontSize: 14,
               fontWeight: FontWeight.normal,
             ),

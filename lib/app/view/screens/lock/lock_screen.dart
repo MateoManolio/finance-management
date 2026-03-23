@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:wise_wallet/app/service/auth_service.dart';
+import 'package:wise_wallet/app/core/app_constants.dart';
 import 'package:wise_wallet/app/view/screens/main%20page/main_screen.dart';
 
 class LockScreen extends StatefulWidget {
@@ -50,8 +51,8 @@ class _LockScreenState extends State<LockScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              theme.colorScheme.surface,
-              theme.colorScheme.surface.withValues(alpha: 0.8),
+              theme.scaffoldBackgroundColor,
+              theme.scaffoldBackgroundColor.withValues(alpha: 0.8),
             ],
           ),
         ),
@@ -62,7 +63,7 @@ class _LockScreenState extends State<LockScreen> {
               const Spacer(),
               // Logo/Icon
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppConstants.largePadding),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color:
@@ -110,7 +111,7 @@ class _LockScreenState extends State<LockScreen> {
 
               // Unlock Button
               Padding(
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(AppConstants.extraLargePadding),
                 child: SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -125,12 +126,13 @@ class _LockScreenState extends State<LockScreen> {
                       elevation: 0,
                     ),
                     child: _isAuthenticating
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  theme.colorScheme.onPrimary),
                             ),
                           )
                         : Text(

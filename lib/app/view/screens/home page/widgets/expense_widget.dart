@@ -17,7 +17,7 @@ class ExpenseWidget extends StatelessWidget {
       child: Row(
         children: [
           _Leading(expense: expense),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: _Name(
               name: expense.tags.isNotEmpty
@@ -44,27 +44,22 @@ class _Leading extends StatelessWidget {
         Get.find<DisplayExpensesController>().getColorForExpense(expense);
 
     return Container(
-      width: 44,
-      height: 44,
+      width: 42,
+      height: 42,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: colors,
+        color: colors.first.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colors.first.withValues(alpha: 0.3),
+          width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: colors.first.withValues(alpha: 0.3),
-            blurRadius: 8,
-            spreadRadius: 1,
-          ),
-        ],
       ),
-      child: Icon(
-        expense.category.icon,
-        color: Colors.white,
-        size: 20,
+      child: Center(
+        child: Icon(
+          expense.category.icon,
+          color: colors.first,
+          size: 22,
+        ),
       ),
     );
   }
@@ -89,16 +84,19 @@ class _Name extends StatelessWidget {
         Text(
           name,
           style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
+            fontSize: 16,
+            letterSpacing: -0.2,
           ),
         ),
         if (description != null && description!.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             description!,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              fontSize: 13,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -114,14 +112,18 @@ class _Price extends StatelessWidget {
   const _Price({required this.price});
 
   @override
-  Widget build(BuildContext context) => Obx(() {
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Obx(() {
         final profile = Get.find<ProfileController>();
         return Text(
           '-${profile.formatValue(price)}',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFFF5F5DC),
+          style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+                letterSpacing: -0.2,
               ),
         );
       });
+  }
 }

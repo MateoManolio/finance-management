@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wise_wallet/app/core/app_constants.dart';
 
 class SettingsSection extends StatelessWidget {
   final String title;
@@ -32,9 +33,9 @@ class SettingsSection extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(AppConstants.largeRadius),
             border: Border.all(
-              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -48,8 +49,8 @@ class SettingsSection extends StatelessWidget {
                       height: 1,
                       indent: 56,
                       endIndent: 16,
-                      color: theme.colorScheme.outlineVariant
-                          .withValues(alpha: 0.2),
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: 0.05),
                     ),
                 ],
               );

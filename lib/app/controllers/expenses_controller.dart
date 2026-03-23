@@ -6,6 +6,8 @@ import 'package:wise_wallet/app/domain/usecases/save_expense_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/get_all_expenses_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/delete_expense_usecase.dart';
 import 'package:wise_wallet/app/domain/usecases/get_expenses_by_date_range_usecase.dart';
+import 'analysis_controller.dart';
+import 'profile_controller.dart';
 
 /// Controller for managing expenses
 /// Following Clean Architecture and GetX best practices
@@ -66,7 +68,11 @@ class ExpensesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadExpenses();
+    loadExpenses().then((_) {
+      if (Get.isRegistered<ProfileController>()) {
+        Get.find<ProfileController>().updateBalance(getTotalMonthlyExpenses());
+      }
+    });
   }
 
   @override
@@ -91,9 +97,13 @@ class ExpensesController extends GetxController {
         _loadMockData();
       },
       (loadedExpenses) {
-        // Success - update expenses list
         _expenses.value = loadedExpenses;
         _expenses.sort((a, b) => a.time.compareTo(b.time));
+        
+        // Update balance
+        if (Get.isRegistered<ProfileController>()) {
+          Get.find<ProfileController>().updateBalance(getTotalMonthlyExpenses());
+        }
       },
     );
 
@@ -121,6 +131,17 @@ class ExpensesController extends GetxController {
         // Success - add to list and re-sort
         _expenses.add(savedExpense);
         _expenses.sort((a, b) => a.time.compareTo(b.time));
+
+        // Refresh analysis and widget if registered
+        if (Get.isRegistered<AnalysisController>()) {
+          Get.find<AnalysisController>().refreshData();
+        }
+
+        // Update balance
+        if (Get.isRegistered<ProfileController>()) {
+          Get.find<ProfileController>().updateBalance(getTotalMonthlyExpenses());
+        }
+
         success = true;
       },
     );
@@ -150,6 +171,12 @@ class ExpensesController extends GetxController {
         // Success - remove from list
         // Note: We'll need to reload expenses to properly reflect the change
         loadExpenses();
+
+        // Refresh analysis and widget if registered
+        if (Get.isRegistered<AnalysisController>()) {
+          Get.find<AnalysisController>().refreshData();
+        }
+
         showSuccessSnackbar('Gasto eliminado exitosamente');
         success = true;
       },
@@ -213,6 +240,13 @@ class ExpensesController extends GetxController {
   /// Calculates total expenses
   double getTotalExpenses() {
     return _expenses.fold(0, (sum, expense) => sum + expense.value);
+  }
+
+  /// Calculates total expenses for the current month
+  double getTotalMonthlyExpenses() {
+    final now = DateTime.now();
+    return _expenses.where((e) => e.time.year == now.year && e.time.month == now.month)
+        .fold(0, (sum, expense) => sum + expense.value);
   }
 
   // Private helper methods
