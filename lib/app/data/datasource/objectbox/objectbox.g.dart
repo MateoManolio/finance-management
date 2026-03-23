@@ -19,6 +19,7 @@ import '../../../../app/data/models/bank_discount_dao.dart';
 import '../../../../app/data/models/category_dao.dart';
 import '../../../../app/data/models/credit_card_dao.dart';
 import '../../../../app/data/models/expense_dao.dart';
+import '../../../../app/data/models/income_dao.dart';
 import '../../../../app/data/models/subscription_dao.dart';
 import '../../../../app/data/models/tag_dao.dart';
 
@@ -271,7 +272,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(9, 3354584546240971987),
       name: 'BankDiscountDao',
-      lastPropertyId: const obx_int.IdUid(12, 2170867165309409881),
+      lastPropertyId: const obx_int.IdUid(13, 6162972385868373437),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -333,7 +334,48 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(12, 2170867165309409881),
             name: 'specificDate',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(13, 6162972385868373437),
+            name: 'note',
+            type: 9,
             flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(10, 3912907808824102914),
+      name: 'IncomeDao',
+      lastPropertyId: const obx_int.IdUid(5, 8782898853105616480),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 3451198809886046964),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 215161903591326553),
+            name: 'value',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 1861395626675204789),
+            name: 'note',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 3137571142956319484),
+            name: 'time',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 8782898853105616480),
+            name: 'categoryId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(6, 472417504103244167),
+            relationTarget: 'CategoryDao')
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
@@ -374,8 +416,8 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(9, 3354584546240971987),
-      lastIndexId: const obx_int.IdUid(5, 1803719598457424279),
+      lastEntityId: const obx_int.IdUid(10, 3912907808824102914),
+      lastIndexId: const obx_int.IdUid(6, 472417504103244167),
       lastRelationId: const obx_int.IdUid(5, 8560510091104629211),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -679,7 +721,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final merchantNameOffset = object.merchantName == null
               ? null
               : fbb.writeString(object.merchantName!);
-          fbb.startTable(13);
+          final noteOffset =
+              object.note == null ? null : fbb.writeString(object.note!);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, bankNameOffset);
           fbb.addFloat64(2, object.discountPercentage);
@@ -692,6 +736,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(9, categoryOffset);
           fbb.addOffset(10, merchantNameOffset);
           fbb.addInt64(11, object.specificDate?.millisecondsSinceEpoch);
+          fbb.addOffset(12, noteOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -732,6 +777,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final specificDateParam = specificDateValue == null
               ? null
               : DateTime.fromMillisecondsSinceEpoch(specificDateValue);
+          final noteParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 28);
           final object = BankDiscountDao(
               id: idParam,
               bankName: bankNameParam,
@@ -744,8 +791,46 @@ obx_int.ModelDefinition getObjectBoxModel() {
               bankColor: bankColorParam,
               category: categoryParam,
               merchantName: merchantNameParam,
-              specificDate: specificDateParam);
+              specificDate: specificDateParam,
+              note: noteParam);
 
+          return object;
+        }),
+    IncomeDao: obx_int.EntityDefinition<IncomeDao>(
+        model: _entities[6],
+        toOneRelations: (IncomeDao object) => [object.category],
+        toManyRelations: (IncomeDao object) => {},
+        getId: (IncomeDao object) => object.id,
+        setId: (IncomeDao object, int id) {
+          object.id = id;
+        },
+        objectToFB: (IncomeDao object, fb.Builder fbb) {
+          final noteOffset =
+              object.note == null ? null : fbb.writeString(object.note!);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.value);
+          fbb.addOffset(2, noteOffset);
+          fbb.addInt64(3, object.time.millisecondsSinceEpoch);
+          fbb.addInt64(4, object.category.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final valueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final noteParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 8);
+          final timeParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
+          final object = IncomeDao(
+              value: valueParam, note: noteParam, time: timeParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.category.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.category.attach(store);
           return object;
         })
   };
@@ -969,4 +1054,31 @@ class BankDiscountDao_ {
   /// see [BankDiscountDao.specificDate]
   static final specificDate =
       obx.QueryDateProperty<BankDiscountDao>(_entities[5].properties[11]);
+
+  /// see [BankDiscountDao.note]
+  static final note =
+      obx.QueryStringProperty<BankDiscountDao>(_entities[5].properties[12]);
+}
+
+/// [IncomeDao] entity fields to define ObjectBox queries.
+class IncomeDao_ {
+  /// see [IncomeDao.id]
+  static final id =
+      obx.QueryIntegerProperty<IncomeDao>(_entities[6].properties[0]);
+
+  /// see [IncomeDao.value]
+  static final value =
+      obx.QueryDoubleProperty<IncomeDao>(_entities[6].properties[1]);
+
+  /// see [IncomeDao.note]
+  static final note =
+      obx.QueryStringProperty<IncomeDao>(_entities[6].properties[2]);
+
+  /// see [IncomeDao.time]
+  static final time =
+      obx.QueryDateProperty<IncomeDao>(_entities[6].properties[3]);
+
+  /// see [IncomeDao.category]
+  static final category = obx.QueryRelationToOne<IncomeDao, CategoryDao>(
+      _entities[6].properties[4]);
 }
