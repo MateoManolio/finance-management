@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_platform_interface/local_auth_platform_interface.dart';
 
 class AuthService extends GetxService {
   final LocalAuthentication auth = LocalAuthentication();

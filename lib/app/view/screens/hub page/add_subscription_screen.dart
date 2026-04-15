@@ -49,7 +49,8 @@ class AddSubscriptionScreen extends StatelessWidget {
               controller: ctrl,
               keyboardType: type,
               style: GoogleFonts.outfit(
-                  color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                  color: theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.bold),
               decoration: InputDecoration(
                 hintText: placeholder,
                 hintStyle: GoogleFonts.outfit(
@@ -59,7 +60,10 @@ class AddSubscriptionScreen extends StatelessWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
                 prefixIcon: icon != null
-                    ? Icon(icon, color: theme.colorScheme.onSurface.withValues(alpha: 0.4), size: 22)
+                    ? Icon(icon,
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                        size: 22)
                     : null,
               ),
             ),
@@ -93,8 +97,8 @@ class AddSubscriptionScreen extends StatelessWidget {
                 duration: const Duration(milliseconds: 100),
                 height: screenHeight * controller.modalHeight.value,
                 child: GlassContainer(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(AppConstants.largeRadius)),
+                  borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(AppConstants.largeRadius)),
                   blur: AppConstants.glassBlur,
                   opacity: 0.1, // Dark modal background feel
                   padding: const EdgeInsets.all(AppConstants.largePadding),
@@ -154,15 +158,18 @@ class AddSubscriptionScreen extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.03),
-                                    borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
-                                    border: Border.all(
-                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
-                                      width: 1,
-                                    ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.onSurface
+                                      .withValues(alpha: 0.03),
+                                  borderRadius: BorderRadius.circular(
+                                      AppConstants.defaultRadius),
+                                  border: Border.all(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.08),
+                                    width: 1,
                                   ),
+                                ),
                                 child: TextField(
                                   controller: controller.priceController,
                                   keyboardType:
@@ -181,7 +188,9 @@ class AddSubscriptionScreen extends StatelessWidget {
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 18, vertical: 16),
                                     prefixIcon: Icon(Icons.attach_money,
-                                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4), size: 22),
+                                        color: theme.colorScheme.onSurface
+                                            .withValues(alpha: 0.4),
+                                        size: 22),
                                   ),
                                 ),
                               ),
@@ -193,13 +202,15 @@ class AddSubscriptionScreen extends StatelessWidget {
                                 }
                                 if (controller.isFetchingRate.value) {
                                   return Padding(
-                                    padding: EdgeInsets.only(top: 4, left: 16),
+                                    padding:
+                                        const EdgeInsets.only(top: 4, left: 16),
                                     child: SizedBox(
                                         width: 12,
                                         height: 12,
                                         child: CircularProgressIndicator(
                                             strokeWidth: 2,
-                                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
+                                            color: theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.5))),
                                   );
                                 }
                                 final price =
@@ -213,7 +224,9 @@ class AddSubscriptionScreen extends StatelessWidget {
                                   child: Text(
                                     '≈ ARS ${converted.toStringAsFixed(2)}',
                                     style: GoogleFonts.outfit(
-                                        fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.7)),
+                                        fontSize: 12,
+                                        color: theme.colorScheme.onSurface
+                                            .withValues(alpha: 0.7)),
                                   ),
                                 );
                               }),
@@ -226,51 +239,84 @@ class AddSubscriptionScreen extends StatelessWidget {
                                 height: 85,
                                 child: Obx(() => ListView.builder(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: controller.availableCategories.length,
+                                      itemCount:
+                                          controller.availableCategories.length,
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
-                                        final category = controller.availableCategories[index];
-                                        final isSelected = controller.selectedCategory.value?.id == category.id;
+                                        final category = controller
+                                            .availableCategories[index];
+                                        final isSelected = controller
+                                                .selectedCategory.value?.id ==
+                                            category.id;
                                         return GestureDetector(
-                                          onTap: () => controller.selectedCategory.value = category,
+                                          onTap: () => controller
+                                              .selectedCategory
+                                              .value = category,
                                           child: AnimatedContainer(
-                                            duration: const Duration(milliseconds: 200),
+                                            duration: const Duration(
+                                                milliseconds: 200),
                                             width: 75,
-                                            margin: const EdgeInsets.only(right: 12),
+                                            margin: const EdgeInsets.only(
+                                                right: 12),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? category.color?.withValues(alpha: 0.2) ?? theme.colorScheme.primary.withValues(alpha: 0.2)
-                                                  : theme.colorScheme.onSurface.withValues(alpha: 0.05),
-                                              borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
+                                                  ? category.color?.withValues(
+                                                          alpha: 0.2) ??
+                                                      theme.colorScheme.primary
+                                                          .withValues(
+                                                              alpha: 0.2)
+                                                  : theme.colorScheme.onSurface
+                                                      .withValues(alpha: 0.05),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppConstants
+                                                          .defaultRadius),
                                               border: Border.all(
                                                 color: isSelected
-                                                    ? category.color ?? Colors.blue
+                                                    ? category.color ??
+                                                        Colors.blue
                                                     : Colors.transparent,
                                                 width: 2,
                                               ),
                                             ),
                                             child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 Icon(
                                                   category.icon,
                                                   color: isSelected
-                                                      ? category.color ?? theme.colorScheme.primary
-                                                      : theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                                                      ? category.color ??
+                                                          theme.colorScheme
+                                                              .primary
+                                                      : theme
+                                                          .colorScheme.onSurface
+                                                          .withValues(
+                                                              alpha: 0.4),
                                                   size: 24,
                                                 ),
                                                 const SizedBox(height: 6),
                                                 Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 4),
                                                   child: Text(
                                                     category.name,
                                                     style: GoogleFonts.outfit(
-                                                      color: isSelected ? theme.colorScheme.onSurface : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                                                      color: isSelected
+                                                          ? theme.colorScheme
+                                                              .onSurface
+                                                          : theme.colorScheme
+                                                              .onSurface
+                                                              .withValues(
+                                                                  alpha: 0.5),
                                                       fontSize: 10,
-                                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                                      fontWeight: isSelected
+                                                          ? FontWeight.bold
+                                                          : FontWeight.normal,
                                                     ),
                                                     maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                               ],
@@ -298,7 +344,8 @@ class AddSubscriptionScreen extends StatelessWidget {
                                         data: ThemeData.dark().copyWith(
                                           colorScheme: ColorScheme.dark(
                                             primary: theme.colorScheme.primary,
-                                            onPrimary: theme.colorScheme.onPrimary,
+                                            onPrimary:
+                                                theme.colorScheme.onPrimary,
                                             surface: const Color(0xFF1E1E1E),
                                             onSurface: Colors.white,
                                           ),
@@ -312,10 +359,13 @@ class AddSubscriptionScreen extends StatelessWidget {
                                   }
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 18, vertical: 16),
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.03),
-                                    borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.03),
+                                    borderRadius: BorderRadius.circular(
+                                        AppConstants.defaultRadius),
                                     border: Border.all(
                                         color: theme.colorScheme.onSurface
                                             .withValues(alpha: 0.08)),
@@ -329,13 +379,16 @@ class AddSubscriptionScreen extends StatelessWidget {
                                                 .format(controller
                                                     .nextPaymentDate.value),
                                             style: GoogleFonts.outfit(
-                                              color: theme.colorScheme.onSurface,
+                                              color:
+                                                  theme.colorScheme.onSurface,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                             ),
                                           )),
                                       Icon(Icons.calendar_today_rounded,
-                                          color: Colors.white.withValues(alpha: 0.4), size: 20),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.4),
+                                          size: 20),
                                     ],
                                   ),
                                 ),
@@ -355,30 +408,51 @@ class AddSubscriptionScreen extends StatelessWidget {
                                         'weekly',
                                         'quarterly'
                                       ].map((key) {
-                                        final isSelected = controller.renewalCycle.value == key;
+                                        final isSelected =
+                                            controller.renewalCycle.value ==
+                                                key;
                                         return GestureDetector(
-                                          onTap: () => controller.renewalCycle.value = key,
+                                          onTap: () => controller
+                                              .renewalCycle.value = key,
                                           child: AnimatedContainer(
-                                            duration: const Duration(milliseconds: 200),
-                                            margin: const EdgeInsets.only(right: 8),
-                                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                                            duration: const Duration(
+                                                milliseconds: 200),
+                                            margin:
+                                                const EdgeInsets.only(right: 8),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? theme.colorScheme.primary.withValues(alpha: 0.2)
-                                                  : theme.colorScheme.onSurface.withValues(alpha: 0.05),
-                                              borderRadius: BorderRadius.circular(AppConstants.extraSmallRadius),
+                                                  ? theme.colorScheme.primary
+                                                      .withValues(alpha: 0.2)
+                                                  : theme.colorScheme.onSurface
+                                                      .withValues(alpha: 0.05),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppConstants
+                                                          .extraSmallRadius),
                                               border: Border.all(
                                                 color: isSelected
                                                     ? theme.colorScheme.primary
-                                                    : theme.colorScheme.onSurface.withValues(alpha: 0.1),
+                                                    : theme
+                                                        .colorScheme.onSurface
+                                                        .withValues(alpha: 0.1),
                                               ),
                                             ),
                                             child: Center(
                                               child: Text(
                                                 key.tr,
                                                 style: GoogleFonts.outfit(
-                                                  color: isSelected ? theme.colorScheme.onSurface : theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                                  color: isSelected
+                                                      ? theme
+                                                          .colorScheme.onSurface
+                                                      : theme
+                                                          .colorScheme.onSurface
+                                                          .withValues(
+                                                              alpha: 0.5),
+                                                  fontWeight: isSelected
+                                                      ? FontWeight.bold
+                                                      : FontWeight.normal,
                                                 ),
                                               ),
                                             ),
@@ -401,7 +475,8 @@ class AddSubscriptionScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold)),
                                     subtitle: Text('auto_pay_desc'.tr,
                                         style: GoogleFonts.outfit(
-                                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                                            color: theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.5),
                                             fontSize: 12)),
                                     value: controller.isAutoPay.value,
                                     onChanged: (val) =>
@@ -437,14 +512,17 @@ class AddSubscriptionScreen extends StatelessWidget {
                                           alignment: Alignment.centerLeft,
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 18),
-                                            decoration: BoxDecoration(
-                                              color: theme.colorScheme.primary.withValues(alpha: 0.05),
-                                              borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
-                                              border: Border.all(
-                                                color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                                                width: 1,
-                                              ),
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.primary
+                                                .withValues(alpha: 0.05),
+                                            borderRadius: BorderRadius.circular(
+                                                AppConstants.defaultRadius),
+                                            border: Border.all(
+                                              color: theme.colorScheme.primary
+                                                  .withValues(alpha: 0.2),
+                                              width: 1,
                                             ),
+                                          ),
                                           child: Obx(() {
                                             double priceValue = double.tryParse(
                                                     controller.price.value) ??
@@ -491,25 +569,26 @@ class AddSubscriptionScreen extends StatelessWidget {
                                               const Duration(milliseconds: 200),
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 6),
-                                           decoration: BoxDecoration(
-                                             color: isSelected
-                                                 ? tag.color
-                                                     .withValues(alpha: 0.3)
-                                                 : theme.colorScheme.onSurface
-                                                     .withValues(alpha: 0.05),
-                                             border: Border.all(
-                                                 color: isSelected
-                                                     ? tag.color
-                                                     : Colors.transparent),
-                                             borderRadius:
-                                                 BorderRadius.circular(AppConstants.defaultRadius),
-                                           ),
+                                          decoration: BoxDecoration(
+                                            color: isSelected
+                                                ? tag.color
+                                                    .withValues(alpha: 0.3)
+                                                : theme.colorScheme.onSurface
+                                                    .withValues(alpha: 0.05),
+                                            border: Border.all(
+                                                color: isSelected
+                                                    ? tag.color
+                                                    : Colors.transparent),
+                                            borderRadius: BorderRadius.circular(
+                                                AppConstants.defaultRadius),
+                                          ),
                                           child: Text(
                                             tag.tag,
                                             style: GoogleFonts.outfit(
                                               color: isSelected
                                                   ? theme.colorScheme.onSurface
-                                                  : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                                  : theme.colorScheme.onSurface
+                                                      .withValues(alpha: 0.6),
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                             ),
@@ -540,7 +619,8 @@ class AddSubscriptionScreen extends StatelessWidget {
                             backgroundColor: theme.colorScheme.primary,
                             foregroundColor: theme.colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppConstants.defaultRadius),
+                              borderRadius: BorderRadius.circular(
+                                  AppConstants.defaultRadius),
                             ),
                             elevation: 0,
                           ),

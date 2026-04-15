@@ -35,7 +35,8 @@ class ExpenseAmountInput extends StatelessWidget {
                       color: theme.colorScheme.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.3)),
+                          color:
+                              theme.colorScheme.primary.withValues(alpha: 0.3)),
                     ),
                     child: Text(
                       controller.selectedCurrency.value,
@@ -84,12 +85,13 @@ class ExpenseAmountInput extends StatelessWidget {
 
           if (controller.isFetchingRate.value) {
             return Padding(
-              padding: EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.only(left: 12),
               child: SizedBox(
                 width: 12,
                 height: 12,
                 child: CircularProgressIndicator(
-                    strokeWidth: 2, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+                    strokeWidth: 2,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
               ),
             );
           }
@@ -99,8 +101,8 @@ class ExpenseAmountInput extends StatelessWidget {
               padding: const EdgeInsets.only(left: 12),
               child: Text(
                 controller.conversionError.value!,
-                style:
-                    GoogleFonts.outfit(fontSize: 12, color: theme.colorScheme.error),
+                style: GoogleFonts.outfit(
+                    fontSize: 12, color: theme.colorScheme.error),
               ),
             );
           }
@@ -115,7 +117,8 @@ class ExpenseAmountInput extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.swap_horiz_rounded,
-                    size: 16, color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
+                    size: 16,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
                 const SizedBox(width: 4),
                 Text(
                   '≈ ARS ${converted.toStringAsFixed(2)}',

@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/display_expenses_controller.dart';
@@ -86,7 +85,10 @@ class _Information extends StatelessWidget {
                 child: Text(
                   Get.find<DisplayExpensesController>().formatDate(date),
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7),
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
