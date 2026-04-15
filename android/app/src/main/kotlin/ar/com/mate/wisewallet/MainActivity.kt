@@ -1,4 +1,4 @@
-package com.example.finance_management
+package ar.com.mate.wisewallet
 
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +11,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterFragmentActivity() {
-    private val CHANNEL = "com.example.finance_management/storage"
+    private val CHANNEL = "ar.com.mate.wisewallet/storage"
     private val REQUEST_MANAGE_STORAGE = 1001
 
     private var pendingResult: MethodChannel.Result? = null

@@ -1,4 +1,4 @@
-package com.example.finance_management
+package ar.com.mate.wisewallet
 
 import android.content.Context
 import android.net.Uri

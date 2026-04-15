@@ -66,7 +66,7 @@ class ProfileController extends GetxController {
   final language = 'es_ARG'.obs;
   final isDarkMode = true.obs;
   final usePasscode = false.obs;
-  
+
   // Financial state
   final monthlyIncome = 0.0.obs;
   final balance = 0.0.obs;
@@ -414,7 +414,7 @@ class ProfileController extends GetxController {
       Directory? directory;
       if (Platform.isAndroid) {
         // Request storage permission via native MethodChannel
-        const channel = MethodChannel('com.example.finance_management/storage');
+        const channel = MethodChannel('ar.com.mate.wisewallet/storage');
         final bool granted =
             await channel.invokeMethod('requestStoragePermission');
         if (granted) {
@@ -444,8 +444,7 @@ class ProfileController extends GetxController {
         mainButton: TextButton(
           onPressed: () async {
             if (Platform.isAndroid) {
-              const channel =
-                  MethodChannel('com.example.finance_management/storage');
+              const channel = MethodChannel('ar.com.mate.wisewallet/storage');
               final success = await channel.invokeMethod('openDocumentsFolder');
               if (success != true) {
                 Get.snackbar(
