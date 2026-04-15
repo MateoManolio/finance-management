@@ -71,6 +71,7 @@ class _GlossyNavigationItemState extends State<GlossyNavigationItem>
         : widget.unselectedColor;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: widget.onTap,
       child: AnimatedContainer(
         duration: AppConstants.defaultAnimationDuration,

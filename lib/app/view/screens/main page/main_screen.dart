@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   StreamSubscription? _widgetClickSubscription;
 
-  bool _isNavigatingViaBar = false;
+  int? _targetPage;
 
   @override
   void initState() {
@@ -140,7 +140,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   void _onNavigationItemSelected(int index) {
-    _isNavigatingViaBar = true;
+    _targetPage = index;
     _navigationController.changePage(index);
     _pageController
         .animateToPage(
@@ -149,12 +149,14 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       curve: Curves.easeInOut,
     )
         .then((_) {
-      _isNavigatingViaBar = false;
+      if (_targetPage == index) {
+        _targetPage = null;
+      }
     });
   }
 
   void _onPageChanged(int index) {
-    if (!_isNavigatingViaBar) {
+    if (_targetPage == null || _targetPage == index) {
       _navigationController.changePage(index);
     }
   }
