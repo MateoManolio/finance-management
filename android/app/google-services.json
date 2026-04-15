@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "206436041367",
+    "project_id": "wise-wallet-finance",
+    "storage_bucket": "wise-wallet-finance.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206436041367:android:050b8e077b06dc4fdc1fd2",
+        "android_client_info": {
+          "package_name": "ar.com.mate.wisewallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7gbedzHRN0tVigQS5jb4bwaGpXh5a2YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206436041367:android:9772cc9ebeda73b9dc1fd2",
+        "android_client_info": {
+          "package_name": "com.example.wise_wallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7gbedzHRN0tVigQS5jb4bwaGpXh5a2YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

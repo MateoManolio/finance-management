@@ -10,10 +10,22 @@ import 'package:wise_wallet/app/view/screens/main%20page/main_screen.dart';
 import 'package:wise_wallet/app/view/screens/lock/lock_screen.dart';
 import 'package:wise_wallet/app/view/screens/load_expense/quick_expense_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'firebase_options.dart';
 
 void main() async {
   // Ensure Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   // Initialize date formatting
   await initializeDateFormatting('es_ES', null);
@@ -42,6 +54,9 @@ void main() async {
     home: usePasscode ? const LockScreen() : const MainScreen(),
     debugShowCheckedModeBanner: false,
     initialBinding: InitialBinding(),
+    navigatorObservers: [
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
     localizationsDelegates: const [
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
