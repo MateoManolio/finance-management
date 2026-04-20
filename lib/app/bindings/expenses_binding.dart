@@ -170,8 +170,10 @@ class UseCasesBinding extends Bindings {
 class ExpensesBinding extends Bindings {
   @override
   void dependencies() {
-    // Register AuthService
-    Get.put(AuthService(), permanent: true);
+    // Register AuthService if not already registered (allows mocking)
+    if (!Get.isRegistered<AuthService>()) {
+      Get.put(AuthService(), permanent: true);
+    }
 
     // First ensure database and services are initialized
     if (!Get.isRegistered<AppDB>() || !Get.isRegistered<DioClient>()) {
