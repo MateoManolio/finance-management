@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import '../models/expense_dao.dart';
@@ -27,12 +29,18 @@ class AppDB {
     bankDiscountBox = Box<BankDiscountDao>(expenseStore);
   }
 
-  static Future<AppDB> create() async {
-    final docsDir = await getApplicationDocumentsDirectory();
+  static Future<AppDB> create({bool isTest = false}) async {
+    Directory dir;
+    if (isTest) {
+      dir = await Directory.systemTemp.createTemp('objectbox_test_');
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
     final movieStore = await openStore(
       directory: p.join(
-        docsDir.path,
-        "obx-database",
+        dir.path,
+        isTest ? "obx-test-database" : "obx-database",
       ),
     );
     return AppDB._create(movieStore);

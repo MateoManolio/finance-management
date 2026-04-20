@@ -32,17 +32,17 @@
         {
           "id": "8:2796075415949339620",
           "name": "categoryId",
+          "indexId": "2:4613352209867354644",
           "type": 11,
           "flags": 520,
-          "indexId": "2:4613352209867354644",
           "relationTarget": "CategoryDao"
         },
         {
           "id": "10:5620443540309895286",
           "name": "cardId",
+          "indexId": "4:2834181971530382959",
           "type": 11,
           "flags": 520,
-          "indexId": "4:2834181971530382959",
           "relationTarget": "CreditCardDao"
         }
       ],
@@ -230,17 +230,17 @@
         {
           "id": "9:8182732957857453030",
           "name": "categoryId",
+          "indexId": "3:3298386781401118933",
           "type": 11,
           "flags": 520,
-          "indexId": "3:3298386781401118933",
           "relationTarget": "CategoryDao"
         },
         {
           "id": "10:3861221567018217888",
           "name": "cardId",
+          "indexId": "5:1803719598457424279",
           "type": 11,
           "flags": 520,
-          "indexId": "5:1803719598457424279",
           "relationTarget": "CreditCardDao"
         }
       ],
@@ -355,9 +355,9 @@
         {
           "id": "5:8782898853105616480",
           "name": "categoryId",
+          "indexId": "6:472417504103244167",
           "type": 11,
           "flags": 520,
-          "indexId": "6:472417504103244167",
           "relationTarget": "CategoryDao"
         }
       ],
