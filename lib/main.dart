@@ -46,33 +46,55 @@ void main() async {
   final bool isDarkMode = storage.read('isDarkMode') ?? true;
   final bool usePasscode = storage.read('usePasscode') ?? false;
 
-  runApp(GetMaterialApp(
-    theme: AppTheme.lightTheme,
-    darkTheme: AppTheme.darkTheme,
-    themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-    translations: Messages(),
-    home: usePasscode ? const LockScreen() : const MainScreen(),
-    debugShowCheckedModeBanner: false,
-    initialBinding: InitialBinding(),
-    navigatorObservers: [
-      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-    ],
-    localizationsDelegates: const [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [
-      Locale('es', 'AR'),
-      Locale('en', 'US'),
-    ],
-    locale: initialLocale,
-    fallbackLocale: const Locale('es', 'AR'),
-    getPages: [
-      GetPage(
-          name: '/',
-          page: () => usePasscode ? const LockScreen() : const MainScreen()),
-      GetPage(name: '/quick-add', page: () => const QuickExpenseScreen()),
-    ],
+  runApp(App(
+    isDarkMode: isDarkMode,
+    usePasscode: usePasscode,
+    initialLocale: initialLocale,
   ));
+}
+
+class App extends StatelessWidget {
+  final bool isDarkMode;
+  final bool usePasscode;
+  final Locale initialLocale;
+
+  const App({
+    super.key,
+    required this.isDarkMode,
+    required this.usePasscode,
+    required this.initialLocale,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      translations: Messages(),
+      home: usePasscode ? const LockScreen() : const MainScreen(),
+      debugShowCheckedModeBanner: false,
+      initialBinding: InitialBinding(),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', 'AR'),
+        Locale('en', 'US'),
+      ],
+      locale: initialLocale,
+      fallbackLocale: const Locale('es', 'AR'),
+      getPages: [
+        GetPage(
+            name: '/',
+            page: () => usePasscode ? const LockScreen() : const MainScreen()),
+        GetPage(name: '/quick-add', page: () => const QuickExpenseScreen()),
+      ],
+    );
+  }
 }
