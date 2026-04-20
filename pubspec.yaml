@@ -13,12 +13,12 @@ dependencies:
   
   cupertino_icons: ^1.0.2
   get: ^4.6.6
-  objectbox: ^2.4.0
+  objectbox: ^5.3.1
   build_runner: ^2.4.8
   path_provider: ^2.1.2
   path: ^1.9.0
-  objectbox_generator: ^2.5.0
-  objectbox_flutter_libs: ^2.5.0
+  objectbox_generator: ^5.3.1
+  objectbox_flutter_libs: ^5.3.1
   fl_chart: ^1.1.1
   google_fonts: ^6.3.2
   dartz: ^0.10.1
@@ -33,14 +33,16 @@ dependencies:
   local_auth: ^3.0.0
   quick_actions: ^1.1.0
   home_widget: ^0.9.0
-  firebase_core: ^3.11.0
-  firebase_analytics: ^11.4.1
-  firebase_crashlytics: ^4.3.1
+  firebase_core: ^4.7.0
+  firebase_analytics: ^12.3.0
+  firebase_crashlytics: ^5.2.0
 
 dev_dependencies:
+  firebase_core_platform_interface: ^6.0.3
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  patrol: ^4.5.0
 
 flutter:
   uses-material-design: true
@@ -52,3 +54,13 @@ objectbox:
   # output_dir:
   #   lib: custom
   #   test: other
+
+patrol:
+  app_name: Wise Wallet
+  test_directory: test/integration_test
+  android:
+    package_name: ar.com.mate.wisewallet
+  ios:
+    bundle_id: ar.com.mate.wisewallet
+  macos:
+    bundle_id: ar.com.mate.wisewallet
