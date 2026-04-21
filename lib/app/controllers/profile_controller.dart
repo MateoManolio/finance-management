@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wise_wallet/app/domain/entity/bank_discount.dart';
 import 'package:wise_wallet/app/domain/entity/category.dart';
@@ -21,7 +19,7 @@ import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
 import 'package:wise_wallet/app/domain/usecases/get_exchange_rate_usecase.dart';
 import 'package:wise_wallet/app/service/auth_service.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:file_picker/file_picker.dart';
 import 'expenses_controller.dart';
 
 class ProfileController extends GetxController {
@@ -419,14 +417,28 @@ class ProfileController extends GetxController {
       final file = File('${directory.path}/$fileName');
       await file.writeAsString(jsonString);
 
+      // Use file_picker to let the user choose where to save
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: 'save'.tr,
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: utf8.encode(jsonString),
+      );
+
       Get.back(); // Close loading
 
-      // Use share_plus to export the file
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        subject: 'Wise Wallet Data Export',
-        text: 'Backup of my Wise Wallet transactions and settings.',
-      );
+      if (outputFile != null) {
+        // file_picker on some platforms (like Android) returns the path
+        // and we might need to write the bytes ourselves if it didn't do it automatically.
+        // On newer versions of file_picker, if you provide `bytes`, it handles the writing.
+        Get.snackbar(
+          'export_success'.tr,
+          'export_message'.trParams({'path': outputFile}),
+          duration: const Duration(seconds: 5),
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     } catch (e) {
       if (Get.isOverlaysOpen) Get.back(); // Close loading if open
       Get.snackbar('error'.tr, 'export_error'.tr);
