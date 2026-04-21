@@ -21,6 +21,7 @@ import 'package:wise_wallet/app/domain/repositories/tag_repository.dart';
 import 'package:wise_wallet/app/domain/usecases/get_exchange_rate_usecase.dart';
 import 'package:wise_wallet/app/service/auth_service.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'expenses_controller.dart';
 
 class ProfileController extends GetxController {
@@ -411,61 +412,23 @@ class ProfileController extends GetxController {
 
       final jsonString = const JsonEncoder.withIndent('  ').convert(data);
 
-      Directory? directory;
-      if (Platform.isAndroid) {
-        // Request storage permission via native MethodChannel
-        const channel = MethodChannel('ar.com.mate.wisewallet/storage');
-        final bool granted =
-            await channel.invokeMethod('requestStoragePermission');
-        if (granted) {
-          directory = Directory('/storage/emulated/0/Documents');
-          if (!await directory.exists()) {
-            await directory.create(recursive: true);
-          }
-        } else {
-          // Fallback to app-specific external directory (no permission needed)
-          directory = await getExternalStorageDirectory();
-        }
-      } else {
-        directory = await getApplicationDocumentsDirectory();
-      }
-
+      // We use a temporary directory for sharing, no permissions needed.
+      final directory = await getTemporaryDirectory();
       final fileName =
-          'wallet_wise_export_${DateTime.now().millisecondsSinceEpoch}.json';
-      final file = File('${directory!.path}/$fileName');
+          'wise_wallet_export_${DateTime.now().millisecondsSinceEpoch}.json';
+      final file = File('${directory.path}/$fileName');
       await file.writeAsString(jsonString);
 
       Get.back(); // Close loading
-      Get.snackbar(
-        'export_success'.tr,
-        'export_message'.trParams({'path': file.path}),
-        duration: const Duration(seconds: 8),
-        snackPosition: SnackPosition.BOTTOM,
-        mainButton: TextButton(
-          onPressed: () async {
-            if (Platform.isAndroid) {
-              const channel = MethodChannel('ar.com.mate.wisewallet/storage');
-              final success = await channel.invokeMethod('openDocumentsFolder');
-              if (success != true) {
-                Get.snackbar(
-                  'error'.tr,
-                  'open_error_message'
-                      .trParams({'error': 'No file manager found'}),
-                  snackPosition: SnackPosition.BOTTOM,
-                );
-              }
-            } else {
-              await OpenFilex.open(file.path, type: "application/json");
-            }
-          },
-          child: Text(
-            'open'.tr,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
+
+      // Use share_plus to export the file
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        subject: 'Wise Wallet Data Export',
+        text: 'Backup of my Wise Wallet transactions and settings.',
       );
     } catch (e) {
-      Get.back(); // Close loading
+      if (Get.isOverlaysOpen) Get.back(); // Close loading if open
       Get.snackbar('error'.tr, 'export_error'.tr);
     }
   }

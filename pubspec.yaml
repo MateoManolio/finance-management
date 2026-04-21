@@ -2,7 +2,7 @@ name: wise_wallet
 description: "An app for personal finances."
 
 publish_to: 'none' 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^4.7.0
   firebase_analytics: ^12.3.0
   firebase_crashlytics: ^5.2.0
+  share_plus: ^13.0.0
 
 dev_dependencies:
   firebase_core_platform_interface: ^6.0.3
