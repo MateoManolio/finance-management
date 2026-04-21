@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -418,7 +419,7 @@ class ProfileController extends GetxController {
       await file.writeAsString(jsonString);
 
       // Use file_picker to let the user choose where to save
-      String? outputFile = await FilePicker.platform.saveFile(
+      String? outputFile = await FilePicker.saveFile(
         dialogTitle: 'save'.tr,
         fileName: fileName,
         type: FileType.custom,
@@ -429,14 +430,27 @@ class ProfileController extends GetxController {
       Get.back(); // Close loading
 
       if (outputFile != null) {
-        // file_picker on some platforms (like Android) returns the path
-        // and we might need to write the bytes ourselves if it didn't do it automatically.
-        // On newer versions of file_picker, if you provide `bytes`, it handles the writing.
+        // outputFile on Android is a content URI, not a real path.
+        // We show a friendly message with the filename and the Downloads folder.
         Get.snackbar(
           'export_success'.tr,
-          'export_message'.trParams({'path': outputFile}),
-          duration: const Duration(seconds: 5),
+          // Show filename + friendly folder name instead of raw URI
+          '${'export_saved_in'.tr} Descargas:\n$fileName',
+          duration: const Duration(seconds: 8),
           snackPosition: SnackPosition.BOTTOM,
+          mainButton: TextButton(
+            onPressed: () async {
+              if (Platform.isAndroid) {
+                const channel =
+                    MethodChannel('ar.com.mate.wisewallet/storage');
+                await channel.invokeMethod('openDownloadsFolder');
+              }
+            },
+            child: Text(
+              'open'.tr,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         );
       }
     } catch (e) {
