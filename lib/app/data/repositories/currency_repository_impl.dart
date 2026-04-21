@@ -26,7 +26,8 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
         url = 'https://dolarapi.com/v1/dolares/$casa';
       } else {
         final formattedDate = DateFormat('yyyy/MM/dd').format(date);
-        url = 'https://api.argentinadatos.com/v1/dolares/$casa/$formattedDate';
+        url =
+            'https://api.argentinadatos.com/v1/cotizaciones/dolares/$casa/$formattedDate';
       }
 
       final response = await _dioClient.get(url);
