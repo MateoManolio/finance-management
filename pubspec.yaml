@@ -2,7 +2,7 @@ name: wise_wallet
 description: "An app for personal finances."
 
 publish_to: 'none' 
-version: 1.0.0
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
