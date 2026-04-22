@@ -23,9 +23,9 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   late final Box<TagDao> _tagBox;
 
   ExpenseRepositoryImpl(this._database) {
-    _expenseBox = _database.movieBox;
-    _categoryBox = Box<CategoryDao>(_database.expenseStore);
-    _tagBox = Box<TagDao>(_database.expenseStore);
+    _expenseBox = _database.expenseBox;
+    _categoryBox = _database.categoryBox;
+    _tagBox = _database.tagBox;
   }
 
   @override
@@ -304,5 +304,27 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     return tagDaos;
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAllExpenses() async {
+    try {
+      _expenseBox.removeAll();
+      return const Right(null);
+    } on ObjectBoxException catch (e) {
+      return Left(
+        DatabaseFailure(
+          message: 'Error deleting all expenses: ${e.toString()}',
+          code: 'OBJECTBOX_ERROR',
+        ),
+      );
+    } catch (e) {
+      return Left(
+        UnexpectedFailure(
+          message: 'Unexpected error deleting all expenses: $e',
+          code: 'UNEXPECTED_ERROR',
+        ),
+      );
+    }
   }
 }

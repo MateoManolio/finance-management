@@ -55,4 +55,15 @@ class BankDiscountRepositoryImpl implements BankDiscountRepository {
       return const Left(DatabaseFailure(message: 'Error deleting discount'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAllDiscounts() async {
+    try {
+      _appDB.bankDiscountBox.removeAll();
+      return const Right(null);
+    } catch (e) {
+      return const Left(
+          DatabaseFailure(message: 'Error deleting all discounts'));
+    }
+  }
 }

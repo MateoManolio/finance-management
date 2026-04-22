@@ -75,4 +75,14 @@ class CategoryRepositoryImpl implements CategoryRepository {
       return Left(DatabaseFailure(message: e.toString(), code: 'DB_ERROR'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAllCategories() async {
+    try {
+      _database.categoryBox.removeAll();
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(message: e.toString(), code: 'DB_ERROR'));
+    }
+  }
 }

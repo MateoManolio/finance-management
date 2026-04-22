@@ -11,22 +11,22 @@ import '../models/bank_discount_dao.dart';
 import 'objectbox/objectbox.g.dart';
 
 class AppDB {
-  late final Store expenseStore;
+  late final Store store;
 
-  late final Box<ExpenseDao> movieBox;
+  late final Box<ExpenseDao> expenseBox;
   late final Box<CreditCardDao> creditCardBox;
   late final Box<SubscriptionDao> subscriptionBox;
   late final Box<CategoryDao> categoryBox;
   late final Box<TagDao> tagBox;
   late final Box<BankDiscountDao> bankDiscountBox;
 
-  AppDB._create(this.expenseStore) {
-    movieBox = Box<ExpenseDao>(expenseStore);
-    creditCardBox = Box<CreditCardDao>(expenseStore);
-    subscriptionBox = Box<SubscriptionDao>(expenseStore);
-    categoryBox = Box<CategoryDao>(expenseStore);
-    tagBox = Box<TagDao>(expenseStore);
-    bankDiscountBox = Box<BankDiscountDao>(expenseStore);
+  AppDB._create(this.store) {
+    expenseBox = Box<ExpenseDao>(store);
+    creditCardBox = Box<CreditCardDao>(store);
+    subscriptionBox = Box<SubscriptionDao>(store);
+    categoryBox = Box<CategoryDao>(store);
+    tagBox = Box<TagDao>(store);
+    bankDiscountBox = Box<BankDiscountDao>(store);
   }
 
   static Future<AppDB> create({bool isTest = false}) async {
@@ -37,12 +37,12 @@ class AppDB {
       dir = await getApplicationDocumentsDirectory();
     }
 
-    final movieStore = await openStore(
+    final store = await openStore(
       directory: p.join(
         dir.path,
         isTest ? "obx-test-database" : "obx-database",
       ),
     );
-    return AppDB._create(movieStore);
+    return AppDB._create(store);
   }
 }

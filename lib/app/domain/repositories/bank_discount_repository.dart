@@ -7,4 +7,5 @@ abstract class BankDiscountRepository {
   Future<Either<Failure, BankDiscount>> saveDiscount(BankDiscount discount);
   Future<Either<Failure, BankDiscount>> updateDiscount(BankDiscount discount);
   Future<Either<Failure, void>> deleteDiscount(int id);
+  Future<Either<Failure, void>> deleteAllDiscounts();
 }

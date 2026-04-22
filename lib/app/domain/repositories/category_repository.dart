@@ -8,4 +8,5 @@ abstract class CategoryRepository {
   Future<Either<Failure, Category>> updateCategory(Category category);
   Future<Either<Failure, void>> deleteCategory(int id);
   Future<Either<Failure, void>> reorderCategories(List<Category> categories);
+  Future<Either<Failure, void>> deleteAllCategories();
 }

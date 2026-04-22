@@ -89,7 +89,7 @@ class ProfileScreen extends GetView<ProfileController> {
                           value: controller.currency.value,
                           underline: const SizedBox(),
                           items:
-                              ['USD', 'ARS', 'BTC', 'ETH'].map((String value) {
+                              ['USD', 'ARS'].map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

@@ -18,7 +18,13 @@ class ExpenseMapper {
       note: dao.note,
       time: dao.time,
       tags: dao.tags.map((tagDao) => TagMapper.toDomain(tagDao)).toList(),
-      category: CategoryMapper.toDomain(dao.category.target!),
+      category: dao.category.target != null
+          ? CategoryMapper.toDomain(dao.category.target!)
+          : Category(
+              name: 'Sin Categoría',
+              icon: Icons.help_outline_rounded,
+              color: Colors.grey,
+              displayOrder: 999),
       card: dao.card.target != null
           ? CreditCardMapper.toEntity(dao.card.target!)
           : null,

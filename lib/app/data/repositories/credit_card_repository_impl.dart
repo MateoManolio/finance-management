@@ -19,4 +19,9 @@ class CreditCardRepositoryImpl implements CreditCardRepository {
     final dao = CreditCardMapper.toDao(card);
     _appDB.creditCardBox.put(dao);
   }
+
+  @override
+  Future<void> deleteAllCards() async {
+    _appDB.creditCardBox.removeAll();
+  }
 }

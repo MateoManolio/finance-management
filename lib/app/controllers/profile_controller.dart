@@ -22,6 +22,10 @@ import 'package:wise_wallet/app/service/auth_service.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'expenses_controller.dart';
+import 'analysis_controller.dart';
+import 'cards_controller.dart';
+import 'subscriptions_controller.dart';
+import 'bank_discounts_controller.dart';
 
 class ProfileController extends GetxController {
   final CategoryRepository _categoryRepository;
@@ -113,13 +117,13 @@ class ProfileController extends GetxController {
 
   // --- Category Management ---
 
-  Future<void> loadCategories() async {
+  Future<void> loadCategories({bool skipSeeding = false}) async {
     isLoadingCategories.value = true;
     final result = await _categoryRepository.getAllCategories();
     result.fold(
       (failure) => Get.snackbar('error'.tr, 'error_categories'.tr),
       (list) async {
-        if (list.isEmpty) {
+        if (list.isEmpty && !skipSeeding) {
           await _seedDefaultCategories();
         } else {
           categories.value = list;
@@ -234,13 +238,13 @@ class ProfileController extends GetxController {
 
   // --- Tag Management ---
 
-  Future<void> loadTags() async {
+  Future<void> loadTags({bool skipSeeding = false}) async {
     isLoadingTags.value = true;
     final result = await _tagRepository.getAllTags();
     result.fold(
       (failure) => Get.snackbar('error'.tr, 'error_tags'.tr),
       (list) async {
-        if (list.isEmpty) {
+        if (list.isEmpty && !skipSeeding) {
           await _seedDefaultTags();
         } else {
           tags.value = list
@@ -529,19 +533,141 @@ class ProfileController extends GetxController {
       };
 
   void clearData() {
-    // Placeholder logic for clearing data
-    Get.defaultDialog(
-      title: 'clear_all'.tr,
-      middleText: 'confirm_clear'.tr,
-      textConfirm: 'delete'.tr,
-      textCancel: 'cancel'.tr,
-      confirmTextColor: Get.theme.colorScheme.onPrimary,
-      buttonColor: Get.theme.colorScheme.primary,
-      onConfirm: () {
-        // Implement actual deletion logic
-        Get.back();
-        Get.snackbar('data_cleared'.tr, 'records_deleted'.tr);
-      },
+    bool delExpenses = true;
+    bool delCategories = true;
+    bool delTags = true;
+    bool delCards = true;
+    bool delSubscriptions = true;
+    bool delDiscounts = true;
+
+    Get.dialog(
+      StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text('clear_data'.tr),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('select_data_to_delete'.tr),
+                  const SizedBox(height: 10),
+                  CheckboxListTile(
+                    title: Text('expenses_of_month'.tr),
+                    value: delExpenses,
+                    onChanged: (v) => setState(() => delExpenses = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  CheckboxListTile(
+                    title: Text('categories'.tr),
+                    value: delCategories,
+                    onChanged: (v) => setState(() => delCategories = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  CheckboxListTile(
+                    title: Text('tags'.tr),
+                    value: delTags,
+                    onChanged: (v) => setState(() => delTags = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  CheckboxListTile(
+                    title: Text('my_cards'.tr),
+                    value: delCards,
+                    onChanged: (v) => setState(() => delCards = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  CheckboxListTile(
+                    title: Text('subscriptions'.tr),
+                    value: delSubscriptions,
+                    onChanged: (v) => setState(() => delSubscriptions = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  CheckboxListTile(
+                    title: Text('bank_discounts'.tr),
+                    value: delDiscounts,
+                    onChanged: (v) => setState(() => delDiscounts = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text('cancel'.tr),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Get.theme.colorScheme.error,
+                  foregroundColor: Get.theme.colorScheme.onError,
+                ),
+                onPressed: () async {
+                  if (delExpenses) await _expenseRepository.deleteAllExpenses();
+                  if (delCategories) {
+                    await _categoryRepository.deleteAllCategories();
+                  }
+                  if (delTags) await _tagRepository.deleteAllTags();
+                  if (delCards) await _creditCardRepository.deleteAllCards();
+                  if (delSubscriptions) {
+                    await _subscriptionRepository.deleteAllSubscriptions();
+                  }
+                  if (delDiscounts) {
+                    await _bankDiscountRepository.deleteAllDiscounts();
+                  }
+
+                  // Reload data but SKIP re-seeding if we just deleted them
+                  if (delCategories) {
+                    await loadCategories(skipSeeding: true);
+                  }
+                  if (delTags) {
+                    await loadTags(skipSeeding: true);
+                  }
+
+                  // --- Trigger Refreshes in other controllers ---
+                  // Note: AnalysisController depends on expenses, so refresh it too
+                  if (delExpenses || delCategories || delTags) {
+                    if (Get.isRegistered<ExpensesController>()) {
+                      await Get.find<ExpensesController>().loadExpenses();
+                    }
+                    if (Get.isRegistered<AnalysisController>()) {
+                      await Get.find<AnalysisController>().refreshData();
+                    }
+                  }
+
+                  if (delCards && Get.isRegistered<CardsController>()) {
+                    Get.find<CardsController>().loadCards();
+                  }
+
+                  if (delSubscriptions &&
+                      Get.isRegistered<SubscriptionsController>()) {
+                    Get.find<SubscriptionsController>().loadSubscriptions();
+                  }
+
+                  if (delDiscounts &&
+                      Get.isRegistered<BankDiscountsController>()) {
+                    await Get.find<BankDiscountsController>().loadDiscounts();
+                  }
+
+                  Get.back();
+                  Get.snackbar('data_cleared'.tr, 'records_deleted'.tr);
+                },
+                child: Text('delete'.tr),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -8,4 +8,5 @@ abstract class TagRepository {
   Future<Either<Failure, Tag>> updateTag(Tag tag);
   Future<Either<Failure, void>> deleteTag(int id);
   Future<Either<Failure, void>> reorderTags(List<Tag> tags);
+  Future<Either<Failure, void>> deleteAllTags();
 }

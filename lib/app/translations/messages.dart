@@ -214,6 +214,9 @@ class Messages extends Translations {
           'quick_add': 'Carga Rápida',
           'shortcut_add_expense_short': 'Nuevo Gasto',
           'shortcut_view_analysis_short': 'Análisis',
+          'select_data_to_delete': 'Selecciona qué borrar',
+          'expenses_of_month': 'Gastos del mes',
+          'settings_and_preferences': 'Ajustes y Preferencias',
         },
         'en_US': {
           'my_wallet': 'My Wallet',
@@ -424,6 +427,9 @@ class Messages extends Translations {
           'quick_add': 'Quick Add',
           'shortcut_add_expense_short': 'New Expense',
           'shortcut_view_analysis_short': 'Analysis',
+          'select_data_to_delete': 'Select data to delete',
+          'expenses_of_month': 'Expenses of the month',
+          'settings_and_preferences': 'Settings and Preferences',
         },
       };
 }

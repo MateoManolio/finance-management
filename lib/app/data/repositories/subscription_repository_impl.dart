@@ -28,4 +28,9 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
     }
     _appDB.subscriptionBox.put(dao);
   }
+
+  @override
+  Future<void> deleteAllSubscriptions() async {
+    _appDB.subscriptionBox.removeAll();
+  }
 }

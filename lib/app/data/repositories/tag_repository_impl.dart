@@ -68,4 +68,14 @@ class TagRepositoryImpl implements TagRepository {
       return Left(DatabaseFailure(message: e.toString(), code: 'DB_ERROR'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAllTags() async {
+    try {
+      _database.tagBox.removeAll();
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(message: e.toString(), code: 'DB_ERROR'));
+    }
+  }
 }

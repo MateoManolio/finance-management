@@ -31,4 +31,7 @@ abstract class ExpenseRepository {
     DateTime startDate,
     DateTime endDate,
   );
+  /// Deletes all expenses
+  /// Returns Either a Failure (left) or void (right)
+  Future<Either<Failure, void>> deleteAllExpenses();
 }
