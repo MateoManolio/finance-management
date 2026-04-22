@@ -5,6 +5,8 @@ import '../../../../controllers/display_expenses_controller.dart';
 import '../../../../core/app_constants.dart';
 import '../../../../domain/entity/expense.dart';
 import 'expense_widget.dart';
+import '../../../../controllers/load_expense_controller.dart';
+import '../../load_expense/load_expense_screen.dart';
 
 import 'empty_expenses_placeholder.dart';
 
@@ -97,7 +99,14 @@ class _Information extends StatelessWidget {
               ),
               ...dailyExpenses.map((expense) => Padding(
                     padding: const EdgeInsets.only(bottom: 6.0),
-                    child: ExpenseWidget(expense: expense),
+                    child: ExpenseWidget(
+                      expense: expense,
+                      onTap: () {
+                        final controller = Get.find<LoadExpenseController>();
+                        controller.loadExistingExpense(expense);
+                        Get.to(() => const LoadExpenseScreen(), opaque: false);
+                      },
+                    ),
                   )),
             ],
           );

@@ -8,6 +8,8 @@ import 'package:wise_wallet/app/domain/entity/credit_card.dart';
 import 'package:wise_wallet/app/domain/entity/expense.dart';
 import '../../widgets/common_credit_card.dart';
 import '../../screens/home page/widgets/expense_widget.dart';
+import '../../../controllers/load_expense_controller.dart';
+import '../../screens/load_expense/load_expense_screen.dart';
 
 class CardExpensesScreen extends StatelessWidget {
   final CreditCard card;
@@ -258,7 +260,14 @@ class CardExpensesScreen extends StatelessWidget {
             ),
             ...dailyExpenses.map((expense) => Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: ExpenseWidget(expense: expense),
+                  child: ExpenseWidget(
+                    expense: expense,
+                    onTap: () {
+                      final controller = Get.find<LoadExpenseController>();
+                      controller.loadExistingExpense(expense);
+                      Get.to(() => const LoadExpenseScreen(), opaque: false);
+                    },
+                  ),
                 )),
             if (index < sortedDates.length - 1) const SizedBox(height: 12),
           ],

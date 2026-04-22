@@ -16,6 +16,7 @@ import 'package:quick_actions/quick_actions.dart';
 import 'package:home_widget/home_widget.dart';
 import '../load_expense/load_expense_screen.dart';
 import '../load_expense/quick_expense_screen.dart';
+import '../../../controllers/load_expense_controller.dart';
 
 /// Main screen that wraps all navigation screens with the glossy navigation bar
 class MainScreen extends StatefulWidget {
@@ -86,6 +87,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       // Use a delay to ensure navigator is ready
       Future.delayed(const Duration(milliseconds: 500), () {
         if (shortcutType == 'add_expense') {
+          Get.find<LoadExpenseController>().resetForm();
           Get.to(() => const LoadExpenseScreen());
         } else if (shortcutType == 'view_analysis') {
           _onNavigationItemSelected(1); // Index 1 is Analysis

@@ -128,8 +128,13 @@ class ExpensesController extends GetxController {
         _showErrorSnackbar('Error al guardar', failure.message);
       },
       (savedExpense) {
-        // Success - add to list and re-sort
-        _expenses.add(savedExpense);
+        // Success - add or update in list and re-sort
+        final existingIndex = _expenses.indexWhere((e) => e.id != 0 && e.id == savedExpense.id);
+        if (existingIndex != -1) {
+          _expenses[existingIndex] = savedExpense;
+        } else {
+          _expenses.add(savedExpense);
+        }
         _expenses.sort((a, b) => a.time.compareTo(b.time));
 
         // Refresh analysis and widget if registered

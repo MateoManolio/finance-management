@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../core/app_constants.dart';
 import '../../../controllers/expenses_controller.dart';
 import '../load_expense/load_expense_screen.dart';
+import '../../../controllers/load_expense_controller.dart';
 import 'widgets/big_button.dart';
 import 'widgets/dashboard_header.dart';
 import 'widgets/display_expenses.dart';
@@ -101,6 +102,7 @@ class Home extends GetView<ExpensesController> {
   }
 
   void _handleAddExpense(BuildContext context) {
+    Get.find<LoadExpenseController>().resetForm();
     Get.generalDialog(
       barrierColor: Colors.black.withValues(alpha: 0.2),
       barrierDismissible: true,

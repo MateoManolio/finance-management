@@ -45,6 +45,44 @@ class LoadExpenseController extends GetxController {
   // Last used date (persists between form resets, but not app restarts)
   DateTime? _lastUsedDate;
 
+  Expense? _expenseToEdit;
+  Expense? get expenseToEdit => _expenseToEdit;
+
+  void loadExistingExpense(Expense expense) {
+    _expenseToEdit = expense;
+    selectedDate.value = expense.time;
+    selectedTags.value = List.from(expense.tags);
+    selectedCategory.value = expense.category;
+    selectedCard.value = expense.card;
+    customColor.value = expense.customColor;
+    noteController.text = expense.note ?? '';
+    modalHeight.value = 0.7;
+
+    selectedCurrency.value = Get.find<ProfileController>().currency.value;
+
+    if (_allCategories.isEmpty) loadCategories();
+    if (_allTags.isEmpty) loadTags();
+
+    if (selectedCurrency.value == 'ARS') {
+      amountController.text = expense.value == expense.value.truncateToDouble()
+          ? expense.value.toInt().toString()
+          : expense.value.toStringAsFixed(2);
+      amount.value = amountController.text;
+      fetchExchangeRate();
+    } else {
+      amountController.text = '';
+      amount.value = '';
+      fetchExchangeRate().then((_) {
+        double rate = exchangeRate.value > 0 ? exchangeRate.value : 1.0;
+        double displayAmount = expense.value / rate;
+        amountController.text = displayAmount == displayAmount.truncateToDouble()
+            ? displayAmount.toInt().toString()
+            : displayAmount.toStringAsFixed(2);
+        amount.value = amountController.text;
+      });
+    }
+  }
+
   // Dependencies
   final ExpensesController _expensesController = Get.find<ExpensesController>();
 
@@ -145,11 +183,6 @@ class LoadExpenseController extends GetxController {
   }
 
   Future<void> fetchExchangeRate() async {
-    if (selectedCurrency.value == 'ARS') {
-      exchangeRate.value = 1.0;
-      return;
-    }
-
     isFetchingRate.value = true;
     conversionError.value = null;
 
@@ -179,6 +212,7 @@ class LoadExpenseController extends GetxController {
   }
 
   void resetForm() {
+    _expenseToEdit = null;
     // Clear text controllers
     amountController.clear();
     noteController.clear();
@@ -217,9 +251,27 @@ class LoadExpenseController extends GetxController {
   }
 
   void toggleCurrency() {
+    final amountText = amountController.text.replaceAll(',', '.');
+    final currentAmount = double.tryParse(amountText);
+
     selectedCurrency.value = selectedCurrency.value == 'ARS' ? 'USD' : 'ARS';
     Get.find<ProfileController>().changeCurrency(selectedCurrency.value);
-    fetchExchangeRate();
+
+    if (currentAmount != null &&
+        exchangeRate.value > 0 &&
+        exchangeRate.value != 1.0) {
+      double newAmount;
+      if (selectedCurrency.value == 'ARS') {
+        // USD -> ARS
+        newAmount = currentAmount * exchangeRate.value;
+      } else {
+        // ARS -> USD
+        newAmount = currentAmount / exchangeRate.value;
+      }
+      amountController.text = newAmount == newAmount.truncateToDouble()
+          ? newAmount.toInt().toString()
+          : newAmount.toStringAsFixed(2); // keep 2 decimals
+    }
   }
 
   void toggleTag(Tag tag) {
@@ -262,6 +314,7 @@ class LoadExpenseController extends GetxController {
         : baseAmount * exchangeRate.value;
 
     final expense = Expense(
+      id: _expenseToEdit?.id ?? 0,
       value: finalAmount,
       note: noteController.text.trim().isEmpty
           ? null

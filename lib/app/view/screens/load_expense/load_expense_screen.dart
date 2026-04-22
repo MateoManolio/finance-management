@@ -40,56 +40,105 @@ class LoadExpenseScreen extends StatelessWidget {
               () => AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
                 height: screenHeight * controller.modalHeight.value,
-                child: const GlassContainer(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                  blur: 20,
-                  opacity: 0.1,
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Drag Handle - Only this area allows drag
-                      ExpenseDragHandle(),
-                      SizedBox(height: 20),
+                child: Hero(
+                  tag: controller.expenseToEdit?.id != null && controller.expenseToEdit!.id != 0 
+                      ? 'expense_modal_${controller.expenseToEdit!.id}' 
+                      : 'new_expense',
+                  flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
+                    final isPush = flightDirection == HeroFlightDirection.push;
+                    final cardContext = isPush ? fromHeroContext : toHeroContext;
 
-                      // Amount Input
-                      ExpenseAmountInput(),
-                      SizedBox(height: 16),
-
-                      // Scrollable Content - No drag interference
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    return Material(
+                      type: MaterialType.transparency,
+                      child: AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, child) {
+                          final cardOpacity = isPush 
+                             ? (1.0 - (animation.value * 2)).clamp(0.0, 1.0)
+                             : ((animation.value - 0.5) * 2).clamp(0.0, 1.0);
+                             
+                          return Stack(
+                            fit: StackFit.expand,
                             children: [
-                              // Card Selector
-                              ExpenseCardSelector(),
-                              SizedBox(height: 20),
-
-                              // Category Selector
-                              ExpenseCategorySelector(),
-                              SizedBox(height: 16),
-
-                              // Date Selector
-                              ExpenseDateSelector(),
-                              SizedBox(height: 16),
-
-                              // Note Input (Optional)
-                              ExpenseNoteInput(),
-                              SizedBox(height: 16),
-
-                              // Tags Selector
-                              ExpenseTagsSelector(),
-                              SizedBox(height: 20),
+                              const GlassContainer(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                                blur: 20,
+                                opacity: 0.1,
+                                padding: EdgeInsets.zero,
+                                child: SizedBox.expand(),
+                              ),
+                              Opacity(
+                                opacity: cardOpacity,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: MediaQuery.of(flightContext).size.width,
+                                    height: 100,
+                                    child: cardContext.widget,
+                                  ),
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
+                          );
+                        },
                       ),
-
-                      // Save Button
-                      ExpenseSaveButton(),
-                      SizedBox(height: 16),
-                    ],
+                    );
+                  },
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: const GlassContainer(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                      blur: 20,
+                      opacity: 0.1,
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Drag Handle - Only this area allows drag
+                          ExpenseDragHandle(),
+                          SizedBox(height: 20),
+                          
+                          // Amount Input
+                          ExpenseAmountInput(),
+                          SizedBox(height: 16),
+                          
+                          // Scrollable Content - No drag interference
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Card Selector
+                                  ExpenseCardSelector(),
+                                  SizedBox(height: 20),
+                                  
+                                  // Category Selector
+                                  ExpenseCategorySelector(),
+                                  SizedBox(height: 16),
+                                  
+                                  // Date Selector
+                                  ExpenseDateSelector(),
+                                  SizedBox(height: 16),
+                                  
+                                  // Note Input (Optional)
+                                  ExpenseNoteInput(),
+                                  SizedBox(height: 16),
+                                  
+                                  // Tags Selector
+                                  ExpenseTagsSelector(),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
+                            ),
+                          ),
+                          
+                          // Save Button
+                          ExpenseSaveButton(),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
